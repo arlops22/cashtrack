@@ -1,6 +1,8 @@
 import express, { Application, Response } from 'express';
 import { pinoHttp } from 'pino-http';
+
 import { logger } from './config/logger.config';
+import { errorHandler } from './middlewares/error-handler.middleware';
 
 export class App {
     public app: Application;
@@ -9,7 +11,8 @@ export class App {
         this.app = express();
 
         this.initMiddlewares();
-        this.initializeRoutes();
+        this.initRoutes();
+        this.initErrorHandler();
     }
 
     private initMiddlewares() {
@@ -18,10 +21,14 @@ export class App {
         this.app.use(pinoHttp({ logger }));
     }
 
-    private initializeRoutes() {
+    private initRoutes() {
         this.app.get('/health-check', (_, res: Response) => {
             res.status(200).json({ message: 'API running well!' });
         });
+    }
+
+    private initErrorHandler() {
+        this.app.use(errorHandler);
     }
 
     listen(port: string): void {
