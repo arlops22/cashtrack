@@ -1,104 +1,181 @@
-# Use Cases — CashTrack
+# CashTrack
 
-## Authentication
+CashTrack is a personal finance management app that helps users stay in control of their money: manage bank accounts, categorize transactions, and visualize statistics about spending and income over time.
 
-### UC01 — Register account
+## Table of Contents
+
+- [About the project](#about-the-project)
+- [Tech stack](#tech-stack)
+- [Entity-Relationship Diagram](#entity-relationship-diagram)
+- [Use cases](#use-cases)
+- [Getting started](#getting-started)
+- [Project structure](#project-structure)
+- [Roadmap](#roadmap)
+
+## About the project
+
+CashTrack allows the user to:
+
+- Manage multiple bank accounts (checking, saving, investment)
+- Record income and expense transactions, linked to categories and payment methods
+- Organize transactions with custom categories
+- View consolidated statistics: totals by period, expenses by category, and month-over-month comparisons
+
+## Tech stack
+
+**Backend**
+
+- [Node.js](https://nodejs.org/) + [TypeScript](https://www.typescriptlang.org/)
+- [Express](https://expressjs.com/) — HTTP framework
+- [Prisma](https://www.prisma.io/) — ORM
+- [PostgreSQL](https://www.postgresql.org/) — database
+
+**Infrastructure**
+
+- [Docker](https://www.docker.com/) / Docker Compose
+
+**Frontend**
+
+- [Next.js](https://nextjs.org/)
+
+## Entity-Relationship Diagram
+
+![CashTrack Entity-Relationship Diagram](./docs/ERD.png)
+
+## Use cases
+
+### Authentication
+
+**UC01 — Register account**
 
 - **Actor:** User
 - **Main flow:**
-  1. User enters e-mail and password
-  2. System checks that the e-mail is not in use
-  3. System saves the user
+    1. User enters e-mail and password
+    2. System checks that the e-mail is not in use
+    3. System saves the user
 - **Alternative flow:** E-mail already registered → system displays an error and doesn't create the account
 
-### UC02 — Log in
+**UC02 — Log in**
 
 - **Actor:** User
 - **Main flow:**
-  1. User enters e-mail and password
-  2. System authenticates user
+    1. User enters e-mail and password
+    2. System authenticates the user
 - **Alternative flow:** Invalid credentials → system displays an error
 
-## Contas Bancárias
+### Bank Account
 
-### UC03 — Criar conta bancária
+**UC03 — Create bank account**
 
-- **Ator:** User
+- **Actor:** User
 - **Main flow:**
-  1. User informa nome, valor inicial e tipo (Conta corrente, Poupança, Investimento)
-  2. Sistema salva a conta bancária
+    1. User enters name, initial value, and account type (Checking, Saving, Investment)
+    2. System saves the bank account
 
-### UC04 — Editar/excluir conta bancária
+**UC04 — Edit/delete bank account**
 
-- **Ator:** User
+- **Actor:** User
 - **Main flow:**
-  1. User seleciona uma conta existente
-  2. Edita nome/tipo, ou solicita exclusão
-  3. Sistema salva as alterações ou remove a conta
-- **Alternative flow:** Conta possui transações vinculadas → sistema pede confirmação explícita antes de excluir (e o que fazer com as transações associadas)
+    1. User selects an existing account
+    2. Edits name/type, or requests deletion
+    3. System saves the change or removes the account
+- **Alternative flow:** Account has existing transactions → system asks for confirmation before deleting
 
-## Categorias
+### Categories
 
-### UC05 — Gerenciar categorias
+**UC05 — Manage categories**
 
-- **Ator:** User
+- **Actor:** User
 - **Main flow:**
-  1. User pode criar, editar ou excluir uma categoria
-  2. Ao excluir uma categoria em uso, sistema reclassifica as transações vinculadas para "Sem categoria"
+    1. User can create, edit, or delete a category
+    2. When deleting a category in use, the system reassigns the related transactions to "Empty category"
 
-## Transações
+### Transactions
 
-### UC06 — Gerenciar transação
+**UC06 — Manage transactions**
 
-- **Ator:** User
+- **Actor:** User
 - **Main flow:**
-  1. User pode criar, editar ou excluir uma transação
-  2. Ao criar/editar, informa: conta bancária, **tipo (receita ou despesa)**, valor, categoria e método de pagamento (Dinheiro, Pix, Cartão Débito/Crédito)
-  3. Sistema salva a transação e atualiza o saldo da conta bancária correspondente
+    1. User can create, edit, or delete a transaction
+    2. When creating/editing, the user enters: bank account, type (income or expense), amount, category, and payment method (Cash, Pix, Debit/Credit Card)
+    3. System saves the transaction and updates the balance of the corresponding bank account
 
-### UC07 — Listar/filtrar transações de uma conta bancária
+**UC07 — List/filter transactions of a bank account**
 
-- **Ator:** User
+- **Actor:** User
 - **Main flow:**
-  1. User aplica filtros (categoria, período, tipo, método, favoritos)
-  2. Sistema exibe as transações filtradas
+    1. User applies filters (category, period, type, method, favorites)
+    2. System displays the filtered transactions
 
-### UC08 — Favoritar transação
+**UC08 — Favorite a transaction**
 
-- **Ator:** User
+- **Actor:** User
 - **Main flow:**
-  1. User marca/desmarca uma transação como favorita
-  2. Sistema atualiza o status da transação
+    1. User checks/unchecks a transaction as a favorite
+    2. System updates the transaction status
 
-## Estatísticas Financeiras
+### Financial Statistics
 
-### UC09 — Visualizar totais
+**UC09 — Display totals**
 
-- **Ator:** User
+- **Actor:** User
 - **Main flow:**
-  1. Sistema soma as transações do tipo "despesa" do período selecionado → total gasto
-  2. Sistema soma as transações do tipo "receita" do período selecionado → total arrecadado
-  3. Sistema calcula o saldo final (arrecadado − gasto)
-  4. User pode visualizar os totais de uma conta específica ou consolidados de todas as contas
+    1. System sums transactions of type "expense" within the selected period → total expenses
+    2. System sums transactions of type "income" within the selected period → total income
+    3. System calculates the final balance (income - expenses)
+    4. User can view the totals of a specific account or the consolidated total across all accounts
 
-### UC10 — Visualizar gastos por categoria
+**UC10 — Display expenses by category**
 
-- **Ator:** User
+- **Actor:** User
 - **Main flow:**
-  1. Sistema agrupa as despesas do mês por categoria
-  2. Sistema exibe o resultado (ex: gráfico ou lista com percentuais)
+    1. System groups the month's expenses by category
+    2. System displays the result (e.g., a chart or list with percentages)
 
-### UC11 — Comparar meses
+**UC11 — Compare months**
 
-- **Ator:** User
+- **Actor:** User
 - **Main flow:**
-  1. User seleciona um ou mais meses
-  2. Sistema exibe a comparação de gastos e receitas entre os períodos selecionados
+    1. User selects one or more months
+    2. System displays a comparison of expenses and income for the selected period
 
----
+## Getting started
 
-**Observações de escopo (V1):**
+### Prerequisites
 
-- Metas e importação por CSV ficam para a Versão 2.
-- A relação entre metas e contas bancárias (entidade separada vs. reserva em conta poupança) ainda não foi definida — decisão adiada para a V2.
-- Recorrência de transações (ex: salário, aluguel fixo) não está detalhada nesta lista — confirmar se entra na V1 ou se também fica para depois.
+- [Docker](https://www.docker.com/) and Docker Compose installed
+
+### Steps
+
+1. Clone the repository:
+
+    ```bash
+    git clone <repository-url>
+    cd cashtrack
+    ```
+
+2. Set up the backend environment variables:
+
+    ```bash
+    cp backend/.env.example backend/.env
+    ```
+
+    > Fill in the `.env` file with your database connection string and any other required variables.
+
+3. Start the containers:
+    ```bash
+    docker compose up --build
+    ```
+
+This will start:
+
+- **`cashtrack_api`** — Node.js/Express API, available at `http://localhost:8000`
+- **`cashtrack_db`** — PostgreSQL database, available at `localhost:5432`
+
+### Running migrations
+
+With the containers up:
+
+```bash
+docker exec -it cashtrack_api npm run migrate:dev
+```
