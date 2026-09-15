@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { AppError } from '../errors';
-import { logger } from '../config/logger.config';
+import { logger } from '../../config/logger.config';
 
 export const errorHandler = (error: Error, req: Request, res: Response, next: NextFunction) => {
     if (error instanceof AppError) {

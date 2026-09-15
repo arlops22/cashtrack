@@ -2,7 +2,7 @@ import express, { Application, Response } from 'express';
 import { pinoHttp } from 'pino-http';
 
 import { logger } from './config/logger.config';
-import { errorHandler } from './middlewares/error-handler.middleware';
+import { errorHandler } from './shared/middlewares/error-handler.middleware';
 
 export class App {
     public app: Application;
