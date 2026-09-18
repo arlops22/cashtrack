@@ -1,7 +1,8 @@
 import { User } from '../../../shared/entities';
-import { CreateUserDto } from '../dto';
+import { CreateUserDto } from '../dto/create-user.dto';
 
 export interface IUserRepository {
     create(signUpDTO: CreateUserDto): Promise<User>;
-    findUnique(email: string): Promise<Pick<User, 'id'> | null>;
+    findEmail(email: string): Promise<Pick<User, 'id'> | null>;
+    findUnique(email: string): Promise<User | null>;
 }

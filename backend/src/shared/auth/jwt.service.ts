@@ -12,6 +12,7 @@ export class JwtService implements IJwtService {
     verify(token: string): boolean {
         throw new Error('Method not implemented.');
     }
+
     sign(payload: string | object) {
         return jwt.sign(payload, this.jwtSecret, { expiresIn: '1h' });
     }

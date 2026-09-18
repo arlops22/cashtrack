@@ -1,7 +1,7 @@
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
 
 import { User } from '../../shared/entities';
-import { CreateUserDto } from './dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { IUserRepository } from './interfaces/user-repository';
 
 export class UserRepository implements IUserRepository {
@@ -13,10 +13,16 @@ export class UserRepository implements IUserRepository {
         });
     }
 
-    findUnique(email: string): Promise<Pick<User, 'id'> | null> {
-        return this.prisma.user.findFirst({
+    findEmail(email: string): Promise<Pick<User, 'id'> | null> {
+        return this.prisma.user.findUnique({
             where: { email },
             select: { id: true },
+        });
+    }
+
+    findUnique(email: string): Promise<User | null> {
+        return this.prisma.user.findUnique({
+            where: { email },
         });
     }
 }
