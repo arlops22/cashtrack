@@ -11,11 +11,12 @@ export class ServerSetup {
     private readonly appModule: AppModule;
 
     constructor(
-        private port = 8000,
+        private port: string = '8000',
         private readonly prisma: PrismaClient,
+        private readonly jwtSecret: string,
     ) {
         this.app = express();
-        this.appModule = new AppModule(this.prisma);
+        this.appModule = new AppModule(this.prisma, this.jwtSecret);
 
         this.initMiddlewares();
         this.initRoutes();

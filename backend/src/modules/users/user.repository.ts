@@ -1,13 +1,13 @@
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
 
 import { User } from '../../shared/entities';
-import { SignUpDto } from './dto';
+import { CreateUserDto } from './dto';
 import { IUserRepository } from './interfaces/user-repository';
 
 export class UserRepository implements IUserRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
-    create(createUserDTO: SignUpDto) {
+    create(createUserDTO: CreateUserDto) {
         return this.prisma.user.create({
             data: createUserDTO,
         });

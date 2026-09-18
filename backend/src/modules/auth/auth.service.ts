@@ -1,21 +1,24 @@
 import z from 'zod';
-
-import { ConflictError, ValidationError } from '../../shared/errors';
-import { SignUpDto } from './dto';
-import { signUpDtoSchema } from './dto/sign-up.dto';
-import { IUserRepository } from './interfaces/user-repository';
 import { hash } from 'bcrypt';
 import { randomInt } from 'node:crypto';
 
+import { ConflictError, ValidationError } from '../../shared/errors';
+import { IUserRepository } from '../users/interfaces/user-repository';
+import { CreateUserDto, createUserDtoSchema } from '../users/dto';
+import { IJwtService } from '../../shared/auth/interface/jwt-service.interface';
+
 export class AuthService {
-    constructor(private readonly userRepo: IUserRepository) {}
+    constructor(
+        private readonly userRepo: IUserRepository,
+        private readonly jwtService: IJwtService,
+    ) {}
 
     signIn() {}
 
-    async signUp(signUpDto: SignUpDto) {
+    async signUp(signUpDto: CreateUserDto) {
         const { firstName, lastName, email, password } = signUpDto;
 
-        const validation = signUpDtoSchema.safeParse(signUpDto);
+        const validation = createUserDtoSchema.safeParse(signUpDto);
         if (!validation.success) {
             throw new ValidationError('Invalid user data', z.flattenError(validation.error).fieldErrors);
         }
@@ -23,11 +26,9 @@ export class AuthService {
         const emailTaken = await this.userRepo.findUnique(email);
         if (emailTaken) throw new ConflictError('This e-mail is already in use!');
 
-        // criptografa senha
         const randomSalt = randomInt(10, 16);
         const hashedPassword = await hash(password, randomSalt);
 
-        // cria user
         const user = await this.userRepo.create({
             firstName,
             lastName,
@@ -35,6 +36,12 @@ export class AuthService {
             password: hashedPassword,
         });
 
-        // envia access token para cliente
+        const accessToken = this.generateAccessToken(user.id);
+
+        return { accessToken };
+    }
+
+    private generateAccessToken(userId: number) {
+        return this.jwtService.sign({ sub: userId });
     }
 }
