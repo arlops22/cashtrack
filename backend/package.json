@@ -7,7 +7,7 @@
     "type": "commonjs",
     "main": "index.js",
     "scripts": {
-        "dev": "tsx --watch src/main.ts",
+        "dev": "tsx --inspect=0.0.0.0:9229 --watch src/main.ts",
         "start": "node dist/main.js",
         "build": "tsc",
         "type-check": "tsc --noEmit",
