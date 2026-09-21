@@ -1,5 +1,7 @@
+import jwt from 'jsonwebtoken';
+
 export interface IJwtService {
     jwtSecret: string;
-    sign(payload: any): void;
-    verify(token: string): boolean;
+    sign(payload: string | object): string;
+    verify(token: string): jwt.JwtPayload;
 }
