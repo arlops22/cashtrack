@@ -104,7 +104,7 @@ CashTrack allows the user to:
 
 - **Actor:** User
 - **Main flow:**
-    1. User applies filters (category, period, type, method, favorites)
+    1. User applies filters (bank account, category, date, type, method, favorites)
     2. System displays the filtered transactions
 
 **UC08 — Favorite a transaction**
