@@ -12,6 +12,6 @@ export class AppModule {
         private readonly jwtSecret: string,
     ) {
         this.authRoutes = new AuthModule(this.prisma, this.jwtSecret).routes;
-        this.bankAccountsRoutes = new BankAccountsModule().routes;
+        this.bankAccountsRoutes = new BankAccountsModule(this.prisma).routes;
     }
 }
