@@ -39,6 +39,7 @@ export class ServerSetup {
         });
 
         this.app.use('/auth', this.appModule.authRoutes.router);
+        this.app.use('/me', authenticate(this.jwtService), this.appModule.usersRoutes.router);
         this.app.use('/bank-accounts', authenticate(this.jwtService), this.appModule.bankAccountsRoutes.router);
     }
 
