@@ -1,34 +1,27 @@
-import z from 'zod';
-
-import { CreateBankAccountDto, createBankAccountDtoSchema } from './dto/create-bank-account.dto';
-import { UpdateBankAccountDto, updateBankAccountDtoSchema } from './dto/update-bank-account.dto';
-
-import { ValidationError } from '../../shared/errors';
+import { CreateBankAccountDto, UpdateBankAccountDto } from './dto';
 import { IBankAccountsRepository } from './interfaces/bank-accounts-repo';
+import { NotFoundError } from '../../shared/errors';
 
 export class BankAccountsService {
     constructor(private readonly bankAccountRepo: IBankAccountsRepository) {}
 
     create(createDto: CreateBankAccountDto, userId: number) {
-        const validation = createBankAccountDtoSchema.safeParse(createDto);
-        if (!validation.success) {
-            throw new ValidationError('Invalid fields', z.flattenError(validation.error).fieldErrors);
-        }
-
         return this.bankAccountRepo.create(createDto, userId);
     }
 
-    update(updateDto: UpdateBankAccountDto, userId: number) {
-        const {} = updateDto;
+    async update(updateDto: UpdateBankAccountDto, bankAccountId: number, userId: number) {
+        await this.validateOwnership(bankAccountId, userId);
 
-        const validation = updateBankAccountDtoSchema.safeParse(updateDto);
-        if (!validation.success) {
-            throw new ValidationError('Invalid fields', z.flattenError(validation.error).fieldErrors);
-        }
-        return 'Bank Account updated';
+        return this.bankAccountRepo.update(updateDto, bankAccountId);
     }
 
-    delete(userId: number) {
-        return 'Bank Account deleted';
+    async delete(bankAccountId: number, userId: number) {
+        await this.validateOwnership(bankAccountId, userId);
+        return this.bankAccountRepo.delete(bankAccountId);
+    }
+
+    private async validateOwnership(bankAccountId: number, userId: number) {
+        const bankAccount = await this.bankAccountRepo.findFirst(bankAccountId, userId);
+        if (!bankAccount) throw new NotFoundError('bank account');
     }
 }
