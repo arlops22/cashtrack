@@ -12,9 +12,8 @@ export const authenticate = (jwtService: IJwtService) => {
         if (!token) throw new UnauthorizedError();
 
         const payload = jwtService.verify(token);
-        if (!payload) throw new UnauthorizedError();
 
-        req.userId = payload.sub;
+        req.userId = parseInt(payload.sub as string);
         next();
     };
 };
