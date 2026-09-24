@@ -1,3 +1,5 @@
+import { BankAccount } from './bank-account.entity';
+
 export class User {
     constructor(
         public id: number,
@@ -6,5 +8,6 @@ export class User {
         public email: string,
         public password: string,
         public createdAt: Date,
+        public bankAccounts?: BankAccount[],
     ) {}
 }

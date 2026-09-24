@@ -45,8 +45,8 @@ model BankAccount {
   id             Int             @id @default(autoincrement()) @map("pk_bank_account_id")
   userId         Int             @map("fk_user_id")
   name           String          @db.VarChar(100)
-  initialBalance Decimal         @map("initial_balance") @db.Decimal(10, 2)
-  currentBalance Decimal         @map("current_balance") @db.Decimal(10, 2)
+  initialBalance Float           @map("initial_balance")
+  currentBalance Float           @map("current_balance")
   color          String          @db.VarChar(9)
   type           BankAccountType
   transactions   Transaction[]
@@ -72,7 +72,7 @@ model Transaction {
   bankAccountId Int             @map("fk_bank_account_id")
   categoryId    Int?            @map("fk_category_id")
   name          String          @db.VarChar(100)
-  amount        Decimal         @db.Decimal(10, 2)
+  amount        Float
   createdAt     DateTime        @default(now())
   isFavorite    Boolean         @default(false) @map("is_favorite")
   type          TransactionType

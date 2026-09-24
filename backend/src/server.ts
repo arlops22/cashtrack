@@ -4,11 +4,14 @@ import { PrismaClient } from '../prisma/generated/prisma/client';
 
 import { logger } from './config/logger.config';
 import { errorHandler } from './shared/middlewares/error-handler.middleware';
+import { authenticate } from './shared/middlewares/authenticate.middleware';
+import { JwtService } from './shared/auth/jwt.service';
 import { AppModule } from './app.module';
 
 export class ServerSetup {
     public app: Application;
     private readonly appModule: AppModule;
+    private readonly jwtService: JwtService;
 
     constructor(
         private port: string = '8000',
@@ -16,6 +19,7 @@ export class ServerSetup {
         private readonly jwtSecret: string,
     ) {
         this.app = express();
+        this.jwtService = new JwtService(this.jwtSecret);
         this.appModule = new AppModule(this.prisma, this.jwtSecret);
 
         this.initMiddlewares();
@@ -35,6 +39,8 @@ export class ServerSetup {
         });
 
         this.app.use('/auth', this.appModule.authRoutes.router);
+        this.app.use('/me', authenticate(this.jwtService), this.appModule.usersRoutes.router);
+        this.app.use('/bank-accounts', authenticate(this.jwtService), this.appModule.bankAccountsRoutes.router);
     }
 
     private initErrorHandler() {

@@ -3,14 +3,14 @@ import { compare, hash } from 'bcrypt';
 import { randomInt } from 'node:crypto';
 
 import { ConflictError, UnauthorizedError, ValidationError } from '../../shared/errors';
-import { IUserRepository } from '../users/interfaces/user-repository';
+import { IUsersRepository } from '../users/interfaces/users-repository';
 import { CreateUserDto, createUserDtoSchema } from '../users/dto/create-user.dto';
 import { IJwtService } from '../../shared/auth/interface/jwt-service.interface';
 import { SignInDto, signInDtoSchema } from './dto/sign-in.dto';
 
 export class AuthService {
     constructor(
-        private readonly userRepo: IUserRepository,
+        private readonly userRepo: IUsersRepository,
         private readonly jwtService: IJwtService,
     ) {}
 
@@ -22,7 +22,7 @@ export class AuthService {
             throw new ValidationError('Invalid credentials', z.flattenError(validation.error).fieldErrors);
         }
 
-        const user = await this.userRepo.findUnique(email);
+        const user = await this.userRepo.findByEmail(email);
         if (!user) throw new UnauthorizedError('Invalid credentials');
 
         const isValidPassword = await compare(password, user.password);
@@ -41,7 +41,7 @@ export class AuthService {
             throw new ValidationError('Invalid user data', z.flattenError(validation.error).fieldErrors);
         }
 
-        const emailTaken = await this.userRepo.findEmail(email);
+        const emailTaken = await this.userRepo.findExistingEmail(email);
         if (emailTaken) throw new ConflictError('This e-mail is already in use!');
 
         const randomSalt = randomInt(10, 16);
