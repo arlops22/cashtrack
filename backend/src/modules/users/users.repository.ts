@@ -26,9 +26,15 @@ export class UsersRepository implements IUsersRepository {
         });
     }
 
-    findById(id: number): Promise<User | null> {
+    findById(id: number): Promise<Omit<User, 'password' | 'createdAt'> | null> {
         return this.prisma.user.findUnique({
             where: { id },
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+            },
         });
     }
 }

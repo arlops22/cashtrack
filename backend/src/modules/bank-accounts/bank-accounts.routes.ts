@@ -21,6 +21,10 @@ export class BankAccountsRoutes extends BaseRoutes {
             validate('body', updateBankAccountDtoSchema),
             this.bankAccountsController.update.bind(this.bankAccountsController),
         );
-        this.router.delete('/:bankAccountId', this.bankAccountsController.delete.bind(this.bankAccountsController));
+        this.router.delete(
+            '/:bankAccountId',
+            validate('params', bankAccountIdParamSchema),
+            this.bankAccountsController.delete.bind(this.bankAccountsController),
+        );
     }
 }

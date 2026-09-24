@@ -1,5 +1,7 @@
-export enum BankAccountType {
-    CHECKING = 'CHECKING',
-    SAVING = 'SAVING',
-    INVESTMENT = 'INVESTMENT',
-}
+export const BankAccountEnumType = {
+    CHECKING: 'CHECKING',
+    SAVING: 'SAVING',
+    INVESTMENT: 'INVESTMENT',
+} as const;
+
+export type BankAccountType = (typeof BankAccountEnumType)[keyof typeof BankAccountEnumType];

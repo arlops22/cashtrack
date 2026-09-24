@@ -6,10 +6,10 @@ import { ValidationError } from '../errors';
 type RequestPart = 'params' | 'body' | 'query';
 
 export const validate = <T extends z.ZodType>(part: RequestPart, paramsSchema: T) => {
-    return (req: Request, res: Response, next: NextFunction) => {
-        const validation = paramsSchema.safeParse(req[part]);
-        if (!validation.success) {
-            const { fieldErrors } = z.flattenError(validation.error);
+    return (req: Request, _: Response, next: NextFunction) => {
+        const result = paramsSchema.safeParse(req[part]);
+        if (!result.success) {
+            const { fieldErrors } = z.flattenError(result.error);
             const errors = Object.fromEntries(
                 Object.entries(fieldErrors).filter(([, value]) => value !== undefined),
             ) as Record<string, string[]>;
@@ -17,7 +17,7 @@ export const validate = <T extends z.ZodType>(part: RequestPart, paramsSchema: T
             throw new ValidationError(`Invalid ${part}`, errors);
         }
 
-        req[part] = validation.data;
+        req[part] = result.data;
         next();
     };
 };
