@@ -1,4 +1,5 @@
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
+import { TransactionsRoutes } from '../transactions/transactions.routes';
 
 import { BankAccountsController } from './bank-accounts.controller';
 import { BankAccountsRepository } from './bank-accounts.repository';
@@ -8,10 +9,13 @@ import { BankAccountsService } from './bank-accounts.service';
 export class BankAccountsModule {
     public readonly routes: BankAccountsRoutes;
 
-    constructor(private readonly prisma: PrismaClient) {
+    constructor(
+        private readonly prisma: PrismaClient,
+        private readonly transactionsRoutes: TransactionsRoutes,
+    ) {
         const repository = new BankAccountsRepository(this.prisma);
         const service = new BankAccountsService(repository);
         const controller = new BankAccountsController(service);
-        this.routes = new BankAccountsRoutes(controller);
+        this.routes = new BankAccountsRoutes(controller, this.transactionsRoutes);
     }
 }

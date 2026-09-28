@@ -34,6 +34,7 @@ export class UsersRepository implements IUsersRepository {
                 firstName: true,
                 lastName: true,
                 email: true,
+                bankAccounts: true,
             },
         });
     }
