@@ -7,7 +7,7 @@ import { ITransactionsRepository } from './interface/transactions-repository';
 export class TransactionsRepository implements ITransactionsRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
-    create(createDto: CreateTransactionDto, bankAccountId: number, userId: number): Promise<Transaction> {
+    create(createDto: CreateTransactionDto, bankAccountId: number): Promise<Transaction> {
         const { name, method, type, createdAt, amount, categoryId } = createDto;
 
         return this.prisma.transaction.create({
@@ -19,12 +19,37 @@ export class TransactionsRepository implements ITransactionsRepository {
                 createdAt,
                 categoryId,
                 bankAccountId,
-                userId,
+            },
+            select: {
+                id: true,
+                name: true,
+                amount: true,
+                createdAt: true,
+                isFavorite: true,
+                type: true,
+                method: true,
             },
         });
     }
-    findMany(): Promise<Transaction[]> {
-        throw new Error('Method not implemented.');
+    findMany(bankAccountId: number): Promise<Transaction[]> {
+        return this.prisma.transaction.findMany({
+            where: { bankAccountId },
+            select: {
+                id: true,
+                name: true,
+                amount: true,
+                createdAt: true,
+                isFavorite: true,
+                type: true,
+                method: true,
+                category: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+            },
+        });
     }
     update(): Promise<Transaction> {
         throw new Error('Method not implemented.');

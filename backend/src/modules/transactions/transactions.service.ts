@@ -1,22 +1,27 @@
-import { NotFoundError } from '../../shared/errors';
-import { IBankAccountsRepository } from '../bank-accounts/interfaces/bank-accounts-repo';
+import { BankAccountOwnershipService } from '../bank-accounts/services/bank-account-ownership.service';
+import { CategoryOwnershipService } from '../categories/services/category-ownership.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { ITransactionsRepository } from './interface/transactions-repository';
 
 export class TransactionsService {
     constructor(
         private readonly transactionsRepo: ITransactionsRepository,
-        private readonly bankAccountsRepo: IBankAccountsRepository,
+        private readonly bankAccountOwnershipService: BankAccountOwnershipService,
+        private readonly categoryOwnershipService: CategoryOwnershipService,
     ) {}
 
-    list() {
-        return 'List Transactions';
+    async list(bankAccountId: number, userId: number) {
+        await this.bankAccountOwnershipService.validate(bankAccountId, userId);
+        return this.transactionsRepo.findMany(bankAccountId);
     }
 
-    create(createDto: CreateTransactionDto, bankAccountId: number, userId: number) {
-        const bankAccount = this.bankAccountsRepo.findFirst(bankAccountId, userId);
-        if (!bankAccount) throw new NotFoundError('bank account');
-        return this.transactionsRepo.create(createDto, bankAccountId, userId);
+    async create(createDto: CreateTransactionDto, bankAccountId: number, userId: number) {
+        const { categoryId } = createDto;
+
+        await this.bankAccountOwnershipService.validate(bankAccountId, userId);
+        if (categoryId !== null) await this.categoryOwnershipService.validate(categoryId, userId);
+
+        return this.transactionsRepo.create(createDto, bankAccountId);
     }
 
     update() {

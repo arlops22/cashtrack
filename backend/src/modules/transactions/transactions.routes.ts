@@ -1,11 +1,14 @@
-import { validate } from '../../shared/middlewares/validate.middleware';
-import { BaseRoutes } from '../../shared/routes/base.routes';
-import { createBankAccountDtoSchema } from '../bank-accounts/dto';
-import { TransactionsController } from './transactions.controller';
+import { Router } from 'express';
 
-export class TransactionsRoutes extends BaseRoutes {
+import { validate } from '../../shared/middlewares/validate.middleware';
+import { TransactionsController } from './transactions.controller';
+import { createTransactionDtoSchema } from './dto/create-transaction.dto';
+
+export class TransactionsRoutes {
+    public readonly router: Router;
+
     constructor(private readonly controller: TransactionsController) {
-        super();
+        this.router = Router({ mergeParams: true });
         this.initializeRoutes();
     }
 
@@ -13,7 +16,7 @@ export class TransactionsRoutes extends BaseRoutes {
         this.router.get('', this.controller.getAll.bind(this.controller));
         this.router.post(
             '',
-            validate('body', createBankAccountDtoSchema),
+            validate('body', createTransactionDtoSchema),
             this.controller.create.bind(this.controller),
         );
         this.router.patch('/:transactionId', this.controller.update.bind(this.controller));

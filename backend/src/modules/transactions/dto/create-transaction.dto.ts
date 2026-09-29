@@ -6,7 +6,7 @@ export const createTransactionDtoSchema = z.object({
     categoryId: z.number().nonnegative().nullable(),
     name: z.string().nonempty('Must not be empty'),
     amount: z.number().nonnegative(),
-    createdAt: z.iso.date(),
+    createdAt: z.iso.datetime(),
     type: z.enum(Object.values(TransactionType)),
     method: z.enum(Object.values(PaymentMethod)),
 });

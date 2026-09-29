@@ -6,7 +6,10 @@ export class TransactionsController {
     constructor(private readonly service: TransactionsService) {}
 
     async getAll(req: Request, res: Response) {
-        const response = await this.service.list();
+        const { userId } = req;
+        const { bankAccountId } = req.params;
+
+        const response = await this.service.list(Number(bankAccountId), Number(userId));
         return res.status(200).json(response);
     }
 

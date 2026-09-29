@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import { BankAccountsService } from './bank-accounts.service';
+
 import { UnauthorizedError } from '../../shared/errors';
+import { BankAccountsService } from './services/bank-accounts.service';
 
 export class BankAccountsController {
     constructor(private readonly service: BankAccountsService) {}
