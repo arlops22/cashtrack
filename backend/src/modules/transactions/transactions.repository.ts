@@ -62,6 +62,7 @@ export class TransactionsRepository implements ITransactionsRepository {
 
     update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number): Promise<Transaction> {
         const { name, method, type, createdAt, amount, categoryId, isFavorite } = updateDto;
+
         return this.prisma.transaction.update({
             where: { id: transactionId },
             data: {
@@ -86,7 +87,9 @@ export class TransactionsRepository implements ITransactionsRepository {
         });
     }
 
-    delete(): Promise<Transaction> {
-        throw new Error('Method not implemented.');
+    delete(transactionId: number): Promise<Transaction> {
+        return this.prisma.transaction.delete({
+            where: { id: transactionId },
+        });
     }
 }

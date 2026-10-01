@@ -6,5 +6,5 @@ export interface ITransactionsRepository {
     findMany(bankAccountId: number): Promise<Transaction[]>;
     findFirst(transactionId: number, bankAccountId: number): Promise<Transaction | null>;
     update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number): Promise<Transaction>;
-    delete(): Promise<Transaction>;
+    delete(transactionId: number): Promise<Transaction>;
 }

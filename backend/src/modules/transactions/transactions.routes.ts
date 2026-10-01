@@ -24,6 +24,10 @@ export class TransactionsRoutes {
             validate('params', transactionIdParamSchema),
             this.controller.update.bind(this.controller),
         );
-        this.router.delete('/:transactionId', this.controller.delete.bind(this.controller));
+        this.router.delete(
+            '/:transactionId',
+            validate('params', transactionIdParamSchema),
+            this.controller.delete.bind(this.controller),
+        );
     }
 }

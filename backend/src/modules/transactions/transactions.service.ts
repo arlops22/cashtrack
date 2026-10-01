@@ -32,8 +32,10 @@ export class TransactionsService {
         return this.transactionsRepo.update(updateDto, transactionId, bankAccountId);
     }
 
-    async delete() {
-        return 'Delete Transaction';
+    async delete(transactionId: number, bankAccountId: number, userId: number) {
+        await this.validateEntitiesOwnership({ transactionId, userId, bankAccountId });
+
+        return this.transactionsRepo.delete(transactionId);
     }
 
     private async validateTransactionOwnership(transactionId: number, bankAccountId: number) {

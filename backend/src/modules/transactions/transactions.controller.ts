@@ -35,7 +35,10 @@ export class TransactionsController {
     }
 
     async delete(req: Request, res: Response) {
-        await this.service.delete();
+        const { userId } = req;
+        const { bankAccountId, transactionId } = req.params;
+
+        await this.service.delete(Number(transactionId), Number(bankAccountId), Number(userId));
         return res.sendStatus(204);
     }
 }
