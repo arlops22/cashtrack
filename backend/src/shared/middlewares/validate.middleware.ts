@@ -5,7 +5,7 @@ import { ValidationError } from '../errors';
 
 type RequestPart = 'params' | 'body' | 'query';
 
-export const validate = <T extends z.ZodType>(part: RequestPart, paramsSchema: T) => {
+export const validate = <T extends z.ZodObject>(part: RequestPart, paramsSchema: T) => {
     return (req: Request, _: Response, next: NextFunction) => {
         const result = paramsSchema.safeParse(req[part]);
         if (!result.success) {
@@ -17,7 +17,7 @@ export const validate = <T extends z.ZodType>(part: RequestPart, paramsSchema: T
             throw new ValidationError(`Invalid ${part}`, errors);
         }
 
-        req[part] = result.data;
+        req[part] = { ...req[part], ...result.data };
         next();
     };
 };

@@ -9,6 +9,7 @@ export const createTransactionDtoSchema = z.object({
     createdAt: z.iso.datetime(),
     type: z.enum(Object.values(TransactionType)),
     method: z.enum(Object.values(PaymentMethod)),
+    isFavorite: z.boolean(),
 });
 
 export type CreateTransactionDto = z.infer<typeof createTransactionDtoSchema>;

@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { validate } from '../../shared/middlewares/validate.middleware';
 import { TransactionsController } from './transactions.controller';
-import { createTransactionDtoSchema } from './dto/create-transaction.dto';
+import { createTransactionDtoSchema, transactionIdParamSchema } from './dto';
 
 export class TransactionsRoutes {
     public readonly router: Router;
@@ -19,7 +19,11 @@ export class TransactionsRoutes {
             validate('body', createTransactionDtoSchema),
             this.controller.create.bind(this.controller),
         );
-        this.router.patch('/:transactionId', this.controller.update.bind(this.controller));
+        this.router.patch(
+            '/:transactionId',
+            validate('params', transactionIdParamSchema),
+            this.controller.update.bind(this.controller),
+        );
         this.router.delete('/:transactionId', this.controller.delete.bind(this.controller));
     }
 }
