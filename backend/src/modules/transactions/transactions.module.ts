@@ -6,10 +6,10 @@ import { BankAccountOwnershipService } from '../bank-accounts/services/bank-acco
 import { CategoriesRepository } from '../categories/categories.repository';
 import { CategoryOwnershipService } from '../categories/services/category-ownership.service';
 
-import { TransactionsController } from './transactions.controller';
 import { TransactionsRepository } from './transactions.repository';
-import { TransactionsRoutes } from './transactions.routes';
 import { TransactionsService } from './transactions.service';
+import { TransactionsController } from './transactions.controller';
+import { TransactionsRoutes } from './transactions.routes';
 
 export class TransactionsModule {
     public readonly routes: TransactionsRoutes;

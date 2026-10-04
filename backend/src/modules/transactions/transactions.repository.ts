@@ -10,26 +10,39 @@ export class TransactionsRepository implements ITransactionsRepository {
     create(createDto: CreateTransactionDto, bankAccountId: number): Promise<Transaction> {
         const { name, method, type, createdAt, amount, categoryId, isFavorite } = createDto;
 
-        return this.prisma.transaction.create({
-            data: {
-                name,
-                amount,
-                method,
-                type,
-                createdAt,
-                isFavorite,
-                categoryId,
-                bankAccountId,
-            },
-            select: {
-                id: true,
-                name: true,
-                amount: true,
-                createdAt: true,
-                isFavorite: true,
-                type: true,
-                method: true,
-            },
+        return this.prisma.$transaction(async tx => {
+            const transaction = await tx.transaction.create({
+                data: {
+                    name,
+                    amount,
+                    method,
+                    type,
+                    createdAt,
+                    isFavorite,
+                    categoryId,
+                    bankAccountId,
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    amount: true,
+                    createdAt: true,
+                    isFavorite: true,
+                    type: true,
+                    method: true,
+                },
+            });
+
+            await tx.bankAccount.update({
+                where: { id: bankAccountId },
+                data: {
+                    currentBalance: {
+                        increment: type === 'INCOME' ? amount : -amount,
+                    },
+                },
+            });
+
+            return transaction;
         });
     }
 
@@ -60,36 +73,62 @@ export class TransactionsRepository implements ITransactionsRepository {
         });
     }
 
-    update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number): Promise<Transaction> {
+    update(updateDto: UpdateTransactionDto, oldTransaction: Transaction, bankAccountId: number): Promise<Transaction> {
         const { name, method, type, createdAt, amount, categoryId, isFavorite } = updateDto;
 
-        return this.prisma.transaction.update({
-            where: { id: transactionId },
-            data: {
-                name,
-                method,
-                type,
-                createdAt,
-                isFavorite,
-                amount,
-                categoryId,
-                bankAccountId,
-            },
-            select: {
-                id: true,
-                name: true,
-                amount: true,
-                createdAt: true,
-                isFavorite: true,
-                type: true,
-                method: true,
-            },
+        return this.prisma.$transaction(async tx => {
+            const transaction = await tx.transaction.update({
+                where: { id: oldTransaction.id },
+                data: {
+                    name,
+                    method,
+                    type,
+                    createdAt,
+                    isFavorite,
+                    amount,
+                    categoryId,
+                    bankAccountId,
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    amount: true,
+                    createdAt: true,
+                    isFavorite: true,
+                    type: true,
+                    method: true,
+                },
+            });
+
+            await tx.bankAccount.update({
+                where: { id: bankAccountId },
+                data: {
+                    currentBalance: {
+                        increment: type === 'INCOME' ? amount - oldTransaction.amount : oldTransaction.amount - amount,
+                    },
+                },
+            });
+
+            return transaction;
         });
     }
 
     delete(transactionId: number): Promise<Transaction> {
-        return this.prisma.transaction.delete({
-            where: { id: transactionId },
+        return this.prisma.$transaction(async tx => {
+            const transaction = await tx.transaction.delete({
+                where: { id: transactionId },
+            });
+
+            await tx.bankAccount.update({
+                where: { id: transaction.bankAccountId },
+                data: {
+                    currentBalance: {
+                        decrement: transaction.type === 'INCOME' ? transaction.amount : -transaction.amount,
+                    },
+                },
+            });
+
+            return transaction;
         });
     }
 }

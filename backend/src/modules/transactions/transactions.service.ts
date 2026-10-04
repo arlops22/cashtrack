@@ -1,8 +1,8 @@
-import { NotFoundError } from '../../shared/errors';
-import { BankAccountOwnershipService } from '../bank-accounts/services/bank-account-ownership.service';
-import { CategoryOwnershipService } from '../categories/services/category-ownership.service';
 import { CreateTransactionDto, UpdateTransactionDto } from './dto';
 import { ITransactionsRepository } from './interface/transactions-repository';
+import { CategoryOwnershipService } from '../categories/services/category-ownership.service';
+import { BankAccountOwnershipService } from '../bank-accounts/services/bank-account-ownership.service';
+import { NotFoundError } from '../../shared/errors';
 
 export class TransactionsService {
     constructor(
@@ -13,6 +13,7 @@ export class TransactionsService {
 
     async list(bankAccountId: number, userId: number) {
         await this.validateEntitiesOwnership({ userId, bankAccountId });
+
         return this.transactionsRepo.findMany(bankAccountId);
     }
 
@@ -27,9 +28,10 @@ export class TransactionsService {
     async update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number, userId: number) {
         const { categoryId } = updateDto;
 
-        await this.validateEntitiesOwnership({ transactionId, userId, bankAccountId, categoryId });
+        await this.validateEntitiesOwnership({ userId, bankAccountId, categoryId });
+        const transaction = await this.validateTransactionOwnership(transactionId, bankAccountId);
 
-        return this.transactionsRepo.update(updateDto, transactionId, bankAccountId);
+        return this.transactionsRepo.update(updateDto, transaction, bankAccountId);
     }
 
     async delete(transactionId: number, bankAccountId: number, userId: number) {
@@ -39,8 +41,9 @@ export class TransactionsService {
     }
 
     private async validateTransactionOwnership(transactionId: number, bankAccountId: number) {
-        const category = await this.transactionsRepo.findFirst(transactionId, bankAccountId);
-        if (!category) throw new NotFoundError('transaction');
+        const transaction = await this.transactionsRepo.findFirst(transactionId, bankAccountId);
+        if (!transaction) throw new NotFoundError('transaction');
+        return transaction;
     }
 
     private async validateEntitiesOwnership({
