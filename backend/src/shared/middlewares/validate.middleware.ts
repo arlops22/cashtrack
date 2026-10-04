@@ -17,7 +17,21 @@ export const validate = <T extends z.ZodObject>(part: RequestPart, paramsSchema:
             throw new ValidationError(`Invalid ${part}`, errors);
         }
 
-        req[part] = { ...req[part], ...result.data };
+        const merged = { ...req[part], ...result.data };
+
+        if (part === 'query') {
+            Object.defineProperty(req, 'query', {
+                value: merged,
+                writable: true,
+                configurable: true,
+                enumerable: true,
+            });
+        } else if (part === 'params') {
+            req.params = merged as typeof req.params;
+        } else {
+            req.body = merged;
+        }
+
         next();
     };
 };

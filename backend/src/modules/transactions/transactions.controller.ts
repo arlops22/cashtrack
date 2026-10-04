@@ -17,7 +17,7 @@ export class TransactionsController {
         const { userId } = req;
         const { bankAccountId } = req.params;
 
-        const response = await this.service.list(Number(bankAccountId), Number(userId));
+        const response = await this.service.list(req.query, Number(bankAccountId), Number(userId));
         return res.status(200).json(response);
     }
 

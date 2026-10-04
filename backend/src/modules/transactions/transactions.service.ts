@@ -1,4 +1,4 @@
-import { CreateTransactionDto, UpdateTransactionDto } from './dto';
+import { CreateTransactionDto, TransactionListQueryDto, UpdateTransactionDto } from './dto';
 import { ITransactionsRepository } from './interface/transactions-repository';
 import { CategoryOwnershipService } from '../categories/services/category-ownership.service';
 import { BankAccountOwnershipService } from '../bank-accounts/services/bank-account-ownership.service';
@@ -11,10 +11,10 @@ export class TransactionsService {
         private readonly categoryOwnershipService: CategoryOwnershipService,
     ) {}
 
-    async list(bankAccountId: number, userId: number) {
+    async list(filters: TransactionListQueryDto, bankAccountId: number, userId: number) {
         await this.validateEntitiesOwnership({ userId, bankAccountId });
 
-        return this.transactionsRepo.findMany(bankAccountId);
+        return this.transactionsRepo.findMany(filters, bankAccountId);
     }
 
     async create(createDto: CreateTransactionDto, bankAccountId: number, userId: number) {

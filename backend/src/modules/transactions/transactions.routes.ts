@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { validate } from '../../shared/middlewares/validate.middleware';
 import { TransactionsController } from './transactions.controller';
-import { createTransactionDtoSchema, transactionIdParamSchema } from './dto';
+import { createTransactionDtoSchema, transactionIdParamSchema, transactionListQueryParamSchema } from './dto';
 
 export class TransactionsRoutes {
     public readonly router: Router;
@@ -13,7 +13,11 @@ export class TransactionsRoutes {
     }
 
     protected initializeRoutes(): void {
-        this.router.get('', this.controller.getAll.bind(this.controller));
+        this.router.get(
+            '',
+            validate('query', transactionListQueryParamSchema),
+            this.controller.getAll.bind(this.controller),
+        );
         this.router.post(
             '',
             validate('body', createTransactionDtoSchema),
