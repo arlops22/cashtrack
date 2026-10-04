@@ -14,12 +14,20 @@ export class CategoriesRepository implements ICategoriesRepository {
                 userId,
                 name,
             },
+            select: {
+                id: true,
+                name: true,
+            },
         });
     }
 
     findMany(userId: number): Promise<Category[]> {
         return this.prisma.category.findMany({
             where: { userId },
+            select: {
+                id: true,
+                name: true,
+            },
         });
     }
 
@@ -35,6 +43,10 @@ export class CategoriesRepository implements ICategoriesRepository {
         return this.prisma.category.update({
             where: { id: categoryId },
             data: { name },
+            select: {
+                id: true,
+                name: true,
+            },
         });
     }
 

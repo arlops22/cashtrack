@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { CategoriesService } from './categories.service';
+import { CategoriesService } from './services/categories.service';
 import { UnauthorizedError } from '../../shared/errors';
 
 export class CategoriesController {

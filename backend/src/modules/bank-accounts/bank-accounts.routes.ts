@@ -2,9 +2,13 @@ import { BaseRoutes } from '../../shared/routes/base.routes';
 import { validate } from '../../shared/middlewares/validate.middleware';
 import { BankAccountsController } from './bank-accounts.controller';
 import { bankAccountIdParamSchema, createBankAccountDtoSchema, updateBankAccountDtoSchema } from './dto';
+import { TransactionsRoutes } from '../transactions/transactions.routes';
 
 export class BankAccountsRoutes extends BaseRoutes {
-    constructor(private readonly bankAccountsController: BankAccountsController) {
+    constructor(
+        private readonly bankAccountsController: BankAccountsController,
+        private readonly transactionsRoutes: TransactionsRoutes,
+    ) {
         super();
         this.initializeRoutes();
     }
@@ -25,6 +29,11 @@ export class BankAccountsRoutes extends BaseRoutes {
             '/:bankAccountId',
             validate('params', bankAccountIdParamSchema),
             this.bankAccountsController.delete.bind(this.bankAccountsController),
+        );
+        this.router.use(
+            '/:bankAccountId/transactions',
+            validate('params', bankAccountIdParamSchema),
+            this.transactionsRoutes.router,
         );
     }
 }
