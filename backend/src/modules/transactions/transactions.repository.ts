@@ -51,7 +51,7 @@ export class TransactionsRepository implements ITransactionsRepository {
 
         const today = new Date();
         const yearFilter = year ?? today.getFullYear();
-        const monthFilter = month ?? today.getMonth() - 1;
+        const monthFilter = month ?? today.getMonth();
 
         return this.prisma.transaction.findMany({
             where: {
