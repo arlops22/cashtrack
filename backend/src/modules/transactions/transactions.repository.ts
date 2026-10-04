@@ -1,7 +1,7 @@
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
 
 import { Transaction } from '../../shared/entities/transaction.entity';
-import { CreateTransactionDto, UpdateTransactionDto } from './dto';
+import { CreateTransactionDto, TransactionListQueryDto, UpdateTransactionDto } from './dto';
 import { ITransactionsRepository } from './interface/transactions-repository';
 
 export class TransactionsRepository implements ITransactionsRepository {
@@ -46,9 +46,25 @@ export class TransactionsRepository implements ITransactionsRepository {
         });
     }
 
-    findMany(bankAccountId: number): Promise<Transaction[]> {
+    findMany(filters: TransactionListQueryDto, bankAccountId: number): Promise<Transaction[]> {
+        const { type, method, category, isFavorite, month, year } = filters;
+
+        const today = new Date();
+        const yearFilter = year ?? today.getFullYear();
+        const monthFilter = month ?? today.getMonth() - 1;
+
         return this.prisma.transaction.findMany({
-            where: { bankAccountId },
+            where: {
+                bankAccountId,
+                type,
+                method,
+                categoryId: category,
+                isFavorite,
+                createdAt: {
+                    gte: new Date(Date.UTC(yearFilter, monthFilter)),
+                    lt: new Date(Date.UTC(yearFilter, monthFilter + 1)),
+                },
+            },
             select: {
                 id: true,
                 name: true,
