@@ -1,5 +1,6 @@
 import { CreateTransactionDto, TransactionListQueryDto, UpdateTransactionDto } from './dto';
 import { ITransactionsRepository } from './interface/transactions-repository';
+import { IBankAccountsRepository } from '../bank-accounts/interfaces/bank-accounts-repo';
 import { CategoryOwnershipService } from '../categories/services/category-ownership.service';
 import { BankAccountOwnershipService } from '../bank-accounts/services/bank-account-ownership.service';
 import { NotFoundError } from '../../shared/errors';
@@ -7,6 +8,7 @@ import { NotFoundError } from '../../shared/errors';
 export class TransactionsService {
     constructor(
         private readonly transactionsRepo: ITransactionsRepository,
+        private readonly bankAccountsRepo: IBankAccountsRepository,
         private readonly bankAccountOwnershipService: BankAccountOwnershipService,
         private readonly categoryOwnershipService: CategoryOwnershipService,
     ) {}
@@ -22,22 +24,42 @@ export class TransactionsService {
 
         await this.validateEntitiesOwnership({ userId, bankAccountId, categoryId });
 
-        return this.transactionsRepo.create(createDto, bankAccountId);
+        const transaction = await this.transactionsRepo.create(createDto, bankAccountId);
+        await this.bankAccountsRepo.incrementBalance(
+            bankAccountId,
+            transaction.type === 'INCOME' ? transaction.amount : -transaction.amount,
+        );
+
+        return transaction;
     }
 
     async update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number, userId: number) {
         const { categoryId } = updateDto;
 
         await this.validateEntitiesOwnership({ userId, bankAccountId, categoryId });
-        const transaction = await this.validateTransactionOwnership(transactionId, bankAccountId);
+        const oldTtransaction = await this.validateTransactionOwnership(transactionId, bankAccountId);
 
-        return this.transactionsRepo.update(updateDto, transaction, bankAccountId);
+        const transaction = await this.transactionsRepo.update(updateDto, transactionId, bankAccountId);
+        await this.bankAccountsRepo.incrementBalance(
+            bankAccountId,
+            transaction.type === 'INCOME'
+                ? transaction.amount - oldTtransaction.amount
+                : oldTtransaction.amount - transaction.amount,
+        );
+
+        return transaction;
     }
 
     async delete(transactionId: number, bankAccountId: number, userId: number) {
         await this.validateEntitiesOwnership({ transactionId, userId, bankAccountId });
 
-        return this.transactionsRepo.delete(transactionId);
+        const transaction = await this.transactionsRepo.delete(transactionId);
+        await this.bankAccountsRepo.decrementBalance(
+            bankAccountId,
+            transaction.type === 'INCOME' ? transaction.amount : -transaction.amount,
+        );
+
+        return transaction;
     }
 
     private async validateTransactionOwnership(transactionId: number, bankAccountId: number) {

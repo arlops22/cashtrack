@@ -22,6 +22,7 @@ export class TransactionsModule {
         const categoryOwnershipService = new CategoryOwnershipService(categoryRepo);
         const transactionsService = new TransactionsService(
             transactionsRepo,
+            bankAccountRepo,
             bankAccountOwnershipService,
             categoryOwnershipService,
         );

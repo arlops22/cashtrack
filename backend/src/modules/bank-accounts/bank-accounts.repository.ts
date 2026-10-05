@@ -47,4 +47,26 @@ export class BankAccountsRepository implements IBankAccountsRepository {
             where: { id: bankAccountId },
         });
     }
+
+    incrementBalance(bankAccountId: number, amount: number): Promise<BankAccount | null> {
+        return this.prisma.bankAccount.update({
+            where: { id: bankAccountId },
+            data: {
+                currentBalance: {
+                    increment: amount,
+                },
+            },
+        });
+    }
+
+    decrementBalance(bankAccountId: number, amount: number): Promise<BankAccount | null> {
+        return this.prisma.bankAccount.update({
+            where: { id: bankAccountId },
+            data: {
+                currentBalance: {
+                    decrement: amount,
+                },
+            },
+        });
+    }
 }

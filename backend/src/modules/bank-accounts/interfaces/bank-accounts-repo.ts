@@ -7,4 +7,6 @@ export interface IBankAccountsRepository {
     update(updateDto: UpdateBankAccountDto, bankAccountId: number): Promise<BankAccount>;
     findFirst(bankAccountId: number, userId: number): Promise<BankAccount | null>;
     delete(bankAccountId: number): Promise<BankAccount | null>;
+    incrementBalance(bankAccountId: number, amount: number): Promise<BankAccount | null>;
+    decrementBalance(bankAccountId: number, amount: number): Promise<BankAccount | null>;
 }
