@@ -21,6 +21,14 @@ export class TransactionsController {
         return res.status(200).json(response);
     }
 
+    async getMetrics(req: Request, res: Response) {
+        const { userId } = req;
+        const { bankAccountId } = req.params;
+
+        const response = await this.service.getMetrics(req.query, Number(bankAccountId), Number(userId));
+        return res.status(200).json(response);
+    }
+
     async update(req: Request, res: Response) {
         const { userId } = req;
         const { bankAccountId, transactionId } = req.params;

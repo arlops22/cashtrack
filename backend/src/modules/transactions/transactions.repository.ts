@@ -1,7 +1,12 @@
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
 
 import { Transaction } from '../../shared/entities/transaction.entity';
-import { CreateTransactionDto, TransactionListQueryDto, UpdateTransactionDto } from './dto';
+import {
+    CreateTransactionDto,
+    TransactionListQueryDto,
+    TransactionMetricsFilterQueryDto,
+    UpdateTransactionDto,
+} from './dto';
 import { ITransactionsRepository } from './interface/transactions-repository';
 
 export class TransactionsRepository implements ITransactionsRepository {
@@ -76,6 +81,46 @@ export class TransactionsRepository implements ITransactionsRepository {
         });
     }
 
+    async getTotalExpense(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<number> {
+        const { from, to } = filters;
+
+        const now = new Date();
+
+        const result = await this.prisma.transaction.aggregate({
+            where: {
+                bankAccountId,
+                type: 'EXPENSE',
+                createdAt: {
+                    gte: this.parseDateUTC(from || `${now.getFullYear()}-01-01`),
+                    lt: this.parseDateUTC(to || `${now.getFullYear() + 1}-01-01`),
+                },
+            },
+            _sum: { amount: true },
+        });
+
+        return result._sum.amount ?? 0;
+    }
+
+    async getTotalIncome(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<number> {
+        const { from, to } = filters;
+
+        const now = new Date();
+
+        const result = await this.prisma.transaction.aggregate({
+            where: {
+                bankAccountId,
+                type: 'INCOME',
+                createdAt: {
+                    gte: this.parseDateUTC(from || `${now.getFullYear()}-01-01`),
+                    lt: this.parseDateUTC(to || `${now.getFullYear() + 1}-01-01`),
+                },
+            },
+            _sum: { amount: true },
+        });
+
+        return result._sum.amount ?? 0;
+    }
+
     update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number): Promise<Transaction> {
         const { name, method, type, createdAt, amount, categoryId, isFavorite } = updateDto;
 
@@ -107,5 +152,10 @@ export class TransactionsRepository implements ITransactionsRepository {
         return this.prisma.transaction.delete({
             where: { id: transactionId },
         });
+    }
+
+    private parseDateUTC(dateString: string): Date {
+        const [year, month, day] = dateString.split('-').map(Number);
+        return new Date(Date.UTC(year, month - 1, day));
     }
 }

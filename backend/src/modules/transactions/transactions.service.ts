@@ -1,4 +1,9 @@
-import { CreateTransactionDto, TransactionListQueryDto, UpdateTransactionDto } from './dto';
+import {
+    CreateTransactionDto,
+    TransactionListQueryDto,
+    TransactionMetricsFilterQueryDto,
+    UpdateTransactionDto,
+} from './dto';
 import { ITransactionsRepository } from './interface/transactions-repository';
 import { IBankAccountsRepository } from '../bank-accounts/interfaces/bank-accounts-repo';
 import { CategoryOwnershipService } from '../categories/services/category-ownership.service';
@@ -17,6 +22,21 @@ export class TransactionsService {
         await this.validateEntitiesOwnership({ userId, bankAccountId });
 
         return this.transactionsRepo.findMany(filters, bankAccountId);
+    }
+
+    async getMetrics(filters: TransactionMetricsFilterQueryDto, bankAccountId: number, userId: number) {
+        await this.validateEntitiesOwnership({ userId, bankAccountId });
+
+        const [totalExpense, totalIncome] = await Promise.all([
+            this.transactionsRepo.getTotalExpense(filters, bankAccountId),
+            this.transactionsRepo.getTotalIncome(filters, bankAccountId),
+        ]);
+
+        return {
+            balance: totalIncome - totalExpense,
+            totalExpense,
+            totalIncome,
+        };
     }
 
     async create(createDto: CreateTransactionDto, bankAccountId: number, userId: number) {
