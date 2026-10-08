@@ -7,7 +7,8 @@ import {
     TransactionMetricsFilterQueryDto,
     UpdateTransactionDto,
 } from './dto';
-import { ITransactionsRepository } from './interface/transactions-repository';
+import { TransactionTypeEnum } from './enum/transaction-type';
+import { getByCategorySummary, ITransactionsRepository } from './interface/transactions-repository';
 
 export class TransactionsRepository implements ITransactionsRepository {
     constructor(private readonly prisma: PrismaClient) {}
@@ -119,6 +120,32 @@ export class TransactionsRepository implements ITransactionsRepository {
         });
 
         return result._sum.amount ?? 0;
+    }
+
+    async getByCategory(
+        filters: TransactionMetricsFilterQueryDto,
+        bankAccountId: number,
+    ): Promise<getByCategorySummary[]> {
+        const { from, to } = filters;
+
+        const now = new Date();
+
+        return this.prisma.$queryRaw<getByCategorySummary[]>`
+            SELECT
+                t."fk_category_id" as "categoryId",
+                c."name" as "categoryName",
+                date_trunc('month', t."createdAt") as "month",
+                SUM(t.amount) as "totalAmount"
+            FROM "transactions" t
+            LEFT OUTER JOIN "categories" c
+            ON t."fk_category_id" = c."pk_category_id"
+            WHERE t."fk_bank_account_id" = ${bankAccountId}
+            AND t."type" = ${TransactionTypeEnum.EXPENSE}
+            AND t."createdAt" >= ${this.parseDateUTC(from || `${now.getFullYear()}-01-01`)}
+            AND t."createdAt" < ${this.parseDateUTC(to || `${now.getFullYear() + 1}-01-01`)}
+            GROUP BY t."fk_category_id", c."name", date_trunc('month', t."createdAt")
+            ORDER BY "month" ASC
+        `;
     }
 
     update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number): Promise<Transaction> {
