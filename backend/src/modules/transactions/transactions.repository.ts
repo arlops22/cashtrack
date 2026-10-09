@@ -8,7 +8,12 @@ import {
     UpdateTransactionDto,
 } from './dto';
 import { TransactionTypeEnum } from './enum/transaction-type';
-import { getByCategorySummary, getByTypeSummary, ITransactionsRepository } from './interface/transactions-repository';
+import {
+    getByCategorySummary,
+    getMonthlyTotals,
+    getTotals,
+    ITransactionsRepository,
+} from './interface/transactions-repository';
 
 export class TransactionsRepository implements ITransactionsRepository {
     constructor(private readonly prisma: PrismaClient) {}
@@ -82,15 +87,15 @@ export class TransactionsRepository implements ITransactionsRepository {
         });
     }
 
-    async getTotalExpense(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<number> {
+    async getTotals(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<getTotals> {
         const { from, to } = filters;
 
         const now = new Date();
 
-        const result = await this.prisma.transaction.aggregate({
+        const result = await this.prisma.transaction.groupBy({
+            by: ['type'],
             where: {
                 bankAccountId,
-                type: 'EXPENSE',
                 createdAt: {
                     gte: this.parseDateUTC(from || `${now.getFullYear()}-01-01`),
                     lt: this.parseDateUTC(to || `${now.getFullYear() + 1}-01-01`),
@@ -99,27 +104,15 @@ export class TransactionsRepository implements ITransactionsRepository {
             _sum: { amount: true },
         });
 
-        return result._sum.amount ?? 0;
-    }
+        const sumByType = new Map(result.map(row => [row.type, row._sum.amount ?? 0]));
+        const totalIncome = sumByType.get('INCOME') ?? 0;
+        const totalExpense = sumByType.get('EXPENSE') ?? 0;
 
-    async getTotalIncome(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<number> {
-        const { from, to } = filters;
-
-        const now = new Date();
-
-        const result = await this.prisma.transaction.aggregate({
-            where: {
-                bankAccountId,
-                type: 'INCOME',
-                createdAt: {
-                    gte: this.parseDateUTC(from || `${now.getFullYear()}-01-01`),
-                    lt: this.parseDateUTC(to || `${now.getFullYear() + 1}-01-01`),
-                },
-            },
-            _sum: { amount: true },
-        });
-
-        return result._sum.amount ?? 0;
+        return {
+            totalIncome,
+            totalExpense,
+            balance: totalIncome - totalExpense,
+        };
     }
 
     async getByCategory(
@@ -148,12 +141,12 @@ export class TransactionsRepository implements ITransactionsRepository {
         `;
     }
 
-    async getByType(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<getByTypeSummary[]> {
+    async getByType(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<getMonthlyTotals[]> {
         const { from, to } = filters;
 
         const now = new Date();
 
-        const result = await this.prisma.$queryRaw<getByTypeSummary[]>`
+        const result = await this.prisma.$queryRaw<getMonthlyTotals[]>`
             SELECT
                 date_trunc('month', t."createdAt") as "month",
                 SUM(t.amount) FILTER (WHERE t."type" = ${TransactionTypeEnum.EXPENSE}) as "totalExpense",

@@ -27,17 +27,14 @@ export class TransactionsService {
     async getMetrics(filters: TransactionMetricsFilterQueryDto, bankAccountId: number, userId: number) {
         await this.validateEntitiesOwnership({ userId, bankAccountId });
 
-        const [totalExpense, totalIncome, byCategory, byType] = await Promise.all([
-            this.transactionsRepo.getTotalExpense(filters, bankAccountId),
-            this.transactionsRepo.getTotalIncome(filters, bankAccountId),
+        const [totals, byCategory, byType] = await Promise.all([
+            this.transactionsRepo.getTotals(filters, bankAccountId),
             this.transactionsRepo.getByCategory(filters, bankAccountId),
             this.transactionsRepo.getByType(filters, bankAccountId),
         ]);
 
         return {
-            balance: totalIncome - totalExpense,
-            totalExpense,
-            totalIncome,
+            ...totals,
             byCategory,
             byType,
         };
