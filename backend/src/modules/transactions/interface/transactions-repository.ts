@@ -13,6 +13,13 @@ export interface getByCategorySummary {
     month: Date;
 }
 
+export interface getByTypeSummary {
+    totalIncome: number;
+    totalExpense: number;
+    month: Date;
+    balance: number;
+}
+
 export interface ITransactionsRepository {
     create(createDto: CreateTransactionDto, bankAccountId: number): Promise<Transaction>;
     findMany(filters: TransactionListQueryDto, bankAccountId: number): Promise<Transaction[]>;
@@ -20,6 +27,7 @@ export interface ITransactionsRepository {
     getTotalExpense(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<number>;
     getTotalIncome(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<number>;
     getByCategory(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<getByCategorySummary[]>;
+    getByType(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<getByTypeSummary[]>;
     update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number): Promise<Transaction>;
     delete(transactionId: number): Promise<Transaction>;
 }

@@ -8,7 +8,7 @@ import {
     UpdateTransactionDto,
 } from './dto';
 import { TransactionTypeEnum } from './enum/transaction-type';
-import { getByCategorySummary, ITransactionsRepository } from './interface/transactions-repository';
+import { getByCategorySummary, getByTypeSummary, ITransactionsRepository } from './interface/transactions-repository';
 
 export class TransactionsRepository implements ITransactionsRepository {
     constructor(private readonly prisma: PrismaClient) {}
@@ -146,6 +146,32 @@ export class TransactionsRepository implements ITransactionsRepository {
             GROUP BY t."fk_category_id", c."name", date_trunc('month', t."createdAt")
             ORDER BY "month" ASC
         `;
+    }
+
+    async getByType(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<getByTypeSummary[]> {
+        const { from, to } = filters;
+
+        const now = new Date();
+
+        const result = await this.prisma.$queryRaw<getByTypeSummary[]>`
+            SELECT
+                date_trunc('month', t."createdAt") as "month",
+                SUM(t.amount) FILTER (WHERE t."type" = ${TransactionTypeEnum.EXPENSE}) as "totalExpense",
+                SUM(t.amount) FILTER (WHERE t."type" = ${TransactionTypeEnum.INCOME}) as "totalIncome"
+            FROM "transactions" t
+            WHERE t."fk_bank_account_id" = ${bankAccountId}
+            AND t."createdAt" >= ${this.parseDateUTC(from || `${now.getFullYear()}-01-01`)}
+            AND t."createdAt" < ${this.parseDateUTC(to || `${now.getFullYear() + 1}-01-01`)}
+            GROUP BY date_trunc('month', t."createdAt")
+            ORDER BY "month" ASC
+        `;
+
+        return result.map(row => ({
+            ...row,
+            totalExpense: Number(row.totalExpense),
+            totalIncome: Number(row.totalIncome),
+            balance: row.totalIncome - row.totalExpense,
+        }));
     }
 
     update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number): Promise<Transaction> {
