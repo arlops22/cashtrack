@@ -24,22 +24,6 @@ export class TransactionsService {
         return this.transactionsRepo.findMany(filters, bankAccountId);
     }
 
-    async getMetrics(filters: TransactionMetricsFilterQueryDto, bankAccountId: number, userId: number) {
-        await this.validateEntitiesOwnership({ userId, bankAccountId });
-
-        const [totals, byCategory, byType] = await Promise.all([
-            this.transactionsRepo.getTotals(filters, bankAccountId),
-            this.transactionsRepo.getByCategory(filters, bankAccountId),
-            this.transactionsRepo.getByType(filters, bankAccountId),
-        ]);
-
-        return {
-            ...totals,
-            byCategory,
-            byType,
-        };
-    }
-
     async create(createDto: CreateTransactionDto, bankAccountId: number, userId: number) {
         const { categoryId } = createDto;
 
@@ -81,6 +65,28 @@ export class TransactionsService {
         );
 
         return transaction;
+    }
+
+    async getMetrics(filters: TransactionMetricsFilterQueryDto, bankAccountId: number, userId: number) {
+        await this.validateEntitiesOwnership({ userId, bankAccountId });
+
+        const [totals, categorySummary, monthlyTotals] = await Promise.all([
+            this.transactionsRepo.getTotals(filters, bankAccountId),
+            this.transactionsRepo.getByCategoryPerMonth(filters, bankAccountId),
+            this.transactionsRepo.getByType(filters, bankAccountId),
+        ]);
+
+        return {
+            summary: {
+                ...totals,
+                balance: totals.totalIncome - totals.totalExpense,
+            },
+            categorySummary,
+            monthlyTotals: monthlyTotals.map(row => ({
+                ...row,
+                balance: row.totalIncome - row.totalExpense,
+            })),
+        };
     }
 
     private async validateTransactionOwnership(transactionId: number, bankAccountId: number) {

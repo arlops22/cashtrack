@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { TransactionsService } from './transactions.service';
+import * as metricsPresenter from './presenters/metrics.presenter';
 
 export class TransactionsController {
     constructor(private readonly service: TransactionsService) {}
@@ -25,8 +26,16 @@ export class TransactionsController {
         const { userId } = req;
         const { bankAccountId } = req.params;
 
-        const response = await this.service.getMetrics(req.query, Number(bankAccountId), Number(userId));
-        return res.status(200).json(response);
+        const { summary, categorySummary, monthlyTotals } = await this.service.getMetrics(
+            req.query,
+            Number(bankAccountId),
+            Number(userId),
+        );
+        return res.status(200).json({
+            summary,
+            categorySummary: metricsPresenter.presentCategoriesByMonth(categorySummary),
+            monthlyTotals: metricsPresenter.presentIncomeExpenseByMonth(monthlyTotals),
+        });
     }
 
     async update(req: Request, res: Response) {

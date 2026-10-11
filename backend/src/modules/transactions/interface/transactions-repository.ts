@@ -6,30 +6,34 @@ import {
     UpdateTransactionDto,
 } from '../dto';
 
-export interface getTotals {
+export interface TransactionTotals {
     totalIncome: number;
     totalExpense: number;
-    balance: number;
 }
 
-export interface getByCategorySummary {
+export interface CategoryMonthSummary {
     categoryId: number | null;
     categoryName: string;
     totalAmount: number;
     month: Date;
 }
 
-export interface getMonthlyTotals extends getTotals {
+export interface MonthlyIncomeExpense {
     month: Date;
+    totalIncome: number;
+    totalExpense: number;
 }
 
 export interface ITransactionsRepository {
     create(createDto: CreateTransactionDto, bankAccountId: number): Promise<Transaction>;
     findMany(filters: TransactionListQueryDto, bankAccountId: number): Promise<Transaction[]>;
     findFirst(transactionId: number, bankAccountId: number): Promise<Transaction | null>;
-    getTotals(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<getTotals>;
-    getByCategory(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<getByCategorySummary[]>;
-    getByType(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<getMonthlyTotals[]>;
+    getTotals(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<TransactionTotals>;
+    getByCategoryPerMonth(
+        filters: TransactionMetricsFilterQueryDto,
+        bankAccountId: number,
+    ): Promise<CategoryMonthSummary[]>;
+    getByType(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<MonthlyIncomeExpense[]>;
     update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number): Promise<Transaction>;
     delete(transactionId: number): Promise<Transaction>;
 }
