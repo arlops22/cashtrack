@@ -17,7 +17,7 @@
         "declaration": false,
         "removeComments": true
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "tests/**/*"],
     "exclude": ["node_modules", "dist"],
     "ts-node": {
         "esm": true
