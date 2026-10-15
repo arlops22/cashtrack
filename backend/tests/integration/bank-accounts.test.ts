@@ -2,8 +2,9 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import request from 'supertest';
 
 import { prisma } from '../../src/shared/database/prisma-client';
-import { buildTestServer, createAuthenticatedUser, createTestBankAccount, createTestUser } from '../helpers';
+import { createAuthenticatedUser, createTestBankAccount, createTestUser } from '../factories';
 import { buildCreateBankAccountDto } from '../builders';
+import { buildTestServer } from '../helpers';
 import { BankAccount, User } from '../../src/shared/entities';
 
 describe('Bank Accounts Module', () => {

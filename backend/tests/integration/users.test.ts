@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import request from 'supertest';
 
-import { buildTestServer, createAuthenticatedUser } from '../helpers';
+import { createAuthenticatedUser } from '../factories';
+import { buildTestServer } from '../helpers';
 
 describe('Users Module', () => {
     const server = buildTestServer();

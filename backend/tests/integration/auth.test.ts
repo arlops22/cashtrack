@@ -3,7 +3,8 @@ import request from 'supertest';
 
 import { SignInDto } from '../../src/modules/auth/dto/sign-in.dto';
 import { buildCreateUserDto } from '../builders';
-import { buildTestServer, createTestUser } from '../helpers';
+import { createTestUser } from '../factories';
+import { buildTestServer } from '../helpers';
 
 describe('Auth Module', () => {
     const server = buildTestServer();
