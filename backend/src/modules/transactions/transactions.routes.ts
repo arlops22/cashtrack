@@ -7,6 +7,7 @@ import {
     transactionIdParamSchema,
     transactionListQueryParamSchema,
     transactionMetricsFilterQueryParamSchema,
+    updateTransactionDtoSchema,
 } from './dto';
 
 export class TransactionsRoutes {
@@ -36,6 +37,7 @@ export class TransactionsRoutes {
         this.router.patch(
             '/:transactionId',
             validate('params', transactionIdParamSchema),
+            validate('body', updateTransactionDtoSchema),
             this.controller.update.bind(this.controller),
         );
         this.router.delete(
