@@ -5,7 +5,7 @@ import { buildCreateTransactionDto } from '../builders';
 export const createTestTransaction = async (
     overrides: Partial<CreateTransactionDto> = {},
     bankAccountId: number,
-    categoryId: number,
+    categoryId?: number,
 ) => {
     const data = buildCreateTransactionDto(overrides, categoryId);
 

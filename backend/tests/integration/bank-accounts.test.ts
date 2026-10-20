@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import request from 'supertest';
 
 import { prisma } from '../../src/shared/database/prisma-client';
-import { createAuthenticatedUser, createTestBankAccount, createTestUser } from '../factories';
+import { createAuthenticatedUser, createTestBankAccount, createTestTransaction, createTestUser } from '../factories';
 import { buildCreateBankAccountDto } from '../builders';
 import { buildTestServer } from '../helpers';
 import { BankAccount, User } from '../../src/shared/entities';
@@ -40,11 +40,13 @@ describe('Bank Accounts Module', () => {
             expect(saved!.userId).toBe(user.id);
         });
 
-        it('should return validation error when invalid data is provided', async () => {
-            const payload = {
-                name: 'Test',
-            };
-
+        it.each([
+            ['missing required fields', { name: 'Test' }],
+            ['empty name is provided', buildCreateBankAccountDto({ name: '' })],
+            ['empty color is provided', buildCreateBankAccountDto({ color: '' })],
+            ['invalid account type is provided', { ...buildCreateBankAccountDto(), type: 'INVALID' }],
+            ['non-numeric initial balance is provided', { ...buildCreateBankAccountDto(), initialBalance: 'abc' }],
+        ])('should return validation error when %s', async (_, payload) => {
             const { status, body } = await request(server)
                 .post('/bank-accounts')
                 .send(payload)
@@ -52,6 +54,7 @@ describe('Bank Accounts Module', () => {
 
             expect(status).toBe(400);
             expect(body.error).toBe('Invalid body');
+            expect(body.details).toBeDefined();
         });
 
         it('should return unauthorized when no token is provided', async () => {
@@ -84,18 +87,20 @@ describe('Bank Accounts Module', () => {
             });
         });
 
-        it('should return validation error when invalid data is provided', async () => {
-            const payload = {
-                name: '',
-            };
-
+        it.each([
+            ['empty name is provided', buildCreateBankAccountDto({ name: '' })],
+            ['empty color is provided', buildCreateBankAccountDto({ color: '' })],
+            ['invalid account type is provided', { ...buildCreateBankAccountDto(), type: 'INVALID' }],
+            ['non-numeric initial balance is provided', { ...buildCreateBankAccountDto(), initialBalance: 'abc' }],
+        ])('should return validation error when %s', async (_, payload) => {
             const { status, body } = await request(server)
-                .patch('/bank-accounts/' + bankAccount.id)
+                .post('/bank-accounts')
                 .send(payload)
                 .set('Authorization', authHeader);
 
             expect(status).toBe(400);
             expect(body.error).toBe('Invalid body');
+            expect(body.details).toBeDefined();
         });
 
         it('should return validation error when invalid params is provided', async () => {
@@ -143,13 +148,13 @@ describe('Bank Accounts Module', () => {
                 .delete('/bank-accounts/' + bankAccount.id)
                 .set('Authorization', authHeader);
 
-            expect(status).toBe(204);
-            expect(body).toEqual({});
-
-            const persisted = await prisma.bankAccount.findUnique({
+            const persistedBankAccount = await prisma.bankAccount.findUnique({
                 where: { id: bankAccount.id },
             });
-            expect(persisted).toBeNull();
+
+            expect(status).toBe(204);
+            expect(body).toEqual({});
+            expect(persistedBankAccount).toBeNull();
         });
 
         it('should return not found error when the user is not the owner of the provided bank account', async () => {
@@ -189,6 +194,23 @@ describe('Bank Accounts Module', () => {
             expect(body.error).toBe('Invalid params');
         });
 
-        it.todo('should delete the account and its transactions (cascade)');
+        it('should delete the bank account transactions (cascade)', async () => {
+            const transaction = await createTestTransaction({}, bankAccount.id);
+            const otherAccount = await createTestBankAccount({}, user.id);
+            const untouchedTransaction = await createTestTransaction({}, otherAccount.id);
+
+            const { status } = await request(server)
+                .delete('/bank-accounts/' + bankAccount.id)
+                .set('Authorization', authHeader);
+
+            const persistedTransaction = await prisma.transaction.findUnique({
+                where: { id: transaction.id },
+            });
+            const stillThere = await prisma.transaction.findUnique({ where: { id: untouchedTransaction.id } });
+
+            expect(status).toBe(204);
+            expect(persistedTransaction).toBeNull();
+            expect(stillThere).not.toBeNull();
+        });
     });
 });
