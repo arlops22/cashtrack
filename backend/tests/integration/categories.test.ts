@@ -2,7 +2,13 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import request from 'supertest';
 
 import { prisma } from '../../src/shared/database/prisma-client';
-import { createAuthenticatedUser, createTestCategory, createTestUser } from '../factories';
+import {
+    createAuthenticatedUser,
+    createTestBankAccount,
+    createTestCategory,
+    createTestTransaction,
+    createTestUser,
+} from '../factories';
 import { Category, User } from '../../src/shared/entities';
 import { buildTestServer } from '../helpers';
 import { buildCreateCategoryDto } from '../builders';
@@ -189,6 +195,19 @@ describe('Categories Module', () => {
             expect(status).toBe(401);
         });
 
-        it.todo('should delete the category and its transactions set to null');
+        it('should set transactions category to null', async () => {
+            const bankAccount = await createTestBankAccount({}, user.id);
+            const transaction = await createTestTransaction({}, bankAccount.id, category.id);
+
+            const { status } = await request(server)
+                .delete('/categories/' + category.id)
+                .set('Authorization', authHeader);
+
+            const persistedTransaction = await prisma.transaction.findUnique({ where: { id: transaction.id } });
+
+            expect(status).toBe(204);
+            expect(transaction.category?.id).toBe(category.id);
+            expect(persistedTransaction).toMatchObject({ categoryId: null });
+        });
     });
 });
