@@ -1,11 +1,12 @@
 import { z } from 'zod';
+
 import { TransactionTypeEnum } from '../enum/transaction-type';
-import { PaymentMethod } from '../../../../prisma/generated/prisma/enums';
+import { PaymentMethodEnum } from '../enum/payment-method';
 
 export const transactionListQueryParamSchema = z
     .object({
         type: z.enum(Object.values(TransactionTypeEnum)),
-        method: z.enum(Object.values(PaymentMethod)),
+        method: z.enum(Object.values(PaymentMethodEnum)),
         category: z.coerce.number().nonnegative(),
         isFavorite: z.enum(['true', 'false']).transform(value => value === 'true'),
         month: z.coerce.number().nonnegative(),
