@@ -64,6 +64,26 @@ describe('PATCH /bank-accounts/:id/transactions/:id', () => {
         },
     );
 
+    it.each([
+        { from: 'EXPENSE', to: 'INCOME', accountBalance: 900, expectedBalance: 1100 },
+        { from: 'INCOME', to: 'EXPENSE', accountBalance: 1100, expectedBalance: 900 },
+    ] as { from: TransactionType; to: TransactionType; accountBalance: number; expectedBalance: number }[])(
+        'should recalculate the balance when the type changes from $from to $to',
+        async ({ from, to, accountBalance, expectedBalance }) => {
+            const bankAccount = await createTestBankAccount({ initialBalance: accountBalance }, user.id);
+            const transaction = await createTestTransaction({ type: from, amount: 100 }, bankAccount.id, category.id);
+
+            const { status } = await request(server)
+                .patch(`/bank-accounts/${bankAccount.id}/transactions/${transaction.id}`)
+                .send({ type: to })
+                .set('Authorization', authHeader);
+            const updatedAccount = await prisma.bankAccount.findUniqueOrThrow({ where: { id: bankAccount.id } });
+
+            expect(status).toBe(200);
+            expect(updatedAccount.currentBalance).toBe(expectedBalance);
+        },
+    );
+
     it('should return validation error when invalid data is provided', async () => {
         const payload = {
             name: '',
