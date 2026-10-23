@@ -9,6 +9,7 @@ import { IBankAccountsRepository } from '../bank-accounts/interfaces/bank-accoun
 import { CategoryOwnershipService } from '../categories/services/category-ownership.service';
 import { BankAccountOwnershipService } from '../bank-accounts/services/bank-account-ownership.service';
 import { NotFoundError } from '../../shared/errors';
+import { TransactionType } from './enum/transaction-type';
 
 export class TransactionsService {
     constructor(
@@ -42,15 +43,16 @@ export class TransactionsService {
         const { categoryId } = updateDto;
 
         await this.validateEntitiesOwnership({ userId, bankAccountId, categoryId });
-        const oldTtransaction = await this.validateTransactionOwnership(transactionId, bankAccountId);
+        const oldTransaction = await this.validateTransactionOwnership(transactionId, bankAccountId);
 
         const transaction = await this.transactionsRepo.update(updateDto, transactionId, bankAccountId);
-        await this.bankAccountsRepo.incrementBalance(
-            bankAccountId,
-            transaction.type === 'INCOME'
-                ? transaction.amount - oldTtransaction.amount
-                : oldTtransaction.amount - transaction.amount,
-        );
+        const balanceDelta =
+            this.signedAmount(transaction.type, transaction.amount) -
+            this.signedAmount(oldTransaction.type, oldTransaction.amount);
+
+        if (balanceDelta !== 0) {
+            await this.bankAccountsRepo.incrementBalance(bankAccountId, balanceDelta);
+        }
 
         return transaction;
     }
@@ -111,5 +113,9 @@ export class TransactionsService {
             categoryId && this.categoryOwnershipService.validate(categoryId, userId),
             transactionId && this.validateTransactionOwnership(transactionId, bankAccountId),
         ]);
+    }
+
+    private signedAmount(type: TransactionType, amount: number) {
+        return type === 'INCOME' ? amount : -amount;
     }
 }
