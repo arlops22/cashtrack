@@ -6,6 +6,7 @@ import { buildTestServer } from '../../helpers';
 import { BankAccount, Category, User } from '../../../src/shared/entities';
 import { createAuthenticatedUser, createTestBankAccount, createTestCategory, createTestUser } from '../../factories';
 import { prisma } from '../../../src/shared/database/prisma-client';
+import { TransactionType } from '../../../src/modules/transactions/enum/transaction-type';
 
 describe('POST /bank-accounts/:id/transactions', () => {
     const server = buildTestServer();
@@ -101,5 +102,25 @@ describe('POST /bank-accounts/:id/transactions', () => {
         expect(status).toBe(401);
     });
 
-    it.todo('should update bank account current balance successfuly', async () => {});
+    it.each([
+        { type: 'EXPENSE', expectedBalance: 900 },
+        { type: 'INCOME', expectedBalance: 1100 },
+    ] as { type: TransactionType; expectedBalance: number }[])(
+        'should update the balance when a $type transaction is created',
+        async ({ type, expectedBalance }) => {
+            const bankAccount = await createTestBankAccount({ initialBalance: 1000 }, user.id);
+            const payload = buildCreateTransactionDto({ type, amount: 100 }, category.id);
+
+            const { status } = await request(server)
+                .post(`/bank-accounts/${bankAccount.id}/transactions`)
+                .send(payload)
+                .set('Authorization', authHeader);
+            const updatedAccount = await prisma.bankAccount.findUniqueOrThrow({
+                where: { id: bankAccount.id },
+            });
+
+            expect(status).toBe(201);
+            expect(updatedAccount.currentBalance).toBe(expectedBalance);
+        },
+    );
 });

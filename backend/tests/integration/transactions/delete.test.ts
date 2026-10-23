@@ -11,6 +11,8 @@ import {
     createTestUser,
 } from '../../factories';
 import { buildCreateTransactionDto } from '../../builders';
+import { TransactionType } from '../../../src/modules/transactions/enum/transaction-type';
+import { prisma } from '../../../src/shared/database/prisma-client';
 
 describe('DELETE /bank-accounts/:id/transactions/:id', () => {
     const server = buildTestServer();
@@ -32,7 +34,24 @@ describe('DELETE /bank-accounts/:id/transactions/:id', () => {
         expect(body).toEqual({});
     });
 
-    it.todo('should update bank account current balance without error', async () => {});
+    it.each([
+        { type: 'EXPENSE', accountBalance: 900, expectedBalance: 1000 },
+        { type: 'INCOME', accountBalance: 1100, expectedBalance: 1000 },
+    ] as { type: TransactionType; accountBalance: number; expectedBalance: number }[])(
+        'should update the balance when a $type transaction is deleted',
+        async ({ type, accountBalance, expectedBalance }) => {
+            const bankAccount = await createTestBankAccount({ initialBalance: accountBalance }, user.id);
+            const transaction = await createTestTransaction({ type, amount: 100 }, bankAccount.id, category.id);
+
+            const { status } = await request(server)
+                .delete(`/bank-accounts/${bankAccount.id}/transactions/${transaction.id}`)
+                .set('Authorization', authHeader);
+            const updatedAccount = await prisma.bankAccount.findUniqueOrThrow({ where: { id: bankAccount.id } });
+
+            expect(status).toBe(204);
+            expect(updatedAccount.currentBalance).toBe(expectedBalance);
+        },
+    );
 
     it('should return not found error when the user is not the owner of the provided bank account', async () => {
         const { user: ownerUser } = await createTestUser({ email: 'owner@email.com' });
