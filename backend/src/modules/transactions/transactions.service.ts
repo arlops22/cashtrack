@@ -81,12 +81,12 @@ export class TransactionsService {
         return {
             summary: {
                 ...totals,
-                balance: totals.totalIncome - totals.totalExpense,
+                periodBalance: totals.totalIncome - totals.totalExpense,
             },
             categorySummary,
             monthlyTotals: monthlyTotals.map(row => ({
                 ...row,
-                balance: row.totalIncome - row.totalExpense,
+                periodBalance: row.totalIncome - row.totalExpense,
             })),
         };
     }
