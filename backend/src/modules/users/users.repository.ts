@@ -34,7 +34,16 @@ export class UsersRepository implements IUsersRepository {
                 firstName: true,
                 lastName: true,
                 email: true,
-                bankAccounts: true,
+                bankAccounts: {
+                    select: {
+                        id: true,
+                        name: true,
+                        initialBalance: true,
+                        currentBalance: true,
+                        color: true,
+                        type: true,
+                    },
+                },
             },
         });
     }

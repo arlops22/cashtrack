@@ -1,4 +1,4 @@
-import { CategoryMonthSummary, MonthlyIncomeExpense } from '../interface/transactions-repository';
+import { CategoryMonthSummary, MonthlyIncomeExpense } from '../interface/transaction-metrics.interface';
 
 interface CategoriesGroupedByMonth {
     month: string;
@@ -30,6 +30,7 @@ export const presentIncomeExpenseByMonth = (data: MonthlyIncomeExpense[]) => {
         summary: {
             totalIncome: row.totalIncome,
             totalExpense: row.totalExpense,
+            periodBalance: row.periodBalance,
         },
     }));
 };
