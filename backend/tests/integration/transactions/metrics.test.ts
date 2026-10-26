@@ -57,7 +57,41 @@ describe('GET /bank-accounts/:id/transactions/metrics', () => {
         });
     });
 
-    it.todo('should return metrics with filters successfuly');
+    it('should return total values without errors', async () => {
+        const bankAccount = await createTestBankAccount({ initialBalance: 1000 }, user.id);
+        const category1 = await createTestCategory({}, user.id);
+        const category2 = await createTestCategory({}, user.id);
+        const category3 = await createTestCategory({}, user.id);
+        const transaction1 = await createTestTransaction(
+            { type: 'EXPENSE', amount: 100 },
+            bankAccount.id,
+            category1.id,
+        );
+        const transaction2 = await createTestTransaction(
+            { type: 'EXPENSE', amount: 250 },
+            bankAccount.id,
+            category2.id,
+        );
+        await createTestTransaction({ type: 'INCOME', amount: 1000 }, bankAccount.id, category3.id);
+
+        const { status, body } = await request(server)
+            .get(`/bank-accounts/${bankAccount.id}/transactions/metrics`)
+            .set('Authorization', authHeader);
+
+        expect(status).toBe(200);
+        expect(body.summary.totalIncome).toBe(1000);
+        expect(body.summary.totalExpense).toBe(350);
+        expect(body.summary.periodBalance).toBe(650);
+        expect(
+            body.categorySummary[0].categories.find(category => category.categoryId === category1.id).totalAmount,
+        ).toBe(100);
+        expect(
+            body.categorySummary[0].categories.find(category => category.categoryId === category2.id).totalAmount,
+        ).toBe(250);
+        expect(body.monthlyTotals[0].summary.totalIncome).toBe(1000);
+        expect(body.monthlyTotals[0].summary.totalExpense).toBe(350);
+        expect(body.monthlyTotals[0].summary.periodBalance).toBe(350);
+    });
 
     it('should return unauthorized when no token is provided', async () => {
         const { status } = await request(server).get(`/bank-accounts/${bankAccount.id}/transactions/metrics`);
