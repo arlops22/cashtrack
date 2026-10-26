@@ -2,28 +2,23 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import request from 'supertest';
 
 import { buildTestServer } from '../../helpers';
-import { BankAccount, Category, Transaction, User } from '../../../src/shared/entities';
-import {
-    createAuthenticatedUser,
-    createTestBankAccount,
-    createTestCategory,
-    createTestTransaction,
-} from '../../factories';
+import { User } from '../../../src/shared/entities';
+import { createAuthenticatedUser, createMetricsScenario } from '../../factories';
 
 describe('GET /bank-accounts/:id/transactions/metrics', () => {
     const server = buildTestServer();
-    let user: User, authHeader: string, bankAccount: BankAccount, category: Category, transaction: Transaction;
+    let user: User, authHeader: string;
+    const period = '?from=2026-06-01&to=2026-07-01';
 
     beforeEach(async () => {
         ({ user, authHeader } = await createAuthenticatedUser());
-        bankAccount = await createTestBankAccount({}, user.id);
-        category = await createTestCategory({}, user.id);
-        transaction = await createTestTransaction({}, bankAccount.id, category.id);
     });
 
-    it('should return the transactions metrics successfuly', async () => {
+    it('should return the metrics in the expected response format', async () => {
+        const { bankAccount } = await createMetricsScenario(user.id);
+
         const { status, body } = await request(server)
-            .get(`/bank-accounts/${bankAccount.id}/transactions/metrics`)
+            .get(`/bank-accounts/${bankAccount.id}/transactions/metrics${period}`)
             .set('Authorization', authHeader);
 
         expect(status).toBe(200);
@@ -31,18 +26,18 @@ describe('GET /bank-accounts/:id/transactions/metrics', () => {
             summary: expect.objectContaining({
                 totalIncome: expect.any(Number),
                 totalExpense: expect.any(Number),
-                balance: expect.any(Number),
+                periodBalance: expect.any(Number),
             }),
             categorySummary: expect.arrayContaining([
                 expect.objectContaining({
                     month: expect.any(String),
-                    categories: [
+                    categories: expect.arrayContaining([
                         expect.objectContaining({
                             categoryId: expect.any(Number),
                             categoryName: expect.any(String),
                             totalAmount: expect.any(Number),
                         }),
-                    ],
+                    ]),
                 }),
             ]),
             monthlyTotals: expect.arrayContaining([
@@ -51,49 +46,62 @@ describe('GET /bank-accounts/:id/transactions/metrics', () => {
                     summary: expect.objectContaining({
                         totalIncome: expect.any(Number),
                         totalExpense: expect.any(Number),
+                        periodBalance: expect.any(Number),
                     }),
                 }),
             ]),
         });
     });
 
-    it('should return total values without errors', async () => {
-        const bankAccount = await createTestBankAccount({ initialBalance: 1000 }, user.id);
-        const category1 = await createTestCategory({}, user.id);
-        const category2 = await createTestCategory({}, user.id);
-        const category3 = await createTestCategory({}, user.id);
-        const transaction1 = await createTestTransaction(
-            { type: 'EXPENSE', amount: 100 },
-            bankAccount.id,
-            category1.id,
-        );
-        const transaction2 = await createTestTransaction(
-            { type: 'EXPENSE', amount: 250 },
-            bankAccount.id,
-            category2.id,
-        );
-        await createTestTransaction({ type: 'INCOME', amount: 1000 }, bankAccount.id, category3.id);
+    it('should return the totals of the period', async () => {
+        const { bankAccount } = await createMetricsScenario(user.id);
 
         const { status, body } = await request(server)
-            .get(`/bank-accounts/${bankAccount.id}/transactions/metrics`)
+            .get(`/bank-accounts/${bankAccount.id}/transactions/metrics${period}`)
             .set('Authorization', authHeader);
 
         expect(status).toBe(200);
-        expect(body.summary.totalIncome).toBe(1000);
-        expect(body.summary.totalExpense).toBe(350);
-        expect(body.summary.periodBalance).toBe(650);
-        expect(
-            body.categorySummary[0].categories.find(category => category.categoryId === category1.id).totalAmount,
-        ).toBe(100);
-        expect(
-            body.categorySummary[0].categories.find(category => category.categoryId === category2.id).totalAmount,
-        ).toBe(250);
-        expect(body.monthlyTotals[0].summary.totalIncome).toBe(1000);
-        expect(body.monthlyTotals[0].summary.totalExpense).toBe(350);
-        expect(body.monthlyTotals[0].summary.periodBalance).toBe(350);
+        expect(body.summary).toEqual({ totalIncome: 1000, totalExpense: 350, periodBalance: 650 });
+    });
+
+    it('should group the amounts by category', async () => {
+        const { bankAccount, foodCategory, transportCategory } = await createMetricsScenario(user.id);
+
+        const { status, body } = await request(server)
+            .get(`/bank-accounts/${bankAccount.id}/transactions/metrics${period}`)
+            .set('Authorization', authHeader);
+
+        expect(status).toBe(200);
+        expect(body.categorySummary).toEqual([
+            {
+                month: '2026-06',
+                categories: expect.arrayContaining([
+                    expect.objectContaining({ categoryId: foodCategory.id, totalAmount: 100 }),
+                    expect.objectContaining({ categoryId: transportCategory.id, totalAmount: 250 }),
+                ]),
+            },
+        ]);
+    });
+
+    it('should return the income and expense totals per month', async () => {
+        const { bankAccount } = await createMetricsScenario(user.id);
+
+        const { status, body } = await request(server)
+            .get(`/bank-accounts/${bankAccount.id}/transactions/metrics${period}`)
+            .set('Authorization', authHeader);
+
+        expect(status).toBe(200);
+        expect(body.monthlyTotals).toEqual([
+            expect.objectContaining({
+                month: '2026-06',
+                summary: expect.objectContaining({ totalIncome: 1000, totalExpense: 350, periodBalance: 650 }),
+            }),
+        ]);
     });
 
     it('should return unauthorized when no token is provided', async () => {
+        const { bankAccount } = await createMetricsScenario(user.id);
+
         const { status } = await request(server).get(`/bank-accounts/${bankAccount.id}/transactions/metrics`);
 
         expect(status).toBe(401);
