@@ -3,7 +3,7 @@ services:
         container_name: cashtrack_api
         build:
             context: ./backend
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.dev
         ports:
             - 8000:8000
             - 9229:9229

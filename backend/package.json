@@ -16,8 +16,9 @@
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "migrate:dev": "prisma migrate dev",
+        "migrate:deploy": "prisma migrate deploy",
         "prisma:generate": "prisma generate",
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "vitest run --no-file-parallelism",
         "test:integration:migrate": "dotenv -o -e .env.test -- prisma migrate deploy",
         "test:integration:run": "dotenv -o -e .env.test -- vitest run --no-file-parallelism",
         "test:integration": "npm run test:integration:migrate && npm run test:integration:run"
