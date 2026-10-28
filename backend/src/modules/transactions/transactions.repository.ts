@@ -8,7 +8,8 @@ import {
     UpdateTransactionDto,
 } from './dto';
 import { TransactionTypeEnum } from './enum/transaction-type';
-import { CategoryMonthSummary, ITransactionsRepository, TransactionTotals } from './interface/transactions-repository';
+import { CategoryMonthSummary, TransactionTotals } from './interface/transaction-metrics.interface';
+import { ITransactionsRepository } from './interface/transactions-repository';
 
 export class TransactionsRepository implements ITransactionsRepository {
     constructor(private readonly prisma: PrismaClient) {}
