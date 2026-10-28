@@ -4,12 +4,10 @@ WORKDIR /app/backend
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY . .
 
-RUN npm run build
+RUN npm run prisma:generate && npm run build
 
-EXPOSE 8000
-
-CMD ["npm", "start"]
+CMD ["sh", "-c", "npm run migrate:deploy && npm start"]
