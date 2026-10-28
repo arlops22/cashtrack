@@ -8,7 +8,11 @@ import {
     UpdateTransactionDto,
 } from './dto';
 import { TransactionTypeEnum } from './enum/transaction-type';
-import { CategoryMonthSummary, TransactionTotals } from './interface/transaction-metrics.interface';
+import {
+    CategoryMonthSummary,
+    MonthlyIncomeExpense,
+    TransactionTotals,
+} from './interface/transaction-metrics.interface';
 import { ITransactionsRepository } from './interface/transactions-repository';
 
 export class TransactionsRepository implements ITransactionsRepository {
@@ -169,12 +173,15 @@ export class TransactionsRepository implements ITransactionsRepository {
         `;
     }
 
-    async getByType(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<any> {
+    async getByType(
+        filters: TransactionMetricsFilterQueryDto,
+        bankAccountId: number,
+    ): Promise<Omit<MonthlyIncomeExpense, 'periodBalance'>[]> {
         const { from, to } = filters;
 
         const now = new Date();
 
-        const result = await this.prisma.$queryRaw<any[]>`
+        const result = await this.prisma.$queryRaw<{ month: Date; totalExpense: number; totalIncome: number }[]>`
             SELECT
                 date_trunc('month', t."createdAt") as "month",
                 SUM(t.amount) FILTER (WHERE t."type" = ${TransactionTypeEnum.EXPENSE}) as "totalExpense",
@@ -188,10 +195,9 @@ export class TransactionsRepository implements ITransactionsRepository {
         `;
 
         return result.map(row => ({
-            month: row.month.toISOString().slice(0, 7),
+            month: row.month,
             totalExpense: Number(row.totalExpense),
             totalIncome: Number(row.totalIncome),
-            balance: row.totalIncome - row.totalExpense,
         }));
     }
 

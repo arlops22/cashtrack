@@ -13,7 +13,8 @@ export class JwtService implements IJwtService {
     verify(token: string): jwt.JwtPayload {
         try {
             return jwt.verify(token, this.jwtSecret) as jwt.JwtPayload;
-        } catch (err) {
+        } catch (error) {
+            console.error(error);
             throw new UnauthorizedError();
         }
     }

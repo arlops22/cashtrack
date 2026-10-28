@@ -26,7 +26,7 @@ export const presentCategoriesByMonth = (data: CategoryMonthSummary[]) => {
 
 export const presentIncomeExpenseByMonth = (data: MonthlyIncomeExpense[]) => {
     return data.map(row => ({
-        month: row.month,
+        month: row.month.toISOString().slice(0, 7),
         summary: {
             totalIncome: row.totalIncome,
             totalExpense: row.totalExpense,

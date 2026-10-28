@@ -16,7 +16,10 @@ export interface ITransactionsRepository {
         filters: TransactionMetricsFilterQueryDto,
         bankAccountId: number,
     ): Promise<CategoryMonthSummary[]>;
-    getByType(filters: TransactionMetricsFilterQueryDto, bankAccountId: number): Promise<MonthlyIncomeExpense[]>;
+    getByType(
+        filters: TransactionMetricsFilterQueryDto,
+        bankAccountId: number,
+    ): Promise<Omit<MonthlyIncomeExpense, 'periodBalance'>[]>;
     update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number): Promise<Transaction>;
     delete(transactionId: number): Promise<Transaction>;
 }

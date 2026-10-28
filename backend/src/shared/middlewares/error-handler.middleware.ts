@@ -3,11 +3,11 @@ import { NextFunction, Request, Response } from 'express';
 import { AppError } from '../errors';
 import { logger } from '../../config/logger.config';
 
-export const errorHandler = (error: Error, req: Request, res: Response, next: NextFunction) => {
+export const errorHandler = (error: Error, _req: Request, res: Response, _next: NextFunction) => {
     if (error instanceof AppError) {
         return res.status(error.statusCode).json({
             error: error.message,
-            ...('details' in error ? { details: (error as any).details } : {}),
+            ...('details' in error ? { details: error.details } : {}),
         });
     }
 
