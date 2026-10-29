@@ -1,21 +1,4 @@
 services:
-    api:
-        container_name: cashtrack_api
-        build:
-            context: ./backend
-            dockerfile: Dockerfile.dev
-        ports:
-            - 8000:8000
-            - 9229:9229
-        depends_on:
-            postgres:
-                condition: service_healthy
-        volumes:
-            - ./backend:/app/backend
-            - /app/backend/node_modules
-        env_file:
-            - ./backend/.env
-
     postgres:
         image: postgres
         container_name: cashtrack_db
@@ -49,6 +32,37 @@ services:
             interval: 5s
             timeout: 5s
             retries: 5
+
+    api:
+        container_name: cashtrack_api
+        build:
+            context: ./backend
+            dockerfile: Dockerfile.dev
+        ports:
+            - 8000:8000
+            - 9229:9229
+        depends_on:
+            postgres:
+                condition: service_healthy
+        volumes:
+            - ./backend:/app/backend
+            - /app/backend/node_modules
+        env_file:
+            - ./backend/.env
+
+    web:
+        container_name: cashtrack_web
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile.dev
+        ports:
+            - 3000:3000
+        depends_on:
+            api:
+                condition: service_started
+        volumes:
+            - ./frontend:/app/frontend
+            - /app/frontend/node_modules
 
 volumes:
     postgres_data:

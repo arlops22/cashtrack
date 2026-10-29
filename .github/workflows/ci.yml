@@ -65,5 +65,5 @@ jobs:
             - name: Checkout project
               uses: actions/checkout@v6
 
-            - name: Build backend Dockerfile
+            - name: Build backend image
               run: docker build -f ./backend/Dockerfile -t backend ./backend
