@@ -1,0 +1,49 @@
+/* styles/theme.css */
+:root {
+    --background: #ffffff;
+    --foreground: var(--color-gray-900);
+    --muted: var(--color-gray-100);
+    --muted-foreground: var(--color-gray-600);
+    --border: var(--color-gray-200);
+
+    --primary: var(--color-primary-m);
+    --primary-hover: var(--color-primary-d);
+    --primary-foreground: #ffffff;
+
+    --destructive: var(--color-error-m);
+    --success: var(--color-success-m);
+    --warning: var(--color-warning-m);
+    --info: var(--color-info);
+}
+
+.dark {
+    --background: var(--color-gray-900);
+    --foreground: var(--color-gray-100);
+    --muted: var(--color-gray-800);
+    --muted-foreground: var(--color-gray-400);
+    --border: var(--color-gray-800);
+
+    --primary: var(--color-primary-l);
+    --primary-hover: var(--color-primary-m);
+
+    --destructive: var(--color-error-l);
+    --success: var(--color-success-l);
+    --warning: var(--color-warning-l);
+}
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+
+    --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-destructive: var(--destructive);
+    --color-success: var(--success);
+    --color-warning: var(--warning);
+    --color-info: var(--info);
+}
