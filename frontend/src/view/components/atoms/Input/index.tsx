@@ -1,4 +1,11 @@
-import { forwardRef, type InputHTMLAttributes, type ReactElement } from 'react';
+import {
+    forwardRef,
+    useId,
+    type ComponentPropsWithRef,
+    type ElementType,
+    type InputHTMLAttributes,
+    type ReactNode,
+} from 'react';
 
 import { cn } from '../../../../app/utils/cn';
 import {
@@ -9,110 +16,104 @@ import {
     supportTextVariants,
     wrapperClass,
 } from './input.variants';
+import { inputRegistry, type InputConfig, type InputType } from './input.registry';
 
-interface IProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
-    label?: string;
-    type: 'text' | 'number' | 'e-mail' | 'password' | 'textarea' | 'date' | 'time';
-    rightBtnAction?: () => void;
-    rightIconComponent?: ReactElement;
-    leftIconComponent?: ReactElement;
-    className?: string;
+interface IBaseProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
+    error?: string;
     supportText?: string;
-    error?: Partial<Record<keyof IProps['name'], { message: string }>>;
+    leftIconComponent?: ReactNode;
+    rightIconComponent?: ReactNode;
+    onRightIconClick?: () => void;
+    rightIconLabel?: string;
+    className?: string;
+    inputClassName?: string;
 }
+
+type TInputProps = IBaseProps & {
+    type?: Exclude<InputType, 'textarea'>;
+} & Omit<ComponentPropsWithRef<'input'>, 'type' | 'className'>;
+
+type TTextareaProps = IBaseProps & {
+    type: 'textarea';
+} & Omit<ComponentPropsWithRef<'textarea'>, 'type' | 'className'>;
+
+export type IProps = TInputProps | TTextareaProps;
 
 const Input = forwardRef<any, IProps>((props, ref) => {
     const {
-        rightBtnAction,
+        onRightIconClick,
         rightIconComponent,
         error,
         className,
         supportText,
-        label,
-        type,
+        type = 'text',
         leftIconComponent,
         disabled,
         ...fieldProps
     } = props;
 
-    const input_props = {
-        ...fieldProps,
-        ref,
-        type,
-        disabled,
-        className: cn(
-            inputVariants({
-                invalid: error !== undefined,
-                disabled,
-                hasLeftIcon: leftIconComponent !== undefined,
-                multiline: type === 'textarea',
-            }),
-            className,
-        ),
-    };
+    const generatedId = useId();
+    const id = fieldProps.id ?? fieldProps.name ?? generatedId;
 
-    const inputs: any = {
-        textarea: {
-            tag: 'textarea',
-            input_props: {
-                ...input_props,
-                rows: 4,
-            },
-        },
-        text: {
-            tag: 'input',
-            input_props,
-        },
-        number: {
-            tag: 'input',
-            input_props,
-        },
-        'e-mail': {
-            tag: 'input',
-            input_props,
-        },
-        password: {
-            tag: 'input',
-            input_props,
-        },
-        date: {
-            tag: 'input',
-            input_props,
-        },
-        time: {
-            tag: 'input',
-            input_props,
-        },
-    };
+    const config: InputConfig = inputRegistry[type];
+    const Tag: ElementType = config.tag;
 
-    const InputTag = inputs[type].tag;
-    const input_tag_props = inputs[type].input_props;
+    const invalid = Boolean(error);
+    const helperText = error ?? supportText;
+    const helperId = `${id}-helper`;
 
     return (
         <div className={cn('w-full', className)}>
             <div className={wrapperClass}>
                 {leftIconComponent && <div className={leftIconClass}>{leftIconComponent}</div>}
 
-                <InputTag id={fieldProps.name} {...input_tag_props} />
+                <Tag
+                    id={id}
+                    ref={ref}
+                    {...config.props}
+                    {...fieldProps}
+                    type={config.htmlType}
+                    aria-invalid={invalid || undefined}
+                    aria-describedby={helperText ? helperId : undefined}
+                    className={cn(
+                        inputVariants({
+                            invalid,
+                            disabled,
+                            hasLeftIcon: leftIconComponent !== undefined,
+                            multiline: type === 'textarea',
+                        }),
+                    )}
+                />
+
+                <label
+                    className={cn(
+                        labelVariants({
+                            invalid,
+                            hasLeftIcon: leftIconComponent !== undefined,
+                            multiline: type === 'textarea',
+                        }),
+                    )}
+                    htmlFor={fieldProps.name}
+                >
+                    {fieldProps.placeholder}
+                </label>
 
                 {rightIconComponent !== undefined && (
                     <button
                         type="button"
-                        onClick={() => (rightBtnAction ? rightBtnAction() : null)}
-                        className={cn(rightIconVariants({ clickable: rightBtnAction !== undefined }))}
+                        onClick={() => (onRightIconClick ? onRightIconClick() : null)}
+                        className={cn(rightIconVariants({ clickable: onRightIconClick !== undefined }))}
                     >
                         {rightIconComponent}
                     </button>
                 )}
-
-                {label && (
-                    <label className={cn(labelVariants({ invalid: error !== undefined }))} htmlFor={fieldProps.name}>
-                        {label}
-                    </label>
-                )}
             </div>
 
-            {supportText && <p className={cn(supportTextVariants({ invalid: error !== undefined }))}>{supportText}</p>}
+            {helperText && (
+                <p id={helperId} role={invalid ? 'alert' : undefined} className={supportTextVariants({ invalid })}>
+                    {helperText}
+                </p>
+            )}
         </div>
     );
 });

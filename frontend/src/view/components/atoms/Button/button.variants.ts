@@ -16,8 +16,8 @@ export const buttonVariants = cva(
             },
             size: {
                 sm: 'px-2 text-label-sm h-6 rounded-[3px]',
-                md: 'px-4 text-label-lg h-7.5 rounded-[3px]',
-                lg: 'px-8 text-label-lg h-9 rounded',
+                md: 'px-4 text-label-lg h-8 rounded-lg',
+                lg: 'px-8 text-label-lg h-12 rounded-lg',
             },
             loading: {
                 true: 'text-transparent!',

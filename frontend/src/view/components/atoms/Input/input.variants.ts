@@ -1,20 +1,25 @@
 import { cva } from 'class-variance-authority';
 
 export const inputVariants = cva(
-    'w-full h-10 border rounded-lg px-4 py-3 text-body-lg transition duration-200 outline-none ' +
-        'placeholder:text-body-lg placeholder:text-gray-300 placeholder:font-normal',
+    'peer w-full rounded-lg border text-body-lg outline-none transition-all ' + 'placeholder:text-transparent',
     {
         variants: {
             invalid: {
                 true: 'border-primary-d',
-                false: 'border-gray-100',
+                false: 'border-gray-500 focus:border-gray-800',
             },
             disabled: {
-                true: 'cursor-not-allowed bg-stroke-low text-stroke-high',
-                false: 'bg-white text-paragraph-high',
+                true: 'cursor-not-allowed bg-gray-100 text-gray-500',
+                false: 'bg-white text-gray-800',
             },
-            hasLeftIcon: { true: 'pl-10', false: '' },
-            multiline: { true: 'min-h-[130px]', false: '' },
+            hasLeftIcon: {
+                true: 'pl-10 pr-4',
+                false: 'px-4',
+            },
+            multiline: {
+                false: 'h-[52px] pt-4 pb-1 placeholder-shown:py-0',
+                true: 'min-h-[130px] pt-6 pb-2',
+            },
         },
         defaultVariants: {
             invalid: false,
@@ -25,12 +30,30 @@ export const inputVariants = cva(
     },
 );
 
-export const labelVariants = cva('text-body-lg font-medium mb-2', {
-    variants: {
-        invalid: { true: 'text-primary-d', false: 'text-paragraph-medium' },
+export const labelVariants = cva(
+    'pointer-events-none absolute top-2 text-label-sm transition-all ' + 'peer-placeholder-shown:text-body-lg',
+    {
+        variants: {
+            invalid: {
+                true: 'text-primary-d',
+                false: 'text-gray-700',
+            },
+            hasLeftIcon: {
+                true: 'left-[37px]',
+                false: 'left-4',
+            },
+            multiline: {
+                false: 'peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2',
+                true: 'peer-placeholder-shown:top-6',
+            },
+        },
+        defaultVariants: {
+            invalid: false,
+            hasLeftIcon: false,
+            multiline: false,
+        },
     },
-    defaultVariants: { invalid: false },
-});
+);
 
 export const supportTextVariants = cva('text-caption ml-2 mt-1', {
     variants: {

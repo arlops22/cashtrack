@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+
 import Button from '../../../components/atoms/Button';
 import Input from '../../../components/atoms/Input';
 import Typography from '../../../components/atoms/Typography';
@@ -16,10 +17,10 @@ export default function SignUp() {
                         Log in
                     </Link>
                 </Typography>
-                <Input type="text" label="First Name" placeholder="First Name" className="mb-2" />
-                <Input type="text" label="Last Name" placeholder="Last Name" className="mb-2" />
-                <Input type="text" label="E-mail" placeholder="E-mail" className="mb-2" />
-                <Input type="text" label="Password" placeholder="Password" />
+                <Input type="text" placeholder="First Name" className="mb-4" />
+                <Input type="text" placeholder="Last Name" className="mb-4" />
+                <Input type="text" placeholder="E-mail" className="mb-4" />
+                <Input type="text" placeholder="Password" />
             </div>
             <Button type="submit">Create Account</Button>
         </form>

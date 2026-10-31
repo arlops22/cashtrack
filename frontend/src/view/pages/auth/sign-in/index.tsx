@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import Button from '../../../components/atoms/Button';
 import Input from '../../../components/atoms/Input';
 import Typography from '../../../components/atoms/Typography';
 
 export default function SignIn() {
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
     return (
         <form className="h-full flex flex-col justify-between">
             <div>
@@ -16,8 +20,12 @@ export default function SignIn() {
                         create an account
                     </Link>
                 </Typography>
-                <Input type="text" label="E-mail" placeholder="E-mail" className="mb-2" />
-                <Input type="text" label="Password" placeholder="Password" />
+                <Input type="text" placeholder="E-mail" className="mb-4" />
+                <Input
+                    type={isPasswordVisible ? 'text' : 'password'}
+                    placeholder="Password"
+                    onRightIconClick={() => setIsPasswordVisible(oldState => !oldState)}
+                />
             </div>
             <Button type="submit">Log in</Button>
         </form>
