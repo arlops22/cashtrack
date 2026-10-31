@@ -4,8 +4,9 @@ import AuthLayout from '../view/layouts/AuthLayout';
 import BlankLayout from '../view/layouts/BlankLayout';
 import AuthGuard from './AuthGuard';
 
-import SignInPage from '../view/pages/auth/sign-in';
+import SignIn from '../view/pages/auth/sign-in';
 import Home from '../view/pages/home';
+import SignUp from '../view/pages/auth/sign-up';
 
 export const router = createBrowserRouter([
     {
@@ -18,7 +19,10 @@ export const router = createBrowserRouter([
                     {
                         path: 'auth',
                         Component: AuthLayout,
-                        children: [{ path: 'sign-in', Component: SignInPage }],
+                        children: [
+                            { path: 'sign-in', Component: SignIn },
+                            { path: 'sign-up', Component: SignUp },
+                        ],
                     },
                 ],
             },

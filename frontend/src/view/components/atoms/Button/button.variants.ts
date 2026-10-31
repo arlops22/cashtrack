@@ -33,7 +33,7 @@ export const buttonVariants = cva(
                 color: 'primary',
                 variant: 'outlined',
                 disabled: false,
-                class: 'border bg-transparent border-primary-m text-primary-m hover:bg-primary-m/12',
+                class: 'border bg-transparent border-teal-900 text-teal-900 hover:bg-teal-900/12',
             },
             {
                 color: 'secondary',
@@ -52,7 +52,7 @@ export const buttonVariants = cva(
                 color: 'primary',
                 variant: 'contained',
                 disabled: false,
-                class: 'border bg-primary-m text-white border-primary-m hover:shadow-md hover:shadow-primary-m/40',
+                class: 'border bg-teal-900 text-white border-teal-900 hover:shadow-md hover:shadow-teal-900/40',
             },
             {
                 color: 'secondary',

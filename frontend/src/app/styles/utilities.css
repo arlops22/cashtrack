@@ -1,0 +1,11 @@
+@utility link {
+    @apply text-teal-900;
+
+    &:hover {
+        @apply underline underline-offset-4;
+    }
+
+    &:focus-visible {
+        @apply rounded-sm outline-2 outline-offset-2 outline-teal-900;
+    }
+}
