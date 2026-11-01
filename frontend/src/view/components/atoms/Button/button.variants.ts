@@ -1,8 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const buttonVariants = cva(
-    // base: sempre aplicada
-    'relative align-middle flex items-center justify-center gap-3 focus:outline-none transition ease-in-out duration-300',
+    'relative align-middle flex items-center justify-center gap-3 cursor-pointer focus:outline-none transition ease-in-out duration-100',
     {
         variants: {
             color: {
@@ -52,7 +51,7 @@ export const buttonVariants = cva(
                 color: 'primary',
                 variant: 'contained',
                 disabled: false,
-                class: 'border bg-teal-900 text-white border-teal-900 hover:shadow-md hover:shadow-teal-900/40',
+                class: 'bg-teal-900 text-white hover:bg-teal-800',
             },
             {
                 color: 'secondary',

@@ -62,12 +62,15 @@ export const supportTextVariants = cva('text-caption ml-2 mt-1', {
     defaultVariants: { invalid: false },
 });
 
-export const rightIconVariants = cva('absolute right-3 bottom-2 transition hover:opacity-70', {
-    variants: {
-        clickable: { true: 'cursor-pointer', false: 'cursor-default' },
+export const rightIconVariants = cva(
+    'w-7 h-7 flex items-center justify-center rounded-full bg-transparent absolute right-3 top-1/2 -translate-y-1/2 transition hover:bg-gray-100 duration-100',
+    {
+        variants: {
+            clickable: { true: 'cursor-pointer', false: 'cursor-default' },
+        },
+        defaultVariants: { clickable: false },
     },
-    defaultVariants: { clickable: false },
-});
+);
 
 export const wrapperClass = 'flex flex-col-reverse relative';
 export const leftIconClass = 'absolute left-3 bottom-3';

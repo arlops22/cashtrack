@@ -12,7 +12,7 @@ export default function SignUp() {
                     Create an account
                 </Typography>
                 <Typography as="p" variant="body-md" className="mb-6">
-                    Already has an account?{' '}
+                    Already have an account?{' '}
                     <Link className="link" to="/auth/sign-in">
                         Log in
                     </Link>
@@ -22,7 +22,7 @@ export default function SignUp() {
                 <Input type="text" placeholder="E-mail" className="mb-4" />
                 <Input type="text" placeholder="Password" />
             </div>
-            <Button type="submit">Create Account</Button>
+            <Button type="submit">Create account</Button>
         </form>
     );
 }
