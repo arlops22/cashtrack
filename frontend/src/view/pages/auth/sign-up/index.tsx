@@ -6,7 +6,7 @@ import Typography from '../../../components/atoms/Typography';
 
 export default function SignUp() {
     return (
-        <form className="h-full flex flex-col justify-between">
+        <form className="h-full w-full flex flex-col justify-between sm:justify-center sm:gap-8 sm:pb-[100px] sm:w-2/3 md:w-1/3">
             <div>
                 <Typography as="h1" variant="h5" className="mb-2">
                     Create an account
