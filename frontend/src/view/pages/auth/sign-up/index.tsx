@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 
 import Button from '../../../components/atoms/Button';
 import Input from '../../../components/atoms/Input';
 import Typography from '../../../components/atoms/Typography';
 
 export default function SignUp() {
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
     return (
         <form className="h-full w-full flex flex-col justify-between sm:justify-center sm:gap-8 sm:pb-[100px] sm:w-2/3 md:w-1/3">
             <div>
@@ -19,8 +23,13 @@ export default function SignUp() {
                 </Typography>
                 <Input type="text" placeholder="First Name" className="mb-4" />
                 <Input type="text" placeholder="Last Name" className="mb-4" />
-                <Input type="text" placeholder="E-mail" className="mb-4" />
-                <Input type="text" placeholder="Password" />
+                <Input type="text" placeholder="Email" className="mb-4" />
+                <Input
+                    type={isPasswordVisible ? 'text' : 'password'}
+                    placeholder="Password"
+                    rightIconComponent={isPasswordVisible ? <EyeClosedIcon /> : <EyeOpenIcon />}
+                    onRightIconClick={() => setIsPasswordVisible(oldState => !oldState)}
+                />
             </div>
             <Button type="submit">Create account</Button>
         </form>
