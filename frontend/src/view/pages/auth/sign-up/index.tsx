@@ -10,7 +10,7 @@ export default function SignUp() {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     return (
-        <form className="h-full w-full flex flex-col justify-between sm:justify-center sm:gap-8 sm:pb-[100px] sm:w-2/3 md:w-1/3">
+        <form className="h-full w-full flex flex-col justify-between sm:justify-center sm:gap-8 sm:pb-25 sm:w-2/3 md:w-1/3">
             <div>
                 <Typography as="h1" variant="h5" className="mb-2">
                     Create an account

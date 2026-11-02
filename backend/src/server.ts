@@ -1,4 +1,5 @@
 import express, { Application, Response } from 'express';
+import cors from 'cors';
 import { pinoHttp } from 'pino-http';
 import { PrismaClient } from '../prisma/generated/prisma/client';
 
@@ -28,6 +29,11 @@ export class ServerSetup {
     }
 
     private initMiddlewares() {
+        this.app.use(
+            cors({
+                origin: ' *',
+            }),
+        );
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(pinoHttp({ logger }));

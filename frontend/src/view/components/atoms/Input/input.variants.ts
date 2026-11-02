@@ -55,7 +55,7 @@ export const labelVariants = cva(
     },
 );
 
-export const supportTextVariants = cva('text-caption ml-2 mt-1', {
+export const supportTextVariants = cva('text-body-sm ml-2 mt-1', {
     variants: {
         invalid: { true: 'text-primary-d', false: 'text-gray-700' },
     },
