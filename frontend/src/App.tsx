@@ -19,7 +19,7 @@ export default function App() {
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
                 <RouterProvider router={router} />;
-                <Toaster position="top-right" />
+                <Toaster />
             </AuthProvider>
         </QueryClientProvider>
     );

@@ -13,7 +13,7 @@ const schema = z.object({
     password: z.string().nonempty('Enter your password'),
 });
 
-type SignInForm = z.infer<typeof schema>;
+type SignInSchema = z.infer<typeof schema>;
 
 export function useSignInController() {
     const { signIn } = useAuth();
@@ -22,7 +22,7 @@ export function useSignInController() {
         register,
         handleSubmit: hookFormSubmit,
         formState: { errors },
-    } = useForm<SignInForm>({
+    } = useForm<SignInSchema>({
         resolver: zodResolver(schema),
     });
 
