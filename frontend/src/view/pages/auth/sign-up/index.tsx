@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
+import { Eye, EyeClosed } from 'lucide-react';
 
 import { useSignUpController } from './useSignUpController';
 
@@ -51,7 +51,7 @@ export default function SignUp() {
                 <Input
                     type={isPasswordVisible ? 'text' : 'password'}
                     placeholder="Password"
-                    rightIconComponent={isPasswordVisible ? <EyeClosedIcon /> : <EyeOpenIcon />}
+                    rightIconComponent={isPasswordVisible ? <Eye size={20} /> : <EyeClosed size={20} />}
                     onRightIconClick={() => setIsPasswordVisible(oldState => !oldState)}
                     error={errors.password?.message}
                     {...register('password')}

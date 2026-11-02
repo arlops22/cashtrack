@@ -1,8 +1,11 @@
 import { Outlet } from 'react-router-dom';
 
+import Logo from '../components/atoms/Logo';
+
 const AuthLayout = () => {
     return (
-        <div className="flex flex-column items-center justify-center p-4 pt-10 w-full h-full bg-gray-0">
+        <div className="flex flex-col flex-column items-center justify-center p-4 pt-6 w-full h-full bg-gray-0">
+            <Logo className="h-8 text-gray-500 self-start mb-8 sm:self-center sm:mb-0" />
             <Outlet />
         </div>
     );

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons';
+import { Eye, EyeClosed } from 'lucide-react';
 
 import { useSignInController } from './useSignInController';
 
@@ -15,7 +15,7 @@ export default function SignIn() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="h-full w-full flex flex-col justify-between sm:justify-center sm:gap-8 sm:pb-25 sm:w-2/3 md:w-1/3"
+            className="h-full w-full flex flex-col justify-between sm:justify-center sm:gap-8 sm:pb-50 sm:w-2/3 md:w-1/3"
         >
             <div>
                 <Typography as="h1" variant="h5" className="mb-2">
@@ -37,7 +37,7 @@ export default function SignIn() {
                 <Input
                     type={isPasswordVisible ? 'text' : 'password'}
                     placeholder="Password"
-                    rightIconComponent={isPasswordVisible ? <EyeClosedIcon /> : <EyeOpenIcon />}
+                    rightIconComponent={isPasswordVisible ? <Eye size={20} /> : <EyeClosed size={20} />}
                     onRightIconClick={() => setIsPasswordVisible(oldState => !oldState)}
                     error={errors.password?.message}
                     {...register('password')}
