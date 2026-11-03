@@ -69,8 +69,6 @@ export const typographyVariants = cva('', {
     },
 });
 
-type Variants = VariantProps<typeof typographyVariants>;
+export type Variants = VariantProps<typeof typographyVariants>;
 
 export type TypographyVariant = NonNullable<Variants['variant']>;
-export type TypographyColor = NonNullable<Variants['color']>;
-export type TypographyAlign = NonNullable<Variants['align']>;

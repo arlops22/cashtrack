@@ -1,14 +1,14 @@
 import { spinnerVariants, type SpinnerColor, type SpinnerVariant } from './spinner.variants';
 import { cn } from '../../../../app/utils/cn';
 
-interface IProps {
+type TProps = {
     variant?: SpinnerVariant;
     size?: number;
     color?: SpinnerColor;
     className?: string;
-}
+};
 
-const Spinner = (props: IProps) => {
+const Spinner = (props: TProps) => {
     const { variant = 'default', size = 55, color = 'white', className } = props;
 
     const styles = {

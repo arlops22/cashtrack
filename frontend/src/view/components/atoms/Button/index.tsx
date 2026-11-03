@@ -1,24 +1,21 @@
 import type { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 
 import { cn } from '../../../../app/utils/cn';
-import { buttonVariants, type ButtonColor, type ButtonSize, type ButtonVariant } from './button.variants';
+import { buttonVariants, type Variants } from './button.variants';
 
 import Spinner from '../Spinner';
 
-interface IProps {
+type TProps = {
     onClick?: MouseEventHandler;
     children?: ReactNode | ReactNode[];
     className?: string;
     disabled?: boolean;
-    variant?: ButtonVariant;
     type?: 'button' | 'submit' | 'reset';
-    color?: ButtonColor;
-    size?: ButtonSize;
     isLoading?: boolean;
     maxWidth?: string;
-}
+} & Variants;
 
-const Button = (props: IProps) => {
+const Button = (props: TProps) => {
     const {
         children,
         onClick,

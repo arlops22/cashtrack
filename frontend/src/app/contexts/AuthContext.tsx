@@ -1,20 +1,21 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import { isAxiosError } from 'axios';
 import { queryOptions, useQuery, useQueryClient } from '@tanstack/react-query';
+import { redirect } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import { localStorageKeys } from '../config/local-storage-keys';
 import { usersService } from '../services/usersService';
 import type { User } from '../../entities/User';
 
-interface AuthContextValue {
+interface AuthContextProps {
     isSignedIn: boolean;
     user: User | undefined;
     signIn(accessToken: string): void;
     signOut(): void;
 }
 
-export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const meQueryOptions = queryOptions({
     queryKey: ['me'],
@@ -52,6 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem(localStorageKeys.ACCESS_TOKEN);
         queryClient.clear();
         setHasToken(false);
+        throw redirect('/auth/sign-in');
     }, []);
 
     useEffect(() => {
@@ -61,7 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     }, [error, signOut]);
 
-    const value = useMemo<AuthContextValue>(
+    const value = useMemo<AuthContextProps>(
         () => ({ isSignedIn: !!user, user, signIn, signOut }),
         [user, signIn, signOut],
     );

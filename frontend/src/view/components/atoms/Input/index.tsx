@@ -18,7 +18,7 @@ import {
 } from './input.variants';
 import { inputRegistry, type InputConfig, type InputType } from './input.registry';
 
-interface IBaseProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
+type TBaseProps = InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
     error?: string;
     supportText?: string;
     leftIconComponent?: ReactNode;
@@ -27,19 +27,19 @@ interface IBaseProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextArea
     rightIconLabel?: string;
     className?: string;
     inputClassName?: string;
-}
+};
 
-type TInputProps = IBaseProps & {
+type TInputProps = TBaseProps & {
     type?: Exclude<InputType, 'textarea'>;
 } & Omit<ComponentPropsWithRef<'input'>, 'type' | 'className'>;
 
-type TTextareaProps = IBaseProps & {
+type TTextareaProps = TBaseProps & {
     type: 'textarea';
 } & Omit<ComponentPropsWithRef<'textarea'>, 'type' | 'className'>;
 
-export type IProps = TInputProps | TTextareaProps;
+export type TProps = TInputProps | TTextareaProps;
 
-const Input = forwardRef<any, IProps>((props, ref) => {
+const Input = forwardRef<any, TProps>((props, ref) => {
     const {
         onRightIconClick,
         rightIconComponent,

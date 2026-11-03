@@ -2,12 +2,7 @@ import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
 
 import { cn } from '../../../../app/utils/cn';
 
-import {
-    typographyVariants,
-    type TypographyAlign,
-    type TypographyColor,
-    type TypographyVariant,
-} from './typography.variants';
+import { typographyVariants, type TypographyVariant, type Variants } from './typography.variants';
 
 const defaultTag: Record<TypographyVariant, ElementType> = {
     h1: 'h1',
@@ -26,17 +21,15 @@ const defaultTag: Record<TypographyVariant, ElementType> = {
     caption: 'span',
 };
 
-type TypographyProps<T extends ElementType> = {
-    align?: TypographyAlign;
-    variant?: TypographyVariant;
-    color?: TypographyColor;
+type TProps<T extends ElementType> = {
     children: ReactNode;
     className?: string;
     as?: T;
     overflow?: boolean;
-} & Omit<ComponentPropsWithoutRef<T>, 'color' | 'children' | 'className'>;
+} & Omit<ComponentPropsWithoutRef<T>, 'color' | 'children' | 'className'> &
+    Variants;
 
-const Typography = <T extends ElementType = 'p'>(props: TypographyProps<T>) => {
+const Typography = <T extends ElementType = 'p'>(props: TProps<T>) => {
     const { align, variant, color, overflow, as, className, children, ...rest } = props;
 
     const resolved = variant ?? 'body-md';

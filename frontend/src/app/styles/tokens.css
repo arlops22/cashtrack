@@ -1,18 +1,9 @@
-/* styles/tokens.css */
 @theme {
     --color-*: initial;
     --text-*: initial;
 
     --color-black: #000000;
     --color-white: #ffffff;
-
-    --color-primary-l: #ee4d5d;
-    --color-primary-m: #dc3545;
-    --color-primary-d: #e81319;
-
-    --color-secondary-l: #a2a2a2;
-    --color-secondary-m: #767676;
-    --color-secondary-d: #a2a2a2;
 
     --color-teal-0: #e6fcf5;
     --color-teal-100: #c3fae8;

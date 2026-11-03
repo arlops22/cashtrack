@@ -1,8 +1,8 @@
-interface IProps {
+type TProps = {
     className?: string;
-}
+};
 
-export default function Logo({ className }: IProps) {
+export default function Logo({ className }: TProps) {
     return (
         <svg
             width="113"

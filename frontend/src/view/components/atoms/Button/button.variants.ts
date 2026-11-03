@@ -12,6 +12,7 @@ export const buttonVariants = cva(
             variant: {
                 contained: '',
                 outlined: '',
+                icon: '',
             },
             size: {
                 sm: 'px-2 text-label-sm h-6 rounded-[3px]',
@@ -32,7 +33,7 @@ export const buttonVariants = cva(
                 color: 'primary',
                 variant: 'outlined',
                 disabled: false,
-                class: 'border bg-transparent border-teal-900 text-teal-900 hover:bg-teal-900/12',
+                class: 'border bg-transparent border-primary text-primary hover:bg-primary/12',
             },
             {
                 color: 'secondary',
@@ -51,7 +52,7 @@ export const buttonVariants = cva(
                 color: 'primary',
                 variant: 'contained',
                 disabled: false,
-                class: 'bg-teal-900 text-white hover:bg-teal-800',
+                class: 'bg-primary text-white hover:bg-teal-800',
             },
             {
                 color: 'secondary',
@@ -76,6 +77,30 @@ export const buttonVariants = cva(
                 disabled: true,
                 class: 'bg-gray-300 text-gray-800 opacity-70',
             },
+            { variant: 'icon', size: 'sm', class: 'w-6 px-0! rounded-full! [&>svg]:size-4' },
+            { variant: 'icon', size: 'md', class: 'w-8 px-0! rounded-full! [&>svg]:size-4' },
+            { variant: 'icon', size: 'lg', class: 'w-12 px-0! rounded-full! [&>svg]:size-6' },
+
+            {
+                color: 'primary',
+                variant: 'icon',
+                disabled: false,
+                class: 'bg-transparent text-primary hover:bg-primary/12',
+            },
+            {
+                color: 'secondary',
+                variant: 'icon',
+                disabled: false,
+                class: 'bg-transparent text-secondary-m hover:bg-secondary-m/12',
+            },
+            {
+                color: 'error',
+                variant: 'icon',
+                disabled: false,
+                class: 'bg-transparent text-error-m hover:bg-error-m/12',
+            },
+
+            { variant: 'icon', disabled: true, class: 'bg-transparent text-gray-400' },
         ],
         defaultVariants: {
             color: 'primary',
@@ -87,8 +112,4 @@ export const buttonVariants = cva(
     },
 );
 
-type Variants = VariantProps<typeof buttonVariants>;
-
-export type ButtonColor = NonNullable<Variants['color']>;
-export type ButtonVariant = NonNullable<Variants['variant']>;
-export type ButtonSize = NonNullable<Variants['size']>;
+export type Variants = VariantProps<typeof buttonVariants>;

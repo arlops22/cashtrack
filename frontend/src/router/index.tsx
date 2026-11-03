@@ -7,6 +7,7 @@ import AuthGuard from './AuthGuard';
 import SignIn from '../view/pages/auth/sign-in';
 import Home from '../view/pages/home';
 import SignUp from '../view/pages/auth/sign-up';
+import AppLayout from '../view/layouts/AppLayout';
 
 export const router = createBrowserRouter([
     {
@@ -28,7 +29,7 @@ export const router = createBrowserRouter([
             },
             {
                 element: <AuthGuard isPrivate />,
-                children: [{ index: true, Component: Home }],
+                children: [{ Component: AppLayout, children: [{ index: true, Component: Home }] }],
             },
         ],
     },
