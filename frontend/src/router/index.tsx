@@ -1,5 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
+import { PRIVATE_ROUTES } from '../app/config/routes';
+
 import AuthLayout from '../view/layouts/AuthLayout';
 import BlankLayout from '../view/layouts/BlankLayout';
 import AuthGuard from './AuthGuard';
@@ -29,7 +31,22 @@ export const router = createBrowserRouter([
             },
             {
                 element: <AuthGuard isPrivate />,
-                children: [{ Component: AppLayout, children: [{ index: true, Component: Home }] }],
+                children: [
+                    {
+                        Component: AppLayout,
+                        children: [
+                            {
+                                index: true,
+                                path: PRIVATE_ROUTES.dashboard,
+                                Component: Home,
+                                handle: { title: 'Dashboard' },
+                            },
+                            { path: PRIVATE_ROUTES.transactions, Component: Home, handle: { title: 'Transactions' } },
+                            { path: PRIVATE_ROUTES.bankAccounts, Component: Home, handle: { title: 'Bank Accounts' } },
+                            { path: PRIVATE_ROUTES.categories, Component: Home, handle: { title: 'Categories' } },
+                        ],
+                    },
+                ],
             },
         ],
     },

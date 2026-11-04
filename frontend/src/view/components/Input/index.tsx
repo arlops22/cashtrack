@@ -7,7 +7,7 @@ import {
     type ReactNode,
 } from 'react';
 
-import { cn } from '../../../../app/utils/cn';
+import { cn } from '../../../app/utils/cn';
 import {
     inputVariants,
     labelVariants,
@@ -17,6 +17,7 @@ import {
     wrapperClass,
 } from './input.variants';
 import { inputRegistry, type InputConfig, type InputType } from './input.registry';
+import Button from '../Button';
 
 type TBaseProps = InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
     error?: string;
@@ -99,13 +100,16 @@ const Input = forwardRef<any, TProps>((props, ref) => {
                 </label>
 
                 {rightIconComponent !== undefined && (
-                    <button
+                    <Button
+                        size="md"
+                        variant="icon"
+                        color="ghost"
                         type="button"
                         onClick={() => (onRightIconClick ? onRightIconClick() : null)}
                         className={cn(rightIconVariants({ clickable: onRightIconClick !== undefined }))}
                     >
                         {rightIconComponent}
-                    </button>
+                    </Button>
                 )}
             </div>
 

@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 
-import { cn } from '../../../../app/utils/cn';
+import { cn } from '../../../app/utils/cn';
 import { buttonVariants, type Variants } from './button.variants';
 
 import Spinner from '../Spinner';

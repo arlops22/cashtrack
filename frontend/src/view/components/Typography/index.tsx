@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
 
-import { cn } from '../../../../app/utils/cn';
+import { cn } from '../../../app/utils/cn';
 
 import { typographyVariants, type TypographyVariant, type Variants } from './typography.variants';
 

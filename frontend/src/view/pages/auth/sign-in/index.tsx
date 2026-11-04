@@ -4,9 +4,9 @@ import { Eye, EyeClosed } from 'lucide-react';
 
 import { useSignInController } from './useSignInController';
 
-import Button from '../../../components/atoms/Button';
-import Input from '../../../components/atoms/Input';
-import Typography from '../../../components/atoms/Typography';
+import Button from '../../../components/Button';
+import Input from '../../../components/Input';
+import Typography from '../../../components/Typography';
 
 export default function SignIn() {
     const { register, errors, handleSubmit, isPending } = useSignInController();

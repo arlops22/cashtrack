@@ -1,5 +1,5 @@
 import { spinnerVariants, type SpinnerColor, type SpinnerVariant } from './spinner.variants';
-import { cn } from '../../../../app/utils/cn';
+import { cn } from '../../../app/utils/cn';
 
 type TProps = {
     variant?: SpinnerVariant;

@@ -14,16 +14,16 @@ export default function Logo({ className }: TProps) {
         >
             <path
                 d="M22 13.5C22 19.0228 17.5228 23.5 12 23.5C6.47715 23.5 2 19.0228 2 13.5C2 7.97715 6.47715 3.5 12 3.5C17.5228 3.5 22 7.97715 22 13.5Z"
-                stroke-width="2.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 stroke="currentColor"
             />
             <path
                 d="M16.24 9.25977L14.436 14.6708C14.3378 14.9653 14.1724 15.233 13.9528 15.4526C13.7333 15.6722 13.4656 15.8376 13.171 15.9358L7.76 17.7398L9.564 12.3288C9.66218 12.0342 9.82761 11.7665 10.0472 11.5469C10.2667 11.3274 10.5344 11.1619 10.829 11.0638L16.24 9.25977Z"
-                stroke-width="2.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 stroke="currentColor"
             />
             <path
