@@ -1,12 +1,11 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import { isAxiosError } from 'axios';
 import { queryOptions, useQuery, useQueryClient } from '@tanstack/react-query';
-import { redirect } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import { localStorageKeys } from '../config/local-storage-keys';
 import { usersService } from '../services/usersService';
-import type { User } from '../../entities/User';
+import type { User } from '../entities/User';
 
 interface AuthContextProps {
     isSignedIn: boolean;
@@ -53,7 +52,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem(localStorageKeys.ACCESS_TOKEN);
         queryClient.clear();
         setHasToken(false);
-        throw redirect('/auth/sign-in');
     }, []);
 
     useEffect(() => {

@@ -1,15 +1,17 @@
 :root {
-    --background: #ffffff;
+    --background: var(--color-white);
     --foreground: var(--color-gray-900);
     --muted: var(--color-gray-100);
     --muted-foreground: var(--color-gray-600);
     --border: var(--color-gray-200);
+    --accent: var(--color-gray-100);
+    --accent-foreground: var(--color-gray-900);
 
     --primary: var(--color-teal-900);
-    --primary-foreground: #ffffff;
+    --primary-foreground: var(--color-white);
 
     --secondary: var(--color-gray-700);
-    --secondary-foreground: #ffffff;
+    --secondary-foreground: var(--color-white);
 
     --destructive: var(--color-error-m);
     --success: var(--color-success-m);
@@ -20,26 +22,9 @@
     --sidebar-foreground: var(--color-gray-900);
     --sidebar-accent: var(--color-gray-200);
     --sidebar-border: var(--color-gray-300);
-}
 
-.dark {
-    --background: var(--color-gray-900);
-    --foreground: var(--color-gray-100);
-    --muted: var(--color-gray-800);
-    --muted-foreground: var(--color-gray-400);
-    --border: var(--color-gray-800);
-
-    --primary: var(--color-primary-l);
-    --primary-hover: var(--color-primary-m);
-
-    --destructive: var(--color-error-l);
-    --success: var(--color-success-l);
-    --warning: var(--color-warning-l);
-
-    --sidebar: #171717;
-    --sidebar-foreground: #fafafa;
-    --sidebar-accent: #2a2a2a;
-    --sidebar-border: #ffffff1a;
+    --popover: var(--color-white);
+    --popover-foreground: var(--color-gray-900);
 }
 
 @theme inline {
@@ -48,6 +33,8 @@
     --color-muted: var(--muted);
     --color-muted-foreground: var(--muted-foreground);
     --color-border: var(--border);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
 
     --color-primary: var(--primary);
     --color-primary-hover: var(--primary-hover);
@@ -62,4 +49,7 @@
     --color-sidebar-foreground: var(--sidebar-foreground);
     --color-sidebar-accent: var(--sidebar-accent);
     --color-sidebar-border: var(--sidebar-border);
+
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
 }

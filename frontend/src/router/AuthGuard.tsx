@@ -1,19 +1,19 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-import { localStorageKeys } from '../app/config/local-storage-keys';
+import { useAuth } from '../app/hooks/useAuth';
 
 interface AuthGuardProps {
     isPrivate: boolean;
 }
 
 export default function AuthGuard({ isPrivate }: AuthGuardProps) {
-    const isAuthenticated = localStorage.getItem(localStorageKeys.ACCESS_TOKEN);
+    const { isSignedIn } = useAuth();
 
-    if (!isAuthenticated && isPrivate) {
+    if (!isSignedIn && isPrivate) {
         return <Navigate to="/auth/sign-in" replace />;
     }
 
-    if (isAuthenticated && !isPrivate) {
+    if (isSignedIn && !isPrivate) {
         return <Navigate to="/" replace />;
     }
 
