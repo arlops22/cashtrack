@@ -7,6 +7,8 @@ import { localStorageKeys } from '../config/local-storage-keys';
 import { usersService } from '../services/usersService';
 import type { User } from '../entities/User';
 
+import LaunchScreen from '../../view/components/LaunchScreen';
+
 interface AuthContextProps {
     isSignedIn: boolean;
     user: User | undefined;
@@ -66,7 +68,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         [user, signIn, signOut],
     );
 
-    if (isLoading) return <div>Loading...</div>;
-
-    return <AuthContext value={value}>{!isLoading && children}</AuthContext>;
+    return (
+        <AuthContext value={value}>
+            <LaunchScreen isLoading={isLoading} />
+            {!isLoading && children}
+        </AuthContext>
+    );
 }

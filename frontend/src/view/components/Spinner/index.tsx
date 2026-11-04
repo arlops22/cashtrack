@@ -1,52 +1,41 @@
-import { spinnerVariants, type SpinnerColor, type SpinnerVariant } from './spinner.variants';
 import { cn } from '../../../app/utils/cn';
+import {
+    spinnerEffectsVariants,
+    spinnerWrapperVariants,
+    type SpinnerColor,
+    type SpinnerThickness,
+    type SpinnerVariant,
+} from './spinner.variants';
 
 type TProps = {
     variant?: SpinnerVariant;
     size?: number;
+    thickness?: SpinnerThickness;
     color?: SpinnerColor;
     className?: string;
 };
 
 const Spinner = (props: TProps) => {
-    const { variant = 'default', size = 55, color = 'white', className } = props;
-
-    const styles = {
-        wrapper: {
-            base: 'h-full flex items-center justify-center',
-            variant: {
-                default: 'absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2',
-                fixed: '',
-                backgrounded: '',
-                static: '',
-            },
-        },
-        effects: {
-            base: 'rounded-full border-[3px] border-transparent border-solid box-border border-l-[3px]',
-            effect_1: 'absolute animate-rotate 1s',
-            effect_2: 'absolute animate-rotate-opacity-1',
-            effect_3: 'animate-rotate-opacity-2',
-        },
-    };
+    const { variant = 'default', size = 55, color = 'white', thickness = 'thin', className } = props;
 
     return (
-        <div className={cn(styles.wrapper.base, spinnerVariants({ variant }), className)}>
+        <div className={cn(spinnerWrapperVariants({ variant }), className)}>
             <div
-                className={cn(styles.effects.base, styles.effects.effect_1, spinnerVariants({ color }))}
+                className={cn(spinnerEffectsVariants({ color, thickness }))}
                 style={{
                     height: size - 5,
                     width: size - 5,
                 }}
             />
             <div
-                className={cn(styles.effects.base, styles.effects.effect_2, spinnerVariants({ color }))}
+                className={cn(spinnerEffectsVariants({ color, thickness, effect: 'second' }))}
                 style={{
                     height: size - 5,
                     width: size - 5,
                 }}
             />
             <div
-                className={cn(styles.effects.base, styles.effects.effect_3, spinnerVariants({ color }))}
+                className={cn(spinnerEffectsVariants({ color, thickness, effect: 'third' }))}
                 style={{
                     height: size - 5,
                     width: size - 5,

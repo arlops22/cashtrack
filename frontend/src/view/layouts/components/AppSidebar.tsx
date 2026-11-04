@@ -26,7 +26,7 @@ export default function AppSidebar() {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <NavLink className="group-data-[collapsible=icon]:pl-1!" to="/">
-                                <Logo className="text-teal-900" />
+                                <Logo className="text-teal-900 h-7" />
                             </NavLink>
                         </SidebarMenuButton>
                     </SidebarMenuItem>

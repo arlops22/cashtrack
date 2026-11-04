@@ -4,14 +4,7 @@ type TProps = {
 
 export default function Logo({ className }: TProps) {
     return (
-        <svg
-            width="113"
-            height="27"
-            viewBox="0 0 113 27"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-        >
+        <svg viewBox="0 0 113 27" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
             <path
                 d="M22 13.5C22 19.0228 17.5228 23.5 12 23.5C6.47715 23.5 2 19.0228 2 13.5C2 7.97715 6.47715 3.5 12 3.5C17.5228 3.5 22 7.97715 22 13.5Z"
                 strokeWidth="2.4"
