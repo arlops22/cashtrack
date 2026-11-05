@@ -8,7 +8,7 @@ export default function SidebarTrigger() {
     const { toggleSidebar } = useSidebar();
 
     return (
-        <Button color="ghost" variant="icon" size="md" onClick={toggleSidebar}>
+        <Button color="secondary" variant="ghost" size="icon" onClick={toggleSidebar}>
             <PanelLeft />
             <span className="sr-only">Toggle Sidebar</span>
         </Button>
