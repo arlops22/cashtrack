@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from 'react';
+import * as Slot from '@radix-ui/react-slot';
 
 import { cn } from '../../../app/utils/cn';
 import { buttonVariants, type Variants } from './button.variants';
@@ -13,6 +14,7 @@ type TProps = {
     type?: 'button' | 'submit' | 'reset';
     isLoading?: boolean;
     maxWidth?: string;
+    asChild?: boolean;
 } & Variants;
 
 const Button = (props: TProps) => {
@@ -26,7 +28,10 @@ const Button = (props: TProps) => {
         disabled,
         type = 'button',
         isLoading = false,
+        asChild = false,
     } = props;
+
+    const Comp = asChild ? Slot.Root : 'button';
 
     const button_props: ButtonHTMLAttributes<HTMLButtonElement> = {
         onClick,
@@ -36,10 +41,10 @@ const Button = (props: TProps) => {
     };
 
     return (
-        <button {...button_props}>
+        <Comp {...button_props}>
             {isLoading && <Spinner color={variant === 'outlined' ? 'default' : 'white'} size={23} />}
             {children}
-        </button>
+        </Comp>
     );
 };
 

@@ -101,9 +101,9 @@ const Input = forwardRef<any, TProps>((props, ref) => {
 
                 {rightIconComponent !== undefined && (
                     <Button
-                        size="md"
-                        variant="icon"
-                        color="ghost"
+                        size="icon"
+                        variant="ghost"
+                        color="secondary"
                         type="button"
                         onClick={() => (onRightIconClick ? onRightIconClick() : null)}
                         className={cn(rightIconVariants({ clickable: onRightIconClick !== undefined }))}

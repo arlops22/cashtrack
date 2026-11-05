@@ -5,7 +5,7 @@ export const inputVariants = cva(
     {
         variants: {
             invalid: {
-                true: 'border-primary-d',
+                true: 'border-destructive',
                 false: 'border-gray-500 focus:border-gray-800',
             },
             disabled: {
@@ -35,7 +35,7 @@ export const labelVariants = cva(
     {
         variants: {
             invalid: {
-                true: 'text-primary-d',
+                true: 'text-destructive',
                 false: 'text-gray-700',
             },
             hasLeftIcon: {
@@ -57,7 +57,7 @@ export const labelVariants = cva(
 
 export const supportTextVariants = cva('text-body-sm ml-2 mt-1', {
     variants: {
-        invalid: { true: 'text-primary-d', false: 'text-gray-700' },
+        invalid: { true: 'text-destructive', false: 'text-gray-700' },
     },
     defaultVariants: { invalid: false },
 });

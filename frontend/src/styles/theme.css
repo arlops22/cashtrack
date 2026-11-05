@@ -1,5 +1,5 @@
 :root {
-    --background: var(--color-white);
+    --background: var(--color-gray-0);
     --foreground: var(--color-gray-900);
     --muted: var(--color-gray-100);
     --muted-foreground: var(--color-gray-600);
@@ -8,17 +8,18 @@
     --accent-foreground: var(--color-gray-900);
 
     --primary: var(--color-teal-900);
+    --primary-hover: var(--color-teal-800);
     --primary-foreground: var(--color-white);
 
     --secondary: var(--color-gray-700);
     --secondary-foreground: var(--color-white);
 
-    --destructive: var(--color-error-m);
+    --destructive: var(--color-red-900);
     --success: var(--color-success-m);
     --warning: var(--color-warning-m);
     --info: var(--color-info);
 
-    --sidebar: var(--color-gray-0);
+    --sidebar: var(--color-gray-100);
     --sidebar-foreground: var(--color-gray-900);
     --sidebar-accent: var(--color-gray-200);
     --sidebar-border: var(--color-gray-300);
@@ -39,6 +40,10 @@
     --color-primary: var(--primary);
     --color-primary-hover: var(--primary-hover);
     --color-primary-foreground: var(--primary-foreground);
+
+    --color-secondary: var(--secondary);
+    --color-secondary-hover: var(--secondary-hover);
+    --color-secondary-foreground: var(--secondary-foreground);
 
     --color-destructive: var(--destructive);
     --color-success: var(--success);
