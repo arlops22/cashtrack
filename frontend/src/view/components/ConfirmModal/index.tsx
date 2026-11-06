@@ -2,6 +2,7 @@ import { Trash } from 'lucide-react';
 
 import { Modal } from '../ui/Modal';
 import Button from '../Button';
+import Typography from '../Typography';
 
 type TProps = {
     isOpen: boolean;
@@ -18,11 +19,13 @@ export default function ConfirmModal(props: TProps) {
     return (
         <Modal open={isOpen} title="Delete" onClose={onClose}>
             <div className="flex flex-col items-center text-center gap-6">
-                <div className="w-[52px] h-[52px] rounded-full bg-red-0 flex items-center justify-center">
+                <div className="w-13 h-13 rounded-full bg-red-0 flex items-center justify-center">
                     <Trash className="w-6 h-6 text-red-900" />
                 </div>
 
-                <p className="w-[180px] text-gray-800 tracking-[-0.5px] font-bold">{title}</p>
+                <Typography className="text-center max-w-52 w-full" as="p" variant="label-lg">
+                    {title}
+                </Typography>
 
                 {description && <p className="tracking-[-0.5px] text-gray-800">{description}</p>}
             </div>
