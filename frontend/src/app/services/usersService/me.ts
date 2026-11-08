@@ -1,4 +1,4 @@
-import type { User } from '../../../entities/User';
+import type { User } from '../../entities/User';
 import { httpClient } from '../http-client';
 
 export async function me() {

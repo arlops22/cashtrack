@@ -10,7 +10,7 @@ export default function CategoryHeader() {
 
     return (
         <Header
-            title="Categories"
+            title="My Categories"
             actionComponent={
                 <Button onClick={onOpenCreateModal} size="md">
                     <Plus size={15} />

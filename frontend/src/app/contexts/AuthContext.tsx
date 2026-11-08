@@ -12,6 +12,7 @@ import LaunchScreen from '../../view/components/LaunchScreen';
 interface AuthContextProps {
     isSignedIn: boolean;
     user: User | undefined;
+    isUserLoading: boolean;
     signIn(accessToken: string): void;
     signOut(): void;
 }
@@ -64,8 +65,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, [error, signOut]);
 
     const value = useMemo<AuthContextProps>(
-        () => ({ isSignedIn: !!user, user, signIn, signOut }),
-        [user, signIn, signOut],
+        () => ({ isSignedIn: !!user, user, isUserLoading: isLoading, signIn, signOut }),
+        [user, isLoading, signIn, signOut],
     );
 
     return (

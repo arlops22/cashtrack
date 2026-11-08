@@ -11,7 +11,7 @@ export default function DeleteCategoryModal() {
             onClose={onCloseModal}
             onConfirm={onDeleteCategory}
             isLoading={isLoadingDelete}
-            title={`Are you sure that you want to delete ${modal.category?.name}?`}
+            title={`Are you sure that you want to delete ${modal.category?.name} category?`}
         />
     );
 }

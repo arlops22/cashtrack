@@ -20,9 +20,8 @@ type TProps<T> = {
 export default function DataTable<T extends { id: number }>(props: TProps<T>) {
     const { columns, data, isLoading, emptyComponent } = props;
 
-    const emtpyTable = <div className="w-full h-96 flex items-center justify-center">{emptyComponent}</div>;
     const tableData = (
-        <>
+        <Table>
             <TableHeader>
                 <TableRow>
                     {columns.map(column => (
@@ -43,10 +42,10 @@ export default function DataTable<T extends { id: number }>(props: TProps<T>) {
                     </TableRow>
                 ))}
             </TableBody>
-        </>
+        </Table>
     );
     const loadingTable = (
-        <>
+        <Table>
             <TableHeader>
                 <TableRow>
                     {columns.map(column => (
@@ -67,10 +66,10 @@ export default function DataTable<T extends { id: number }>(props: TProps<T>) {
                     </TableRow>
                 ))}
             </TableBody>
-        </>
+        </Table>
     );
 
-    if (isLoading) return <Table>{loadingTable}</Table>;
+    if (isLoading) return loadingTable;
 
-    return <Table>{data.length ? tableData : emtpyTable}</Table>;
+    return data.length ? tableData : emptyComponent;
 }
