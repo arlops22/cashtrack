@@ -1,11 +1,6 @@
-import {
-    forwardRef,
-    useId,
-    type ComponentPropsWithRef,
-    type ElementType,
-    type InputHTMLAttributes,
-    type ReactNode,
-} from 'react';
+import { useId, useMemo, type ComponentPropsWithRef, type ReactNode, type Ref } from 'react';
+import { useMask } from '@react-input/mask';
+import { mergeRefs } from 'react-merge-refs';
 
 import { cn } from '../../../app/utils/cn';
 import {
@@ -16,10 +11,9 @@ import {
     supportTextVariants,
     wrapperClass,
 } from './input.variants';
-import { inputRegistry, type InputConfig, type InputType } from './input.registry';
 import Button from '../Button';
 
-type TBaseProps = InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & {
+type TProps = ComponentPropsWithRef<'input'> & {
     error?: string;
     supportText?: string;
     leftIconComponent?: ReactNode;
@@ -28,36 +22,35 @@ type TBaseProps = InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> & 
     rightIconLabel?: string;
     className?: string;
     inputClassName?: string;
+    mask?: string;
 };
 
-type TInputProps = TBaseProps & {
-    type?: Exclude<InputType, 'textarea'>;
-} & Omit<ComponentPropsWithRef<'input'>, 'type' | 'className'>;
-
-type TTextareaProps = TBaseProps & {
-    type: 'textarea';
-} & Omit<ComponentPropsWithRef<'textarea'>, 'type' | 'className'>;
-
-export type TProps = TInputProps | TTextareaProps;
-
-const Input = forwardRef<any, TProps>((props, ref) => {
+function Input(props: TProps) {
     const {
         onRightIconClick,
         rightIconComponent,
         error,
         className,
         supportText,
-        type = 'text',
         leftIconComponent,
         disabled,
+        mask,
+        ref,
         ...fieldProps
     } = props;
 
+    const maskRef = useMask({
+        mask: mask ?? '',
+        replacement: { _: /\d/ },
+    });
+
+    const mergedRef = useMemo(
+        () => mergeRefs([ref as Ref<HTMLInputElement>, mask ? maskRef : undefined]),
+        [ref, mask, maskRef],
+    );
+
     const generatedId = useId();
     const id = fieldProps.id ?? fieldProps.name ?? generatedId;
-
-    const config: InputConfig = inputRegistry[type];
-    const Tag: ElementType = config.tag;
 
     const invalid = Boolean(error);
     const helperText = error ?? supportText;
@@ -68,12 +61,10 @@ const Input = forwardRef<any, TProps>((props, ref) => {
             <div className={wrapperClass}>
                 {leftIconComponent && <div className={leftIconClass}>{leftIconComponent}</div>}
 
-                <Tag
+                <input
                     id={id}
-                    ref={ref}
-                    {...config.props}
+                    ref={mergedRef}
                     {...fieldProps}
-                    type={config.htmlType}
                     aria-invalid={invalid || undefined}
                     aria-describedby={helperText ? helperId : undefined}
                     className={cn(
@@ -81,7 +72,6 @@ const Input = forwardRef<any, TProps>((props, ref) => {
                             invalid,
                             disabled,
                             hasLeftIcon: leftIconComponent !== undefined,
-                            multiline: type === 'textarea',
                         }),
                     )}
                 />
@@ -91,10 +81,9 @@ const Input = forwardRef<any, TProps>((props, ref) => {
                         labelVariants({
                             invalid,
                             hasLeftIcon: leftIconComponent !== undefined,
-                            multiline: type === 'textarea',
                         }),
                     )}
-                    htmlFor={fieldProps.name}
+                    htmlFor={id}
                 >
                     {fieldProps.placeholder}
                 </label>
@@ -120,6 +109,6 @@ const Input = forwardRef<any, TProps>((props, ref) => {
             )}
         </div>
     );
-});
+}
 
 export default Input;

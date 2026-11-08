@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 export const inputVariants = cva(
-    'peer w-full rounded-lg border text-body-lg outline-none transition-all ' + 'placeholder:text-transparent',
+    'peer w-full rounded-lg border text-body-lg outline-none transition-all h-[52px] pt-4 pb-1 placeholder-shown:py-0 placeholder:text-transparent',
     {
         variants: {
             invalid: {
@@ -16,22 +16,17 @@ export const inputVariants = cva(
                 true: 'pl-10 pr-4',
                 false: 'px-4',
             },
-            multiline: {
-                false: 'h-[52px] pt-4 pb-1 placeholder-shown:py-0',
-                true: 'min-h-[130px] pt-6 pb-2',
-            },
         },
         defaultVariants: {
             invalid: false,
             disabled: false,
             hasLeftIcon: false,
-            multiline: false,
         },
     },
 );
 
 export const labelVariants = cva(
-    'pointer-events-none absolute top-2 text-label-sm transition-all ' + 'peer-placeholder-shown:text-body-lg',
+    'pointer-events-none absolute top-2 text-label-sm transition-all peer-placeholder-shown:text-body-lg peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2',
     {
         variants: {
             invalid: {
@@ -42,15 +37,10 @@ export const labelVariants = cva(
                 true: 'left-[37px]',
                 false: 'left-4',
             },
-            multiline: {
-                false: 'peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2',
-                true: 'peer-placeholder-shown:top-6',
-            },
         },
         defaultVariants: {
             invalid: false,
             hasLeftIcon: false,
-            multiline: false,
         },
     },
 );

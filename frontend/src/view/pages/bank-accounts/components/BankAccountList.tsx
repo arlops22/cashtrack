@@ -7,6 +7,8 @@ import BankAccountCard from './BankAccountCard';
 export default function BankAccountList() {
     const { bankAccounts, isLoadingAccounts, onOpenCreateModal, onOpenDeleteModal, onOpenEditModal } = useBankAccount();
 
+    const wrapperClass = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3';
+
     const emptyData = (
         <EmptyList
             title="No accounts yet"
@@ -18,7 +20,7 @@ export default function BankAccountList() {
 
     if (isLoadingAccounts)
         return (
-            <div className="grid grid-cols-4 gap-3">
+            <div className={wrapperClass}>
                 {new Array(8).fill('').map((_, index) => (
                     <Skeleton className="h-56" key={`loader-${index}`} />
                 ))}
@@ -26,7 +28,7 @@ export default function BankAccountList() {
         );
 
     return bankAccounts.length ? (
-        <div className="grid grid-cols-4 gap-3">
+        <div className={wrapperClass}>
             {bankAccounts.map(account => (
                 <BankAccountCard
                     key={account.id}

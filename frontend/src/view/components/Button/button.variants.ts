@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const buttonVariants = cva(
-    'relative align-middle flex items-center justify-center gap-3 cursor-pointer focus:outline-none transition ease-in-out duration-100',
+    'relative align-middle flex items-center justify-center gap-2 cursor-pointer focus:outline-none transition ease-in-out duration-100',
     {
         variants: {
             color: {

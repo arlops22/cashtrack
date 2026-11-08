@@ -1,4 +1,5 @@
 import { Controller } from 'react-hook-form';
+import { NumericFormat } from 'react-number-format';
 
 import { useAccountFormController } from './useAccountFormController';
 import { useBankAccount } from '../../BankAccountContext/useBankAccount';
@@ -54,13 +55,28 @@ export default function BankAccountModal() {
                         />
                     )}
                 />
-                <Input
-                    type="text"
-                    placeholder="Initial balance"
-                    className="mb-8"
-                    error={errors.initialBalance?.message}
-                    {...register('initialBalance')}
-                />
+
+                {!modal.account && (
+                    <Controller
+                        name="initialBalance"
+                        control={control}
+                        render={({ field }) => (
+                            <NumericFormat
+                                className="mb-8"
+                                placeholder="Initial balance"
+                                customInput={Input}
+                                value={field.value}
+                                onValueChange={values => field.onChange(values.floatValue)}
+                                prefix="R$ "
+                                thousandSeparator="."
+                                decimalSeparator=","
+                                decimalScale={2}
+                                fixedDecimalScale
+                                allowNegative={false}
+                            />
+                        )}
+                    />
+                )}
 
                 <Button isLoading={isPending} className="w-full" type="submit">
                     Save account
