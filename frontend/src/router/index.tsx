@@ -12,6 +12,7 @@ import SignUp from '../view/pages/auth/sign-up';
 import Dashboard from '../view/pages/dashboard';
 import Categories from '../view/pages/categories';
 import BankAccounts from '../view/pages/bank-accounts';
+import Transactions from '../view/pages/transactions';
 
 export const router = createBrowserRouter([
     {
@@ -44,7 +45,7 @@ export const router = createBrowserRouter([
                             },
                             {
                                 path: PRIVATE_ROUTES.transactions,
-                                Component: Dashboard,
+                                Component: Transactions,
                             },
                             {
                                 path: PRIVATE_ROUTES.bankAccounts,

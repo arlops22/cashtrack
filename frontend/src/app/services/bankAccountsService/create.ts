@@ -1,11 +1,11 @@
+import type { BankAccount } from '../../entities/BankAccount';
 import { httpClient } from '../http-client';
-import type { BankAccountType } from '../../entities/BankAccount';
 
 interface AccountParams {
     name: string;
     initialBalance?: number;
     color: string;
-    type: BankAccountType;
+    type: BankAccount['type'];
 }
 
 export async function create(params: AccountParams) {

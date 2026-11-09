@@ -5,7 +5,7 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 import { cn } from '../../../app/utils/cn';
 import { labelVariants, selectVariants, supportTextVariants } from './select.variants';
 
-type TProps = {
+type TProps = ComponentPropsWithRef<'select'> & {
     className?: string;
     error?: string;
     supportText?: string;
@@ -15,8 +15,8 @@ type TProps = {
         label: string;
     }[];
     value?: string;
-    onChange(value: string): void;
-} & ComponentPropsWithRef<'select'>;
+    onChange: (value: string) => void;
+};
 
 export default function Select(props: TProps) {
     const { className, error, supportText, ref, disabled, options, onChange, value, ...fieldProps } = props;
@@ -28,14 +28,10 @@ export default function Select(props: TProps) {
     const helperText = error ?? supportText;
     const helperId = `${id}-helper`;
 
-    function handleSelect(value: string) {
-        onChange(value);
-    }
-
     return (
         <div className={cn('w-full', className)}>
             <div className="flex flex-col-reverse relative">
-                <SelectPrimitive.Root value={value} onValueChange={handleSelect}>
+                <SelectPrimitive.Root value={value} onValueChange={onChange}>
                     <SelectPrimitive.Trigger className={cn(selectVariants({ invalid }))}>
                         <SelectPrimitive.Value />
 

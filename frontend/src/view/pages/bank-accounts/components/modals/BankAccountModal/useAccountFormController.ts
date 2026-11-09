@@ -4,13 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useBankAccount } from '../../BankAccountContext/useBankAccount';
 import { useCreateBankAccount, useUpdateBankAccount } from '../../../../../../app/hooks/bank-accounts';
-import { BankAccountTypeEnum } from '../../../../../../app/entities/BankAccount';
 
 const schema = z.object({
     name: z.string().trim().min(1, 'Enter a valid account name'),
     initialBalance: z.number().nonnegative(),
     color: z.string().regex(/^#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/, 'Must be a valid hex color (e.g. #FF5733)'),
-    type: z.enum(Object.values(BankAccountTypeEnum)),
+    type: z.enum(['CHECKING', 'SAVING', 'INVESTMENT']),
 });
 
 type CategorySchema = z.infer<typeof schema>;

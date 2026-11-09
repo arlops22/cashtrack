@@ -1,11 +1,11 @@
+import type { BankAccount } from '../../entities/BankAccount';
 import { httpClient } from '../http-client';
-import type { BankAccountType } from '../../entities/BankAccount';
 
 interface AccountParams {
     id: number;
     name: string;
     color: string;
-    type: BankAccountType;
+    type: BankAccount['type'];
 }
 
 export async function update({ id, ...params }: AccountParams) {

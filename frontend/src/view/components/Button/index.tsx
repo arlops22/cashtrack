@@ -35,6 +35,7 @@ const Button = (props: TProps) => {
     const Comp = asChild ? Slot.Root : 'button';
 
     const button_props: ComponentProps<'button'> = {
+        ...props,
         onClick,
         disabled: disabled || isLoading,
         type,
