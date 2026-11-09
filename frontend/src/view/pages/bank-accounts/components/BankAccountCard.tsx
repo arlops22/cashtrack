@@ -29,7 +29,7 @@ export default function BankAccountCard(props: TProps) {
 
     return (
         <div className="relative overflow-hidden flex flex-col justify-between h-56 border bg-white rounded-md p-4">
-            <span className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: `#${color}` }} />
+            <span className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: color }} />
             <div className="flex justify-between items-start">
                 <div>
                     <Avatar className="mb-4" color="secondary" size="lg">

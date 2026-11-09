@@ -9,7 +9,7 @@ import { BankAccountTypeEnum } from '../../../../../../app/entities/BankAccount'
 const schema = z.object({
     name: z.string().trim().min(1, 'Enter a valid account name'),
     initialBalance: z.number().nonnegative(),
-    color: z.hex().nonempty('Must not be empty'),
+    color: z.string().regex(/^#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/, 'Must be a valid hex color (e.g. #FF5733)'),
     type: z.enum(Object.values(BankAccountTypeEnum)),
 });
 
@@ -27,7 +27,7 @@ export function useAccountFormController() {
         values: {
             name: modal.account?.name ?? '',
             initialBalance: modal.account?.initialBalance ?? 0,
-            color: modal.account?.color ?? '',
+            color: modal.account?.color ?? '#000',
             type: modal.account?.type ?? 'CHECKING',
         },
         resolver: zodResolver(schema),

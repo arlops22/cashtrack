@@ -8,6 +8,7 @@ import { Modal } from '../../../../../components/ui/Modal';
 import Input from '../../../../../components/Input';
 import Button from '../../../../../components/Button';
 import Select from '../../../../../components/Select';
+import ColorPickerField from '../../../../../components/ColorPickerField';
 
 export default function BankAccountModal() {
     const { modal, onCloseModal } = useBankAccount();
@@ -62,7 +63,7 @@ export default function BankAccountModal() {
                         control={control}
                         render={({ field }) => (
                             <NumericFormat
-                                className="mb-8"
+                                className="mb-4"
                                 placeholder="Initial balance"
                                 customInput={Input}
                                 value={field.value}
@@ -77,6 +78,14 @@ export default function BankAccountModal() {
                         )}
                     />
                 )}
+
+                <Controller
+                    name="color"
+                    control={control}
+                    render={({ field }) => (
+                        <ColorPickerField className="mb-8" value={field.value} onChange={field.onChange} />
+                    )}
+                />
 
                 <Button isLoading={isPending} className="w-full" type="submit">
                     Save account
