@@ -49,12 +49,14 @@ export default function TransactionsDataTable() {
         {
             id: 'category',
             header: 'Category',
-            cell: (row: Transaction) => <Badge>{row.category ? row.category.name : '-'}</Badge>,
+            cell: (row: Transaction) => (
+                <Badge className="bg-warning-l/20 text-warning-m">{row.category ? row.category.name : '-'}</Badge>
+            ),
         },
         {
             id: 'payment',
             header: 'Payment Method',
-            cell: (row: Transaction) => <Badge variant="secondary">{row.method}</Badge>,
+            cell: (row: Transaction) => <Badge variant="ghost">{row.method}</Badge>,
         },
         {
             id: 'amount',
@@ -63,8 +65,7 @@ export default function TransactionsDataTable() {
             cell: (row: Transaction) => (
                 <div className="flex items-center gap-2">
                     <Typography color={row.type === 'INCOME' ? 'primary' : 'destructive'}>
-                        {row.type === 'INCOME' ? '+ ' : '- '}
-                        {formatCurrency(row.amount)}
+                        {formatCurrency(row.amount, 'exceptZero')}
                     </Typography>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>

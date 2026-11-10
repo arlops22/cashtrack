@@ -37,7 +37,7 @@ export default function TransactionsFilters() {
                     ]}
                 />
             </div>
-            <Carousel className="mb-8" startIndex={filters.month}>
+            <Carousel className="mb-8" selectedIndex={filters.month}>
                 {MONTHS.map((month, index) => (
                     <div
                         role="group"
@@ -49,9 +49,10 @@ export default function TransactionsFilters() {
                         <Button
                             onClick={() => setFilters(oldState => ({ ...oldState, month: MONTHS.indexOf(month) }))}
                             className={cn(
-                                MONTHS[filters.month] === month ? 'border border-gray-700' : '',
-                                'max-w-40 w-full',
+                                MONTHS[filters.month] === month ? 'bg-primary text-white' : '',
+                                'max-w-40 w-full transition-all cursor-pointer',
                             )}
+                            disabled={MONTHS[filters.month] === month}
                             size="md"
                             variant="ghost"
                             color="secondary"

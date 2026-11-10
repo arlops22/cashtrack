@@ -10,8 +10,8 @@ export default function Transactions() {
     return (
         <TransactionProvider>
             <TransactionsHeader />
-            <div className="grid grid-cols-4 gap-4 p-4">
-                <div className="col-span-3 bg-white border rounded-md p-4">
+            <div className="grid grid-cols-[1fr_minmax(0,350px)] items-start gap-4 p-4">
+                <div className="bg-white border rounded-md p-4">
                     <TransactionsFilters />
                     <TransactionsDataTable />
                 </div>

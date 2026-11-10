@@ -9,12 +9,16 @@ import Button from '../Button';
 type CarouselApi = UseEmblaCarouselType[1];
 
 type TProps = {
-    startIndex?: number;
+    selectedIndex?: number;
 };
 
-export function Carousel({ className, children, startIndex = 0 }: ComponentProps<'div'> & TProps) {
+export function Carousel({ className, children, selectedIndex = 0 }: ComponentProps<'div'> & TProps) {
+    const [startIndex] = useState(selectedIndex);
+
     const [carouselRef, api] = useEmblaCarousel({
         axis: 'x',
+        align: 'center',
+        containScroll: false,
         startIndex,
     });
     const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -58,6 +62,12 @@ export function Carousel({ className, children, startIndex = 0 }: ComponentProps
             api?.off('select', onSelect);
         };
     }, [api, onSelect]);
+
+    useEffect(() => {
+        if (!api) return;
+
+        api.scrollTo(selectedIndex);
+    }, [api, selectedIndex]);
 
     return (
         <div

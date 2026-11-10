@@ -66,7 +66,7 @@ export const buttonVariants = cva(
                 color: 'secondary',
                 variant: 'outlined',
                 disabled: false,
-                class: 'border border-solid bg-transparent border-secondary text-secondary hover:bg-gray-0',
+                class: 'border border-solid bg-transparent border-secondary text-secondary hover:bg-gray-200',
             },
             {
                 color: 'error',
