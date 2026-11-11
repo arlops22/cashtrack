@@ -2,22 +2,31 @@ import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import type { Transaction } from '../../../../../../app/entities/Transaction';
 import { useTransaction } from '../../TransactionContext/useTransaction';
 import { useCreateTransaction, useUpdateTransaction } from '../../../../../../app/hooks/transactions';
 
+const required = (field: string) => `${field} must not be empty`;
+
 const schema = z.object({
-    category: z.string().nonempty('Must not be empty'),
-    name: z.string().nonempty('Must not be empty'),
-    amount: z.number().nonnegative(),
-    createdAt: z.date(),
-    type: z.enum(['INCOME', 'EXPENSE']),
-    method: z.enum(['CREDIT', 'DEBIT', 'PIX', 'CASH']),
+    category: z.string().min(1, required('Category')),
+    name: z.string().trim().min(1, required('Name')),
+    amount: z.number({ error: required('Amount') }).positive('Amount must be greater than zero'),
+    createdAt: z.date({ error: required('Date') }),
+    type: z.enum(['INCOME', 'EXPENSE'], { error: required('Type') }),
+    method: z.enum(['CREDIT', 'DEBIT', 'PIX', 'CASH'], { error: required('Payment method') }),
 });
 
 type CategorySchema = z.infer<typeof schema>;
 
-export function useTransactionFormController() {
-    const { modal, onCloseModal, filters } = useTransaction();
+interface Props {
+    transaction?: Transaction;
+    onSuccess: () => void;
+}
+
+export function useTransactionFormController(props: Props) {
+    const { transaction, onSuccess } = props;
+    const { filters } = useTransaction();
 
     const {
         register,
@@ -26,12 +35,12 @@ export function useTransactionFormController() {
         control,
     } = useForm<CategorySchema>({
         defaultValues: {
-            category: modal.transaction?.category?.id.toString() ?? '',
-            name: modal.transaction?.name ?? '',
-            amount: modal.transaction?.amount ?? 0,
-            createdAt: modal.transaction?.createdAt ?? new Date(),
-            type: modal.transaction?.type ?? 'EXPENSE',
-            method: modal.transaction?.method ?? 'CREDIT',
+            category: transaction?.category?.id.toString() ?? '',
+            name: transaction?.name ?? '',
+            amount: transaction?.amount,
+            createdAt: transaction ? new Date(transaction.createdAt) : undefined,
+            type: transaction?.type,
+            method: transaction?.method,
         },
         resolver: zodResolver(schema),
     });
@@ -42,16 +51,16 @@ export function useTransactionFormController() {
 
     const handleSubmit = hookFormSubmit(data => {
         const { category, ...params } = data;
-        if (modal.transaction) {
+        if (transaction) {
             updateTransaction(
                 {
                     ...params,
-                    id: modal.transaction.id,
+                    id: transaction.id,
                     bankAccountId: Number(filters.account),
                     categoryId: Number(category),
                     createdAt: data.createdAt.toISOString(),
                 },
-                { onSuccess: onCloseModal },
+                { onSuccess },
             );
         } else {
             createTransaction(
@@ -61,7 +70,7 @@ export function useTransactionFormController() {
                     categoryId: Number(category),
                     createdAt: data.createdAt.toISOString(),
                 },
-                { onSuccess: onCloseModal },
+                { onSuccess },
             );
         }
     });

@@ -1,24 +1,10 @@
-import { useMemo } from 'react';
-import { NumericFormat } from 'react-number-format';
-import { Controller } from 'react-hook-form';
-
 import { useTransaction } from '../../TransactionContext/useTransaction';
-import { useTransactionFormController } from './useTransactionFormController';
 
 import Modal from '../../../../../components/Modal';
-import DatePickerField from '../../../../../components/DatePickerField';
-import Input from '../../../../../components/Input';
-import Select from '../../../../../components/Select';
-import Button from '../../../../../components/Button';
+import TransactionForm from '../../TransactionForm';
 
 export default function TransactionModal() {
-    const { categories, modal, onCloseModal } = useTransaction();
-    const { handleSubmit, register, errors, isPending, control } = useTransactionFormController();
-
-    const categoryOptions = useMemo(
-        () => categories.map(category => ({ value: category.id, label: category.name })),
-        [categories],
-    );
+    const { modal, onCloseModal } = useTransaction();
 
     return (
         <Modal
@@ -26,123 +12,13 @@ export default function TransactionModal() {
             onClose={onCloseModal}
             title={modal.transaction ? 'Edit transaction' : 'New transaction'}
             size="lg"
+            key={modal.transaction?.id ?? 'new'}
         >
-            <form onSubmit={handleSubmit}>
-                <Input
-                    type="text"
-                    placeholder="Name"
-                    className="mb-4"
-                    error={errors.name?.message}
-                    {...register('name')}
-                />
-                <Controller
-                    name="amount"
-                    control={control}
-                    render={({ field: { onChange } }) => (
-                        <NumericFormat
-                            className="mb-4"
-                            placeholder="Amount"
-                            customInput={Input}
-                            prefix="R$ "
-                            thousandSeparator="."
-                            decimalSeparator=","
-                            decimalScale={2}
-                            fixedDecimalScale
-                            allowNegative={false}
-                            onValueChange={values => onChange(values.floatValue)}
-                            error={errors.amount?.message}
-                        />
-                    )}
-                />
-                <div className="flex items-start gap-4 mb-4">
-                    <Controller
-                        control={control}
-                        name="type"
-                        render={({ field: { onChange, value, ...fieldProps } }) => (
-                            <Select
-                                placeholder="Type"
-                                error={errors.type?.message}
-                                options={[
-                                    {
-                                        value: 'INCOME',
-                                        label: 'Income',
-                                    },
-                                    {
-                                        value: 'EXPENSE',
-                                        label: 'Expense',
-                                    },
-                                ]}
-                                onChange={onChange}
-                                value={value}
-                                {...fieldProps}
-                            />
-                        )}
-                    />
-                    <Controller
-                        control={control}
-                        name="category"
-                        render={({ field: { onChange, value, ...fieldProps } }) => (
-                            <Select
-                                placeholder="Category"
-                                error={errors.category?.message}
-                                options={categoryOptions}
-                                onChange={onChange}
-                                value={value?.toString()}
-                                {...fieldProps}
-                            />
-                        )}
-                    />
-                </div>
-                <div className="flex items-start gap-4 mb-8">
-                    <Controller
-                        control={control}
-                        name="method"
-                        render={({ field: { onChange, value, ...fieldProps } }) => (
-                            <Select
-                                placeholder="Payment Method"
-                                error={errors.method?.message}
-                                options={[
-                                    {
-                                        value: 'CREDIT',
-                                        label: 'Credit card',
-                                    },
-                                    {
-                                        value: 'DEBIT',
-                                        label: 'Debit card',
-                                    },
-                                    {
-                                        value: 'PIX',
-                                        label: 'Pix',
-                                    },
-                                    {
-                                        value: 'CASH',
-                                        label: 'Cash',
-                                    },
-                                ]}
-                                onChange={onChange}
-                                value={value}
-                                {...fieldProps}
-                            />
-                        )}
-                    />
-                    <Controller
-                        control={control}
-                        name="createdAt"
-                        render={({ field: { onChange, value, ...fieldProps } }) => (
-                            <DatePickerField
-                                error={errors.createdAt?.message}
-                                onChange={onChange}
-                                value={value}
-                                {...fieldProps}
-                            />
-                        )}
-                    />
-                </div>
-
-                <Button isLoading={isPending} className="w-full" type="submit">
-                    Save transaction
-                </Button>
-            </form>
+            <TransactionForm
+                key={modal.transaction?.id ?? 'new'}
+                transaction={modal.transaction}
+                onSuccess={onCloseModal}
+            />
         </Modal>
     );
 }
