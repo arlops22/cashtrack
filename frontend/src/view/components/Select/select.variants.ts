@@ -1,8 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 export const selectVariants = cva(
-    'cursor-pointer w-full rounded-lg border text-body-lg text-left h-[52px] p-4 pb-1 placeholder-shown:py-0 outline-none transition-all' +
-        'placeholder:text-transparent',
+    'cursor-pointer w-full rounded-lg border text-body-lg text-left h-[52px] p-4 pb-1 placeholder-shown:py-0 outline-none transition-all',
     {
         variants: {
             invalid: {
@@ -21,30 +20,27 @@ export const selectVariants = cva(
     },
 );
 
-export const labelVariants = cva(
-    'pointer-events-none absolute top-2 text-label-sm transition-all ' + 'peer-placeholder-shown:text-body-lg',
-    {
-        variants: {
-            invalid: {
-                true: 'text-destructive',
-                false: 'text-gray-700',
-            },
-            hasLeftIcon: {
-                true: 'left-[37px]',
-                false: 'left-4',
-            },
-            multiline: {
-                false: 'peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2',
-                true: 'peer-placeholder-shown:top-6',
-            },
+export const labelVariants = cva('pointer-events-none absolute z-10 transition-all', {
+    variants: {
+        selected: {
+            true: 'text-label-sm left-[13px] top-2 translate-y-0',
+            false: 'text-label-lg top-1/2 -translate-y-1/2 left-3',
         },
-        defaultVariants: {
-            invalid: false,
-            hasLeftIcon: false,
-            multiline: false,
+        invalid: {
+            true: 'text-destructive',
+            false: 'text-gray-700',
+        },
+        hasLeftIcon: {
+            true: 'left-[37px]',
+            false: 'left-4',
         },
     },
-);
+    defaultVariants: {
+        selected: false,
+        invalid: false,
+        hasLeftIcon: false,
+    },
+});
 
 export const supportTextVariants = cva('text-body-sm ml-2 mt-1', {
     variants: {

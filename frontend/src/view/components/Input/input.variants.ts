@@ -26,7 +26,7 @@ export const inputVariants = cva(
 );
 
 export const labelVariants = cva(
-    'pointer-events-none absolute top-2 text-label-sm transition-all peer-placeholder-shown:text-body-lg peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2',
+    'pointer-events-none absolute top-2 text-label-sm transition-all peer-placeholder-shown:text-label-lg peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2',
     {
         variants: {
             invalid: {

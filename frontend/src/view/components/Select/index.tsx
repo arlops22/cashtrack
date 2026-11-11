@@ -31,7 +31,7 @@ export default function Select(props: TProps) {
     return (
         <div className={cn('w-full', className)}>
             <div className="flex flex-col-reverse relative">
-                <SelectPrimitive.Root value={value} onValueChange={onChange}>
+                <SelectPrimitive.Root value={value} onValueChange={onChange} disabled={disabled}>
                     <SelectPrimitive.Trigger className={cn(selectVariants({ invalid }))}>
                         <SelectPrimitive.Value />
 
@@ -66,11 +66,10 @@ export default function Select(props: TProps) {
                 </SelectPrimitive.Root>
 
                 <label
-                    className={cn(
-                        labelVariants({
-                            invalid,
-                        }),
-                    )}
+                    className={labelVariants({
+                        invalid,
+                        selected: !!value,
+                    })}
                     htmlFor={fieldProps.name}
                 >
                     {fieldProps.placeholder}
