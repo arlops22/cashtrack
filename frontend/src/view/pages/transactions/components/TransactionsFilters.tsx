@@ -2,6 +2,7 @@ import type { Transaction } from '../../../../app/entities/Transaction';
 import { cn } from '../../../../app/utils/cn';
 import { MONTHS } from '../../../../app/config/constants';
 import { useTransaction } from './TransactionContext/useTransaction';
+import { useWindowDimensions } from '../../../../app/hooks/useWindowDimensions';
 
 import { Carousel } from '../../../components/ui/Carousel';
 import Select from '../../../components/Select';
@@ -9,6 +10,7 @@ import Button from '../../../components/Button';
 
 export default function TransactionsFilters() {
     const { accounts, filters, setFilters } = useTransaction();
+    const { width } = useWindowDimensions();
 
     return (
         <>
@@ -43,7 +45,7 @@ export default function TransactionsFilters() {
                         role="group"
                         aria-roledescription="slide"
                         data-slot="carousel-item"
-                        className="min-w-0 shrink-0 grow-0 basis-1/5 pl-4"
+                        className="min-w-0 shrink-0 grow-0 basis-1/3 xl:basis-1/5 pl-4"
                         key={`month-${index}`}
                     >
                         <Button
@@ -57,7 +59,7 @@ export default function TransactionsFilters() {
                             variant="ghost"
                             color="secondary"
                         >
-                            {month}
+                            {width > 1280 ? month : month.slice(0, 3)}
                         </Button>
                     </div>
                 ))}

@@ -17,9 +17,16 @@ export default function TransactionsHeader() {
                         <Filter size={14} />
                         <span>Filters</span>
                     </Button>
-                    <Button onClick={onOpenCreateModal} size="md">
+                    <Button className="hidden sm:flex" onClick={onOpenCreateModal} size="md">
                         <Plus size={15} />
                         <span>Add transaction</span>
+                    </Button>
+                    <Button
+                        className="absolute bottom-6 right-6 flex sm:hidden"
+                        onClick={onOpenCreateModal}
+                        size="icon-lg"
+                    >
+                        <Plus size={15} />
                     </Button>
                 </div>
             }
