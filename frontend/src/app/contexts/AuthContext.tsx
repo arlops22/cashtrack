@@ -3,6 +3,7 @@ import { isAxiosError } from 'axios';
 import { queryOptions, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
+import { setUnauthorizedHandler } from '../services/http-client';
 import { localStorageKeys } from '../config/local-storage-keys';
 import { usersService } from '../services/usersService';
 import type { User } from '../entities/User';
@@ -36,11 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return !!storedAccessToken;
     });
 
-    const {
-        data: user,
-        isLoading,
-        error,
-    } = useQuery({
+    const { data: user, isLoading } = useQuery({
         ...meQueryOptions,
         enabled: hasToken,
         retry: (failureCount, err) => !isUnauthorized(err) && failureCount < 2,
@@ -57,12 +54,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setHasToken(false);
     }, []);
 
-    useEffect(() => {
-        if (isUnauthorized(error)) {
-            toast.error('Session expired!');
-            signOut();
-        }
-    }, [error, signOut]);
+    useEffect(
+        () =>
+            setUnauthorizedHandler(() => {
+                toast.error('Session expired!', { id: 'session-expired' });
+                signOut();
+            }),
+        [signOut],
+    );
 
     const value = useMemo<AuthContextProps>(
         () => ({ isSignedIn: !!user, user, isUserLoading: isLoading, signIn, signOut }),
