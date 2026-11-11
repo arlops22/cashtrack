@@ -1,7 +1,7 @@
 import { useCategoryFormController } from './useCategoryFormController';
 import { useCategory } from '../../CategoryContext/useCategory';
 
-import { Modal } from '../../../../../components/ui/Modal';
+import Modal from '../../../../../components/Modal';
 import Input from '../../../../../components/Input';
 import Button from '../../../../../components/Button';
 

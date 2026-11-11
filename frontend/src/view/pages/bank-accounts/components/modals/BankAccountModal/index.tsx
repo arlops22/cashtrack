@@ -4,7 +4,7 @@ import { NumericFormat } from 'react-number-format';
 import { useAccountFormController } from './useAccountFormController';
 import { useBankAccount } from '../../BankAccountContext/useBankAccount';
 
-import { Modal } from '../../../../../components/ui/Modal';
+import Modal from '../../../../../components/Modal';
 import Input from '../../../../../components/Input';
 import Button from '../../../../../components/Button';
 import Select from '../../../../../components/Select';

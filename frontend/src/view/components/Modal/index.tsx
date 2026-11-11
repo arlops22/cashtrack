@@ -5,16 +5,17 @@ import { cn } from '../../../app/utils/cn';
 
 import Button from '../Button';
 import Typography from '../Typography';
+import { modalVariants, type Variants } from './modal.variants';
 
-type TProps = {
+type TProps = Variants & {
     open: boolean;
     children: React.ReactNode;
     title: string;
     onClose?(): void;
 };
 
-export function Modal(props: TProps) {
-    const { open, title, onClose, children } = props;
+export default function Modal(props: TProps) {
+    const { open, title, onClose, children, size } = props;
 
     return (
         <DialogPrimitive.Root open={open} onOpenChange={onClose}>
@@ -25,11 +26,7 @@ export function Modal(props: TProps) {
                     )}
                 />
 
-                <DialogPrimitive.Content
-                    className={cn(
-                        'fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-6 text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95',
-                    )}
-                >
+                <DialogPrimitive.Content className={modalVariants({ size })}>
                     <div className="flex justify-center pb-3">
                         <Button
                             className="absolute top-3 right-3"

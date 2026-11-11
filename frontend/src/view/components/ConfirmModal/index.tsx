@@ -1,8 +1,8 @@
 import { Trash } from 'lucide-react';
 
-import { Modal } from '../ui/Modal';
 import Button from '../Button';
 import Typography from '../Typography';
+import Modal from '../Modal';
 
 type TProps = {
     isOpen: boolean;
