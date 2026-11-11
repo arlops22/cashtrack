@@ -4,6 +4,8 @@ import type { Transaction } from '../../../../../app/entities/Transaction';
 import type { BankAccount } from '../../../../../app/entities/BankAccount';
 import { useAuth } from '../../../../../app/hooks/useAuth';
 import { useDeleteTransaction, useTransactions } from '../../../../../app/hooks/transactions';
+import { useCategories } from '../../../../../app/hooks/categories';
+import type { Category } from '../../../../../app/entities/Category';
 
 type ModalState = {
     type: 'closed' | 'create' | 'edit' | 'delete';
@@ -19,6 +21,7 @@ type FilterState = {
 
 export interface TransactionContextProps {
     filters: FilterState;
+    categories: Category[];
     setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
     transactions: Transaction[];
     accounts: BankAccount[];
@@ -53,6 +56,8 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
         year: filters.year,
     });
 
+    const { categories, isLoading: isLoadingCategories } = useCategories();
+
     const onOpenEditModal = useCallback((transaction: Transaction) => {
         setModal({ type: 'edit', transaction });
     }, []);
@@ -86,11 +91,12 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
 
     const value = useMemo<TransactionContextProps>(
         () => ({
+            categories,
             filters,
             setFilters,
             transactions,
             accounts: user?.bankAccounts ?? [],
-            isLoadingTransactions: isUserLoading || isLoading,
+            isLoadingTransactions: isUserLoading || isLoadingCategories || isLoading,
             modal,
             isLoadingDelete: isPending,
             onOpenEditModal,
@@ -100,6 +106,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
             onCloseModal,
         }),
         [
+            categories,
             transactions,
             isLoading,
             filters,

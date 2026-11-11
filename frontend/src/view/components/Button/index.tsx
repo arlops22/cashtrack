@@ -30,12 +30,13 @@ const Button = (props: TProps) => {
         isLoading = false,
         asChild = false,
         ref,
+        ...buttonProps
     } = props;
 
     const Comp = asChild ? Slot.Root : 'button';
 
     const button_props: ComponentProps<'button'> = {
-        ...props,
+        ...buttonProps,
         onClick,
         disabled: disabled || isLoading,
         type,

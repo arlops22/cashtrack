@@ -6,10 +6,10 @@ import { useTransaction } from '../../TransactionContext/useTransaction';
 import { useCreateTransaction, useUpdateTransaction } from '../../../../../../app/hooks/transactions';
 
 const schema = z.object({
-    category: z.number().nonnegative().nullable(),
+    category: z.string().nonempty('Must not be empty'),
     name: z.string().nonempty('Must not be empty'),
     amount: z.number().nonnegative(),
-    createdAt: z.iso.datetime(),
+    createdAt: z.date(),
     type: z.enum(['INCOME', 'EXPENSE']),
     method: z.enum(['CREDIT', 'DEBIT', 'PIX', 'CASH']),
 });
@@ -25,11 +25,11 @@ export function useTransactionFormController() {
         formState: { errors },
         control,
     } = useForm<CategorySchema>({
-        values: {
-            category: modal.transaction?.category?.id ?? null,
+        defaultValues: {
+            category: modal.transaction?.category?.id.toString() ?? '',
             name: modal.transaction?.name ?? '',
             amount: modal.transaction?.amount ?? 0,
-            createdAt: modal.transaction?.createdAt.toString() ?? '',
+            createdAt: modal.transaction?.createdAt ?? new Date(),
             type: modal.transaction?.type ?? 'EXPENSE',
             method: modal.transaction?.method ?? 'CREDIT',
         },
@@ -41,22 +41,25 @@ export function useTransactionFormController() {
     const { mutate: updateTransaction, isPending: isLoadingUpdate } = useUpdateTransaction();
 
     const handleSubmit = hookFormSubmit(data => {
+        const { category, ...params } = data;
         if (modal.transaction) {
             updateTransaction(
                 {
+                    ...params,
                     id: modal.transaction.id,
                     bankAccountId: Number(filters.account),
-                    categoryId: data.category,
-                    ...data,
+                    categoryId: Number(category),
+                    createdAt: data.createdAt.toISOString(),
                 },
                 { onSuccess: onCloseModal },
             );
         } else {
             createTransaction(
                 {
+                    ...params,
                     bankAccountId: Number(filters.account),
-                    categoryId: data.category,
-                    ...data,
+                    categoryId: Number(category),
+                    createdAt: data.createdAt.toISOString(),
                 },
                 { onSuccess: onCloseModal },
             );

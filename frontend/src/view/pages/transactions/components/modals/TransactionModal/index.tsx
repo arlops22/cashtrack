@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Controller } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 
@@ -5,13 +6,22 @@ import { useTransaction } from '../../TransactionContext/useTransaction';
 import { useTransactionFormController } from './useTransactionFormController';
 
 import { Modal } from '../../../../../components/ui/Modal';
+import DatePickerField from '../../../../../components/DatePickerField';
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Button from '../../../../../components/Button';
 
 export default function TransactionModal() {
-    const { modal, onCloseModal } = useTransaction();
+    const { categories, modal, onCloseModal } = useTransaction();
     const { handleSubmit, register, errors, isPending, control } = useTransactionFormController();
+
+    const categoryOptions = useMemo(
+        () => [
+            { value: '0', label: '' },
+            ...categories.map(category => ({ value: category.id, label: category.name })),
+        ],
+        [categories],
+    );
 
     return (
         <Modal
@@ -72,6 +82,21 @@ export default function TransactionModal() {
                 />
                 <Controller
                     control={control}
+                    name="category"
+                    render={({ field: { onChange, value, ...fieldProps } }) => (
+                        <Select
+                            placeholder="Category"
+                            className="mb-4"
+                            error={errors.category?.message}
+                            options={categoryOptions}
+                            onChange={onChange}
+                            value={value?.toString()}
+                            {...fieldProps}
+                        />
+                    )}
+                />
+                <Controller
+                    control={control}
                     name="method"
                     render={({ field: { onChange, value, ...fieldProps } }) => (
                         <Select
@@ -102,42 +127,19 @@ export default function TransactionModal() {
                         />
                     )}
                 />
-                {/* <Controller
+                <Controller
                     control={control}
-                    name="category"
+                    name="createdAt"
                     render={({ field: { onChange, value, ...fieldProps } }) => (
-                        <Select
-                            placeholder="Category"
-                            className="mb-4"
-                            error={errors.method?.message}
-                            options={[
-                                {
-                                    value: '',
-                                    label: 'Empty category',
-                                },
-                                {
-                                    value: 'CREDIT',
-                                    label: 'Credit card',
-                                },
-                                {
-                                    value: 'DEBIT',
-                                    label: 'Debit card',
-                                },
-                                {
-                                    value: 'PIX',
-                                    label: 'Pix',
-                                },
-                                {
-                                    value: 'CASH',
-                                    label: 'Cash',
-                                },
-                            ]}
+                        <DatePickerField
+                            className="mb-8"
+                            error={errors.createdAt?.message}
                             onChange={onChange}
                             value={value}
                             {...fieldProps}
                         />
                     )}
-                /> */}
+                />
 
                 <Button isLoading={isPending} className="w-full" type="submit">
                     Save transaction

@@ -12,6 +12,9 @@ interface TransactionParams {
 }
 
 export async function create({ bankAccountId, ...params }: TransactionParams) {
-    const { data } = await httpClient.post(`/bank-accounts/${bankAccountId}/transactions`, params);
+    const { data } = await httpClient.post(`/bank-accounts/${bankAccountId}/transactions`, {
+        isFavorite: false,
+        ...params,
+    });
     return data;
 }

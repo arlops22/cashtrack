@@ -11,7 +11,7 @@ type TProps = ComponentPropsWithRef<'select'> & {
     supportText?: string;
     placeholder: string;
     options: {
-        value: string;
+        value: string | number;
         label: string;
     }[];
     value?: string;
@@ -50,7 +50,7 @@ export default function Select(props: TProps) {
                                 {options.map(option => (
                                     <SelectPrimitive.Item
                                         key={option.value}
-                                        value={option.value}
+                                        value={option.value.toString()}
                                         className="relative flex w-full cursor-pointer items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground"
                                     >
                                         <SelectPrimitive.ItemText>{option.label}</SelectPrimitive.ItemText>
