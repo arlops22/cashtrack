@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { NumericFormat } from 'react-number-format';
 import { Controller } from 'react-hook-form';
 
@@ -17,16 +16,11 @@ type TProps = {
 };
 
 export default function TransactionForm({ transaction, onSuccess }: TProps) {
-    const { categories } = useTransaction();
+    const { categoryOptions } = useTransaction();
     const { handleSubmit, register, errors, isPending, control } = useTransactionFormController({
         transaction,
         onSuccess,
     });
-
-    const categoryOptions = useMemo(
-        () => categories.map(category => ({ value: category.id, label: category.name })),
-        [categories],
-    );
 
     return (
         <form onSubmit={handleSubmit}>
