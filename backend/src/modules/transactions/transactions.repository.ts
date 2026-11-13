@@ -63,6 +63,9 @@ export class TransactionsRepository implements ITransactionsRepository {
                     lt: new Date(Date.UTC(yearFilter, monthFilter + 1)),
                 },
             },
+            orderBy: {
+                createdAt: 'desc',
+            },
             select: {
                 id: true,
                 name: true,

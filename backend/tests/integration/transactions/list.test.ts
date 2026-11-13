@@ -52,14 +52,19 @@ describe('GET /bank-accounts/:id/transactions', () => {
         expect(status).toBe(200);
         expect(body).toEqual([
             expect.objectContaining({
-                id: transaction.id,
-                name: transaction.name,
-                amount: transaction.amount,
-                createdAt: transaction.createdAt.toISOString(),
-                isFavorite: transaction.isFavorite,
-                type: transaction.type,
-                method: transaction.method,
-                category: transaction.category,
+                date: expect.any(String),
+                transactions: [
+                    expect.objectContaining({
+                        id: transaction.id,
+                        name: transaction.name,
+                        amount: transaction.amount,
+                        createdAt: transaction.createdAt.toISOString(),
+                        isFavorite: transaction.isFavorite,
+                        type: transaction.type,
+                        method: transaction.method,
+                        category: transaction.category,
+                    }),
+                ],
             }),
         ]);
     });
@@ -83,7 +88,7 @@ describe('GET /bank-accounts/:id/transactions', () => {
 
             expect(status).toBe(200);
             expect(body).toHaveLength(1);
-            expect(body[0].id).toBe(includedTransaction.id);
+            expect(body[0].transactions[0].id).toBe(includedTransaction.id);
         },
     );
 
@@ -97,7 +102,7 @@ describe('GET /bank-accounts/:id/transactions', () => {
 
         expect(status).toBe(200);
         expect(body).toHaveLength(1);
-        expect(body[0].id).toBe(transaction.id);
+        expect(body[0].transactions[0].id).toBe(transaction.id);
     });
 
     it.todo('should return validation error when %s');

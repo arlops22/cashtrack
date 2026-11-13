@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { TransactionsService } from './transactions.service';
 import * as metricsPresenter from './presenters/metrics.presenter';
+import * as listPresenter from './presenters/list-transactions.presenter';
 
 export class TransactionsController {
     constructor(private readonly service: TransactionsService) {}
@@ -19,7 +20,7 @@ export class TransactionsController {
         const { bankAccountId } = req.params;
 
         const response = await this.service.list(req.query, Number(bankAccountId), Number(userId));
-        return res.status(200).json(response);
+        return res.status(200).json(listPresenter.presentTransactionsByDate(response));
     }
 
     async getMetrics(req: Request, res: Response) {
