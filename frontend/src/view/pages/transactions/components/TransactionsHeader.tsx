@@ -6,14 +6,14 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 
 export default function TransactionsHeader() {
-    const { onOpenCreateModal } = useTransaction();
+    const { onOpenCreateModal, setIsFilterModalOpen } = useTransaction();
 
     return (
         <Header
             title="Transactions"
             actionComponent={
                 <div className="flex items-center gap-4">
-                    <Button size="md" variant="outlined" color="secondary">
+                    <Button onClick={() => setIsFilterModalOpen(true)} size="md" variant="outlined" color="secondary">
                         <Filter size={14} />
                         <span>Filters</span>
                     </Button>
