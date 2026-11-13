@@ -6,6 +6,7 @@ import TransactionsDataTable from './components/TransactionsDataTable';
 import TransactionModal from './components/modals/TransactionModal';
 import TransactionsSummaryCard from './components/TransactionsSummaryCard';
 import DeleteTransactionModal from './components/modals/DeleteTransactionModal';
+import FilterTransactionsModal from './components/modals/FilterTransactionsModal';
 
 export default function Transactions() {
     return (
@@ -20,6 +21,7 @@ export default function Transactions() {
             </div>
             <TransactionModal />
             <DeleteTransactionModal />
+            <FilterTransactionsModal />
         </TransactionProvider>
     );
 }
