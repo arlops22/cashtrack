@@ -17,7 +17,7 @@ const schema = z.object({
     method: z.enum(['CREDIT', 'DEBIT', 'PIX', 'CASH'], { error: required('Payment method') }),
 });
 
-type CategorySchema = z.infer<typeof schema>;
+type TransactionSchema = z.infer<typeof schema>;
 
 interface Props {
     transaction?: Transaction;
@@ -33,7 +33,7 @@ export function useTransactionFormController(props: Props) {
         handleSubmit: hookFormSubmit,
         formState: { errors },
         control,
-    } = useForm<CategorySchema>({
+    } = useForm<TransactionSchema>({
         defaultValues: {
             category: transaction?.category?.id.toString() ?? '',
             name: transaction?.name ?? '',
