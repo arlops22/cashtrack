@@ -1,6 +1,6 @@
 import { ChartNoAxesCombined, CircleX, CreditCard, Edit, PiggyBank } from 'lucide-react';
 
-import type { BankAccountType } from '../../../../app/entities/BankAccount';
+import type { BankAccount } from '../../../../app/entities/BankAccount';
 import { formatCurrency } from '../../../../app/utils/formatCurrency';
 
 import { Avatar, AvatarFallback } from '../../../components/ui/Avatar';
@@ -16,7 +16,7 @@ const TYPE_ICONS = {
 type TProps = {
     accountName: string;
     balance: number;
-    type: BankAccountType;
+    type: BankAccount['type'];
     color: string;
     onEdit: () => void;
     onDelete: () => void;
@@ -32,7 +32,7 @@ export default function BankAccountCard(props: TProps) {
             <span className="absolute left-0 top-0 h-full w-1" style={{ backgroundColor: color }} />
             <div className="flex justify-between items-start">
                 <div>
-                    <Avatar className="mb-4" color="secondary" size="lg">
+                    <Avatar className="mb-4" size="lg">
                         <AvatarFallback className="bg-gray-300 text-gray-800">
                             <Icon />
                         </AvatarFallback>
