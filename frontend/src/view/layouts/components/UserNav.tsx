@@ -23,7 +23,7 @@ type TProp = {
 };
 
 export default function UserNav({ user, signOut }: TProp) {
-    const { isMobile } = useSidebar();
+    const { isMobile, toggleSidebar } = useSidebar();
 
     return (
         <SidebarMenu>
@@ -67,13 +67,13 @@ export default function UserNav({ user, signOut }: TProp) {
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem asChild>
+                            <DropdownMenuItem onClick={isMobile ? toggleSidebar : () => {}} asChild>
                                 <NavLink to={PRIVATE_ROUTES.bankAccounts}>
                                     <CreditCard />
                                     Bank Accounts
                                 </NavLink>
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
+                            <DropdownMenuItem onClick={isMobile ? toggleSidebar : () => {}} asChild>
                                 <NavLink to={PRIVATE_ROUTES.categories}>
                                     <Layers />
                                     Categories
