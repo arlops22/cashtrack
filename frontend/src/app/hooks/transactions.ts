@@ -2,9 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
 import type { TransactionsFilter } from '../services/transactionsService/get';
+import type { MetricsFilter } from '../services/transactionsService/metrics';
 import { transactionsService } from '../services/transactionsService';
 
 const TRANSACTION_KEY = 'transactions';
+const TRANSACTION_METRIC_KEY = 'metrics';
 
 export function useTransactions(filters: TransactionsFilter) {
     const { data, isLoading, refetch } = useQuery({
@@ -13,6 +15,15 @@ export function useTransactions(filters: TransactionsFilter) {
     });
 
     return { transactionsData: data, isLoading, refetchTransactions: refetch };
+}
+
+export function useTransactionsMetrics(filters: MetricsFilter) {
+    const { data, isLoading, refetch } = useQuery({
+        queryKey: [TRANSACTION_METRIC_KEY],
+        queryFn: () => transactionsService.getMetrics(filters),
+    });
+
+    return { metrics: data, isLoading, refetchMetrics: refetch };
 }
 
 export function useCreateTransaction() {
