@@ -1,11 +1,13 @@
-import Header from '../../components/Header';
+import { DashboardProvider } from './components/DashboardContext';
+
+import DashboardHeader from './components/DashboardHeader';
+import TotalsList from './components/TotalsList';
 
 export default function Dashboard() {
     return (
-        <>
-            <Header title="Dashboard" />
-
-            <div className="flex flex-1 flex-col p-4"></div>
-        </>
+        <DashboardProvider>
+            <DashboardHeader />
+            <TotalsList />
+        </DashboardProvider>
     );
 }
