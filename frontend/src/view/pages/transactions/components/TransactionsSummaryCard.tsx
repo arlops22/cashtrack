@@ -1,38 +1,26 @@
-import type { Transaction } from '../../../../app/entities/Transaction';
-import { formatCurrency } from '../../../../app/utils';
 import { useTransaction } from './TransactionContext/useTransaction';
+import { formatCurrency } from '../../../../app/utils';
+import { MONTHS } from '../../../../app/config/constants';
 
 import Typography from '../../../components/Typography';
 
 export default function TransactionsSummaryCard() {
-    const { transactions, filters, accounts } = useTransaction();
-
-    function getTotalsByType(transactions: Transaction[], type: Transaction['type']) {
-        const total = transactions.reduce((sum: number, transaction: Transaction) => {
-            if (transaction.type === type) {
-                return (sum += transaction.amount);
-            }
-
-            return sum;
-        }, 0);
-
-        return formatCurrency(total, 'exceptZero');
-    }
-
-    function getResult(transactions: Transaction[]) {
-        const total = transactions.reduce((sum: number, transaction: Transaction) => {
-            return (sum += transaction.amount);
-        }, 0);
-
-        return formatCurrency(total, 'exceptZero');
-    }
+    const { transactionsData, filters, accounts } = useTransaction();
 
     return (
-        <div className="bg-white border rounded-md p-4">
-            <Typography variant="body-lg" className="font-bold mb-4">
+        <div className="order-first w-full lg:order-last bg-white border rounded-md p-4">
+            <Typography variant="body-lg" className="font-bold mb-6">
                 Summary
             </Typography>
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-4">
+                <Typography variant="body-sm" color="gray-600">
+                    Date:
+                </Typography>
+                <Typography variant="body-md" className="font-medium">
+                    {MONTHS[filters.month]}, {filters.year}
+                </Typography>
+            </div>
+            <div className="flex items-center justify-between mb-4">
                 <Typography variant="body-sm" color="gray-600">
                     Account balance:
                 </Typography>
@@ -42,36 +30,36 @@ export default function TransactionsSummaryCard() {
                     )}
                 </Typography>
             </div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-4">
                 <Typography variant="body-sm" color="gray-600">
                     Total transactions:
                 </Typography>
                 <Typography variant="body-md" className="font-medium">
-                    {transactions.length}
+                    {transactionsData?.transactionCount}
                 </Typography>
             </div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-4">
                 <Typography variant="body-sm" color="gray-600">
                     Total Income:
                 </Typography>
                 <Typography variant="body-md" className="font-medium text-primary">
-                    {getTotalsByType(transactions, 'INCOME')}
+                    {formatCurrency(transactionsData?.totalIncome || 0)}
                 </Typography>
             </div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-4">
                 <Typography variant="body-sm" color="gray-600">
                     Total Expense:
                 </Typography>
                 <Typography variant="body-md" className="font-medium text-destructive">
-                    {getTotalsByType(transactions, 'EXPENSE')}
+                    {formatCurrency(transactionsData?.totalExpense || 0)}
                 </Typography>
             </div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between">
                 <Typography variant="body-sm" color="gray-600">
                     Result:
                 </Typography>
                 <Typography variant="body-md" className="font-medium">
-                    {getResult(transactions)}
+                    {formatCurrency(transactionsData?.periodBalance || 0)}
                 </Typography>
             </div>
         </div>
