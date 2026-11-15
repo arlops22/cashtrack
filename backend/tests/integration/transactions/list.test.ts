@@ -118,6 +118,10 @@ describe('GET /bank-accounts/:id/transactions', () => {
 
     it.todo('should return transactionCount equal to the number of returned transactions');
 
+    it.todo('should group transactions of the same day under a single transactionsByDay entry');
+
+    it.todo('should return the day balance as income minus expense of each day');
+
     it.todo('should return validation error when %s');
 
     it.todo('should return empty result');
