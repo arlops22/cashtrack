@@ -12,7 +12,7 @@ export function useTransactions(filters: TransactionsFilter) {
         queryFn: () => transactionsService.get(filters),
     });
 
-    return { transactions: data ?? [], isLoading, refetchTransactions: refetch };
+    return { transactionsData: data, isLoading, refetchTransactions: refetch };
 }
 
 export function useCreateTransaction() {

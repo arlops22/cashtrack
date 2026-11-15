@@ -11,26 +11,30 @@ type TColumn<T> = {
 };
 
 type TProps<T> = {
+    className?: string;
     columns: TColumn<T>[];
     data: T[];
     emptyComponent?: ReactNode;
     isLoading?: boolean;
+    hasHeader?: boolean;
 };
 
 export default function DataTable<T extends { id: number }>(props: TProps<T>) {
-    const { columns, data, isLoading, emptyComponent } = props;
+    const { columns, data, isLoading, emptyComponent, hasHeader = true, className } = props;
 
     const tableData = (
-        <Table>
-            <TableHeader>
-                <TableRow>
-                    {columns.map(column => (
-                        <TableHead key={`header-${column.id}`} className={column.className}>
-                            {column.header}
-                        </TableHead>
-                    ))}
-                </TableRow>
-            </TableHeader>
+        <Table className={className}>
+            {hasHeader && (
+                <TableHeader>
+                    <TableRow>
+                        {columns.map(column => (
+                            <TableHead key={`header-${column.id}`} className={column.className}>
+                                {column.header}
+                            </TableHead>
+                        ))}
+                    </TableRow>
+                </TableHeader>
+            )}
             <TableBody>
                 {data.map(item => (
                     <TableRow key={item.id}>
@@ -45,7 +49,7 @@ export default function DataTable<T extends { id: number }>(props: TProps<T>) {
         </Table>
     );
     const loadingTable = (
-        <Table>
+        <Table className={className}>
             <TableHeader>
                 <TableRow>
                     {columns.map(column => (

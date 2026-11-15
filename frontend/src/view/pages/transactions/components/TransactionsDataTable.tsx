@@ -17,55 +17,52 @@ import Button from '../../../components/Button';
 import Typography from '../../../components/Typography';
 
 export default function TransactionsDataTable() {
-    const { transactions, isLoadingTransactions, onOpenCreateModal, onOpenDeleteModal, onOpenEditModal } =
+    const { transactionsData, isLoadingTransactions, onOpenCreateModal, onOpenDeleteModal, onOpenEditModal } =
         useTransaction();
 
     const columns = [
         {
             id: 'name',
             header: 'Name',
-            className: 'w-[340px]',
+            className: 'lg:w-[300px]',
             cell: (row: Transaction) => (
-                <div className="flex flex-col">
-                    <Typography variant="body-lg" className="font-medium">
+                <div>
+                    <Typography
+                        variant="body-md"
+                        className="font-medium text-ellipsis overflow-hidden"
+                        color="gray-900"
+                    >
                         {row.name}
                     </Typography>
-                    <Typography color="gray-800">{formatDate(row.createdAt)}</Typography>
+                    <div className="flex items-center gap-2 lg:hidden mt-2">
+                        <Badge className="bg-teal-0 text-primary">{row.category ? row.category.name : '-'}</Badge>
+                        <Badge variant="ghost">{row.method}</Badge>
+                    </div>
                 </div>
             ),
         },
         {
-            id: 'type',
-            header: 'Type',
-            cell: (row: Transaction) => (
-                <Badge
-                    className={row.type === 'INCOME' ? 'bg-teal-100 text-primary' : ''}
-                    variant={row.type === 'INCOME' ? 'outline' : 'destructive'}
-                >
-                    {row.type}
-                </Badge>
-            ),
-        },
-        {
             id: 'category',
+            className: 'hidden lg:table-cell lg:w-[150px]',
             header: 'Category',
             cell: (row: Transaction) => (
-                <Badge className="bg-warning-l/20 text-warning-m">{row.category ? row.category.name : '-'}</Badge>
+                <Badge className="bg-teal-0 text-primary">{row.category ? row.category.name : '-'}</Badge>
             ),
         },
         {
             id: 'payment',
             header: 'Payment Method',
+            className: 'hidden lg:table-cell lg:w-[150px]',
             cell: (row: Transaction) => <Badge variant="ghost">{row.method}</Badge>,
         },
         {
             id: 'amount',
             header: 'Amount',
-            className: 'w-[100px]',
+            className: 'lg:w-[100px]',
             cell: (row: Transaction) => (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-end gap-2">
                     <Typography color={row.type === 'INCOME' ? 'primary' : 'destructive'}>
-                        {formatCurrency(row.amount, 'exceptZero')}
+                        {formatCurrency(row.type === 'INCOME' ? row.amount : row.amount * -1, 'exceptZero')}
                     </Typography>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -94,19 +91,37 @@ export default function TransactionsDataTable() {
         },
     ];
 
+    if (!transactionsData || !transactionsData.transactionsByDay.length)
+        return (
+            <EmptyList
+                title="No transactions found"
+                description="Create your first transaction to start organizing your monthly expenses"
+                actionLabel="Add transaction"
+                onClickAction={onOpenCreateModal}
+            />
+        );
+
     return (
-        <DataTable
-            isLoading={isLoadingTransactions}
-            columns={columns}
-            data={transactions}
-            emptyComponent={
-                <EmptyList
-                    title="No transactions found"
-                    description="Create your first transaction to start organizing your monthly expenses"
-                    actionLabel="Add transaction"
-                    onClickAction={onOpenCreateModal}
-                />
-            }
-        />
+        <>
+            {transactionsData?.transactionsByDay.map(data => (
+                <div className="mt-4" key={`transactions-from-${data.date}`}>
+                    <div className="flex items-center justify-between bg-gray-100 p-2">
+                        <Typography variant="body-md" color="gray-700" className="font-medium">
+                            {formatDate(new Date(data.date), 'D MMMM YYYY')}
+                        </Typography>
+                        <Typography variant="body-md" color="gray-900">
+                            {formatCurrency(data.dayBalance)}
+                        </Typography>
+                    </div>
+                    <DataTable
+                        className="table-fixed"
+                        hasHeader={false}
+                        isLoading={isLoadingTransactions}
+                        columns={columns}
+                        data={data.transactions}
+                    />
+                </div>
+            ))}
+        </>
     );
 }

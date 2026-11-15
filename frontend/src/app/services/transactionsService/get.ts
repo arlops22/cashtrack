@@ -1,7 +1,17 @@
 import type { Transaction } from '../../entities/Transaction';
 import { httpClient } from '../http-client';
 
-type TransactionsResponse = Array<Transaction>;
+export type TransactionsResponse = {
+    transactionsByDay: {
+        date: string;
+        dayBalance: number;
+        transactions: Transaction[];
+    }[];
+    totalIncome: number;
+    totalExpense: number;
+    periodBalance: number;
+    transactionCount: number;
+};
 
 export type TransactionsFilter = {
     bankAccountId: number;

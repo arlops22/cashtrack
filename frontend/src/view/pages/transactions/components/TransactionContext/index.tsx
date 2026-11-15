@@ -2,6 +2,7 @@ import { createContext, useCallback, useEffect, useMemo, useState } from 'react'
 
 import type { Transaction } from '../../../../../app/entities/Transaction';
 import type { BankAccount } from '../../../../../app/entities/BankAccount';
+import type { TransactionsResponse } from '../../../../../app/services/transactionsService/get';
 import { useAuth } from '../../../../../app/hooks/useAuth';
 import { useDeleteTransaction, useTransactions } from '../../../../../app/hooks/transactions';
 import { useCategories } from '../../../../../app/hooks/categories';
@@ -24,7 +25,7 @@ export interface TransactionContextProps {
     filters: FilterState;
     categoryOptions: { value: number; label: string }[];
     setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
-    transactions: Transaction[];
+    transactionsData?: TransactionsResponse;
     accounts: BankAccount[];
     modal: ModalState;
     isFilterModalOpen: boolean;
@@ -55,7 +56,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
         year: new Date().getFullYear(),
     });
 
-    const { transactions, refetchTransactions, isLoading } = useTransactions({
+    const { transactionsData, refetchTransactions, isLoading } = useTransactions({
         bankAccountId: Number(filters.account),
         type: filters.type !== 'All' ? filters.type : undefined,
         category: filters.category,
@@ -109,7 +110,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
             setFilters,
             isFilterModalOpen,
             setIsFilterModalOpen,
-            transactions,
+            transactionsData,
             accounts: user?.bankAccounts ?? [],
             isLoadingTransactions: isUserLoading || isLoadingCategories || isLoading,
             modal,
@@ -122,7 +123,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
         }),
         [
             categoryOptions,
-            transactions,
+            transactionsData,
             isLoading,
             filters,
             setFilters,
