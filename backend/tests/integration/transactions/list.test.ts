@@ -50,23 +50,30 @@ describe('GET /bank-accounts/:id/transactions', () => {
             .set('Authorization', authHeader);
 
         expect(status).toBe(200);
-        expect(body).toEqual([
-            expect.objectContaining({
-                date: expect.any(String),
-                transactions: [
-                    expect.objectContaining({
-                        id: transaction.id,
-                        name: transaction.name,
-                        amount: transaction.amount,
-                        createdAt: transaction.createdAt.toISOString(),
-                        isFavorite: transaction.isFavorite,
-                        type: transaction.type,
-                        method: transaction.method,
-                        category: transaction.category,
-                    }),
-                ],
-            }),
-        ]);
+        expect(body).toMatchObject({
+            transactionsByDay: expect.arrayContaining([
+                expect.objectContaining({
+                    date: expect.any(String),
+                    resultByDay: expect.any(Number),
+                    transactions: expect.arrayContaining([
+                        expect.objectContaining({
+                            id: transaction.id,
+                            name: transaction.name,
+                            amount: transaction.amount,
+                            createdAt: transaction.createdAt.toISOString(),
+                            isFavorite: transaction.isFavorite,
+                            type: transaction.type,
+                            method: transaction.method,
+                            category: transaction.category,
+                        }),
+                    ]),
+                }),
+            ]),
+            totalIncome: expect.any(Number),
+            totalExpense: expect.any(Number),
+            result: expect.any(Number),
+            totalTransactions: expect.any(Number),
+        });
     });
 
     it('should return unauthorized when no token is provided', async () => {
@@ -87,8 +94,7 @@ describe('GET /bank-accounts/:id/transactions', () => {
                 .set('Authorization', authHeader);
 
             expect(status).toBe(200);
-            expect(body).toHaveLength(1);
-            expect(body[0].transactions[0].id).toBe(includedTransaction.id);
+            expect(body.transactionsByDay[0].transactions[0].id).toBe(includedTransaction.id);
         },
     );
 
@@ -101,9 +107,16 @@ describe('GET /bank-accounts/:id/transactions', () => {
             .set('Authorization', authHeader);
 
         expect(status).toBe(200);
-        expect(body).toHaveLength(1);
-        expect(body[0].transactions[0].id).toBe(transaction.id);
+        expect(body.transactionsByDay[0].transactions[0].id).toBe(transaction.id);
     });
+
+    it.todo('should return totalIncome and totalExpense as the sum of the transactions of each type');
+
+    it.todo('should return the period balance as totalIncome minus totalExpense');
+
+    it.todo('should return a negative period balance when expenses exceed income');
+
+    it.todo('should return transactionCount equal to the number of returned transactions');
 
     it.todo('should return validation error when %s');
 

@@ -19,8 +19,12 @@ export class TransactionsController {
         const { userId } = req;
         const { bankAccountId } = req.params;
 
-        const response = await this.service.list(req.query, Number(bankAccountId), Number(userId));
-        return res.status(200).json(listPresenter.presentTransactionsByDate(response));
+        const { transactions, ...totals } = await this.service.list(req.query, Number(bankAccountId), Number(userId));
+        return res.status(200).json({
+            transactionsByDay: listPresenter.presentTransactionsByDate(transactions),
+            transactionCount: transactions.length,
+            ...totals,
+        });
     }
 
     async getMetrics(req: Request, res: Response) {

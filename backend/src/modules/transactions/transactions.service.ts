@@ -22,7 +22,22 @@ export class TransactionsService {
     async list(filters: TransactionListQueryDto, bankAccountId: number, userId: number) {
         await this.validateEntitiesOwnership({ userId, bankAccountId });
 
-        return this.transactionsRepo.findMany(filters, bankAccountId);
+        const year = filters.year ?? new Date().getFullYear();
+        const month = filters.month ?? new Date().getMonth();
+
+        const [totals, transactions] = await Promise.all([
+            this.transactionsRepo.getTotals(
+                { from: `${year}-${month + 1}-01`, to: `${year}-${month + 2}-01` },
+                bankAccountId,
+            ),
+            this.transactionsRepo.findMany(filters, bankAccountId),
+        ]);
+
+        return {
+            ...totals,
+            periodBalance: totals.totalIncome - totals.totalExpense,
+            transactions,
+        };
     }
 
     async create(createDto: CreateTransactionDto, bankAccountId: number, userId: number) {
