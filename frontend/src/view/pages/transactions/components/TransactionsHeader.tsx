@@ -22,7 +22,7 @@ export default function TransactionsHeader() {
                         <span>Add transaction</span>
                     </Button>
                     <Button
-                        className="absolute bottom-6 right-6 flex sm:hidden"
+                        className="absolute bottom-6 right-6 flex z-50 sm:hidden"
                         onClick={onOpenCreateModal}
                         size="icon-lg"
                     >

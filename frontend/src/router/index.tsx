@@ -4,7 +4,6 @@ import { PRIVATE_ROUTES } from '../app/config/routes';
 
 import AuthGuard from './AuthGuard';
 import AuthLayout from '../view/layouts/AuthLayout';
-import BlankLayout from '../view/layouts/BlankLayout';
 import AppLayout from '../view/layouts/AppLayout';
 
 import SignIn from '../view/pages/auth/sign-in';
@@ -17,7 +16,6 @@ import Transactions from '../view/pages/transactions';
 export const router = createBrowserRouter([
     {
         path: '/',
-        Component: BlankLayout,
         children: [
             {
                 element: <AuthGuard isPrivate={false} />,

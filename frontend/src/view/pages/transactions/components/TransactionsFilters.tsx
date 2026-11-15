@@ -16,7 +16,7 @@ export default function TransactionsFilters() {
         <>
             <div className="flex items-center gap-4 mb-8">
                 <Select
-                    className="max-w-60 w-full"
+                    className="max-w-60 w-full min-w-0"
                     placeholder="Account:"
                     value={filters.account}
                     onChange={value => setFilters(oldState => ({ ...oldState, account: value.toString() }))}
@@ -26,7 +26,7 @@ export default function TransactionsFilters() {
                     }))}
                 />
                 <Select
-                    className="max-w-60 w-full"
+                    className="max-w-60 w-full min-w-0"
                     placeholder="Type:"
                     value={filters.type}
                     onChange={value =>

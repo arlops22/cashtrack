@@ -32,8 +32,14 @@ export default function Select(props: TProps) {
         <div className={cn('w-full', className)}>
             <div className="flex flex-col-reverse relative">
                 <SelectPrimitive.Root value={value} onValueChange={onChange} disabled={disabled}>
-                    <SelectPrimitive.Trigger className={cn(selectVariants({ invalid }))}>
-                        <SelectPrimitive.Value />
+                    <SelectPrimitive.Trigger
+                        className={cn(selectVariants({ invalid }), 'pr-10 text-left whitespace-nowrap')}
+                    >
+                        <SelectPrimitive.Value className="block min-w-0 flex-1 overflow-hidden">
+                            <span className="block truncate">
+                                {options.find(option => option.value.toString() === value)?.label}
+                            </span>
+                        </SelectPrimitive.Value>
 
                         <SelectPrimitive.Icon className="absolute right-3 top-1/2 -translate-y-1/2">
                             <ChevronDown className="text-gray-800" />

@@ -18,7 +18,7 @@ export default function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
-                <RouterProvider router={router} />;
+                <RouterProvider router={router} />
                 <Toaster />
             </AuthProvider>
         </QueryClientProvider>
