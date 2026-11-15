@@ -1,5 +1,14 @@
 import { httpClient } from '../http-client';
 
+export type MonthlySummary = {
+    month: string;
+    summary: {
+        totalIncome: number;
+        totalExpense: number;
+        periodBalance: number;
+    };
+};
+
 export type MetricsResponse = {
     summary: {
         totalIncome: number;
@@ -14,14 +23,7 @@ export type MetricsResponse = {
             totalAmount: number;
         }[];
     }[];
-    monthlyTotals: {
-        month: string;
-        summary: {
-            totalIncome: number;
-            totalExpense: number;
-            periodBalance: number;
-        };
-    }[];
+    monthlyTotals: MonthlySummary[];
 };
 
 export type MetricsFilter = {
