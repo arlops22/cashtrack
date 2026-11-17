@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 
 import { bankAccountsService } from '../services/bankAccountsService';
 
-const USER_KEY = 'me';
+export const USER_KEY = 'me';
 
 export function useCreateBankAccount() {
     const queryClient = useQueryClient();

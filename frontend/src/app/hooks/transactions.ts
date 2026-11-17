@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import type { TransactionsFilter } from '../services/transactionsService/get';
 import type { MetricsFilter } from '../services/transactionsService/metrics';
 import { transactionsService } from '../services/transactionsService';
+import { USER_KEY } from './bank-accounts';
 
 const TRANSACTION_KEY = 'transactions';
 const TRANSACTION_METRIC_KEY = 'metrics';
@@ -33,7 +34,10 @@ export function useCreateTransaction() {
         mutationFn: transactionsService.create,
         onSuccess: () => {
             toast.success('Transaction successfuly created!');
-            return queryClient.invalidateQueries({ queryKey: [TRANSACTION_KEY] });
+            return Promise.all([
+                queryClient.invalidateQueries({ queryKey: [TRANSACTION_KEY] }),
+                queryClient.invalidateQueries({ queryKey: [USER_KEY] }),
+            ]);
         },
     });
 }
@@ -45,7 +49,10 @@ export function useUpdateTransaction() {
         mutationFn: transactionsService.update,
         onSuccess: () => {
             toast.success('Transaction successfuly updated!');
-            return queryClient.invalidateQueries({ queryKey: [TRANSACTION_KEY] });
+            return Promise.all([
+                queryClient.invalidateQueries({ queryKey: [TRANSACTION_KEY] }),
+                queryClient.invalidateQueries({ queryKey: [USER_KEY] }),
+            ]);
         },
     });
 }
@@ -57,7 +64,10 @@ export function useDeleteTransaction() {
         mutationFn: transactionsService.delete,
         onSuccess: () => {
             toast.success('Transaction successfuly deleted!');
-            return queryClient.invalidateQueries({ queryKey: [TRANSACTION_KEY] });
+            return Promise.all([
+                queryClient.invalidateQueries({ queryKey: [TRANSACTION_KEY] }),
+                queryClient.invalidateQueries({ queryKey: [USER_KEY] }),
+            ]);
         },
     });
 }
