@@ -1,22 +1,16 @@
 import { createContext, useId } from 'react';
 import * as RechartsPrimitive from 'recharts';
 
-import { cn } from '../../../app/utils';
+import { cn } from '../../../../app/utils';
+import type { ChartConfig } from './config';
 
 const INITIAL_DIMENSION = { width: 320, height: 200 } as const;
 
 type ChartContextProps = {
     config: ChartConfig;
 };
-const ChartContext = createContext<ChartContextProps | null>(null);
 
-export type ChartConfig = Record<
-    string,
-    {
-        label?: React.ReactNode;
-        icon?: React.ComponentType;
-    } & ({ color?: string } | { color?: never })
->;
+export const ChartContext = createContext<ChartContextProps | null>(null);
 
 export function ChartContainer({
     id,
