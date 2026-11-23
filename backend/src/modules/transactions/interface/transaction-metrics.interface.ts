@@ -6,6 +6,7 @@ export interface TransactionTotals {
 export interface CategoryMonthSummary {
     categoryId: number | null;
     categoryName: string;
+    categoryColor: string;
     totalAmount: number;
     month: Date;
 }

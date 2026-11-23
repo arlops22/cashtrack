@@ -163,6 +163,7 @@ export class TransactionsRepository implements ITransactionsRepository {
             SELECT
                 t."fk_category_id" as "categoryId",
                 c."name" as "categoryName",
+                c."color" as "categoryColor",
                 date_trunc('month', t."createdAt") as "month",
                 SUM(t.amount) as "totalAmount"
             FROM "transactions" t
@@ -172,7 +173,7 @@ export class TransactionsRepository implements ITransactionsRepository {
             AND t."type" = ${TransactionTypeEnum.EXPENSE}
             AND t."createdAt" >= ${this.parseDateUTC(from || `${now.getFullYear()}-01-01`)}
             AND t."createdAt" < ${this.parseDateUTC(to || `${now.getFullYear() + 1}-01-01`)}
-            GROUP BY t."fk_category_id", c."name", date_trunc('month', t."createdAt")
+            GROUP BY t."fk_category_id", c."name", c."color",date_trunc('month', t."createdAt")
             ORDER BY "month" ASC
         `;
     }

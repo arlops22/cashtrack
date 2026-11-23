@@ -33,6 +33,7 @@ describe('GET /bank-accounts/:id/transactions/metrics', () => {
                     month: expect.any(String),
                     categoryId: expect.any(Number),
                     categoryName: expect.any(String),
+                    categoryColor: expect.any(String),
                     totalAmount: expect.any(Number),
                 }),
             ]),
@@ -71,12 +72,14 @@ describe('GET /bank-accounts/:id/transactions/metrics', () => {
                 month: new Date('2026-06-01').toISOString(),
                 categoryId: foodCategory.id,
                 categoryName: foodCategory.name,
+                categoryColor: foodCategory.color,
                 totalAmount: 100,
             },
             {
                 month: new Date('2026-06-01').toISOString(),
                 categoryId: transportCategory.id,
                 categoryName: transportCategory.name,
+                categoryColor: transportCategory.color,
                 totalAmount: 250,
             },
         ]);

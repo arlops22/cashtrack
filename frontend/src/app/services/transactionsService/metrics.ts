@@ -11,8 +11,8 @@ export type ByCategorySummary = {
     month: string;
     categoryId: number;
     categoryName: string;
-    totalAmount: number;
     categoryColor: string;
+    totalAmount: number;
 };
 
 export type MetricsResponse = {
