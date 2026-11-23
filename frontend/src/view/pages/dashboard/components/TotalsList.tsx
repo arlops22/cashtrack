@@ -18,13 +18,13 @@ export default function TotalsList() {
                 </>
             ) : (
                 <>
-                    <TotalValueCard label="Total Income" value={metrics.summary.totalIncome} icon={<TrendingUp />} />
+                    <TotalValueCard label="Total Income" value={metrics.summary.income} icon={<TrendingUp />} />
                     <TotalValueCard
                         label="Total Expense"
-                        value={metrics.summary.totalExpense * -1}
+                        value={metrics.summary.expense * -1}
                         icon={<TrendingDown />}
                     />
-                    <TotalValueCard label="Total Net Income" value={metrics.summary.periodBalance} icon={<Scale />} />
+                    <TotalValueCard label="Total Net Income" value={metrics.summary.balance} icon={<Scale />} />
                 </>
             )}
         </div>

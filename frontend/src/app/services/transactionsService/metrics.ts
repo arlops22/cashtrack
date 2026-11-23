@@ -2,11 +2,9 @@ import { httpClient } from '../http-client';
 
 export type MonthlySummary = {
     month: string;
-    summary: {
-        totalIncome: number;
-        totalExpense: number;
-        periodBalance: number;
-    };
+    income: number;
+    expense: number;
+    balance: number;
 };
 
 export type ByCategorySummary = {
@@ -19,9 +17,9 @@ export type ByCategorySummary = {
 
 export type MetricsResponse = {
     summary: {
-        totalIncome: number;
-        totalExpense: number;
-        periodBalance: number;
+        income: number;
+        expense: number;
+        balance: number;
     };
     categorySummary: ByCategorySummary[];
     monthlyTotals: MonthlySummary[];
