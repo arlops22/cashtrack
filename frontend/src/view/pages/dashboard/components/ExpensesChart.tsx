@@ -23,7 +23,7 @@ type TProps = {
 
 export default function ExpensesChart({ data }: TProps) {
     return (
-        <div className="h-96 w-full bg-white border rounded-md p-4">
+        <div className="h-fit w-full bg-white border rounded-md p-4">
             <Typography variant="body-lg" color="gray-800" className="font-medium mb-4">
                 Metrics by month
             </Typography>
