@@ -54,7 +54,7 @@ describe('GET /bank-accounts/:id/transactions', () => {
             transactionsByDay: expect.arrayContaining([
                 expect.objectContaining({
                     date: expect.any(String),
-                    resultByDay: expect.any(Number),
+                    dayBalance: expect.any(Number),
                     transactions: expect.arrayContaining([
                         expect.objectContaining({
                             id: transaction.id,
@@ -69,10 +69,10 @@ describe('GET /bank-accounts/:id/transactions', () => {
                     ]),
                 }),
             ]),
-            totalIncome: expect.any(Number),
-            totalExpense: expect.any(Number),
-            result: expect.any(Number),
-            totalTransactions: expect.any(Number),
+            income: expect.any(Number),
+            expense: expect.any(Number),
+            balance: expect.any(Number),
+            transactionCount: expect.any(Number),
         });
     });
 

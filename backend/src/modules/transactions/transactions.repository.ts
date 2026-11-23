@@ -78,6 +78,7 @@ export class TransactionsRepository implements ITransactionsRepository {
                     select: {
                         id: true,
                         name: true,
+                        color: true,
                     },
                 },
             },

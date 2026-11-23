@@ -26,6 +26,7 @@ export const createTestTransaction = async (
                 select: {
                     id: true,
                     name: true,
+                    color: true,
                 },
             },
         },
