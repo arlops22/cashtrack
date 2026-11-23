@@ -7,6 +7,7 @@ import { useCategory } from '../../CategoryContext/useCategory';
 
 const schema = z.object({
     name: z.string().trim().min(1, 'Enter a valid category name'),
+    color: z.string().regex(/^#(?:[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/, 'Must be a valid hex color (e.g. #FF5733)'),
 });
 
 type CategorySchema = z.infer<typeof schema>;
@@ -18,8 +19,9 @@ export function useCategoryFormController() {
         register,
         handleSubmit: hookFormSubmit,
         formState: { errors },
+        control,
     } = useForm<CategorySchema>({
-        values: { name: modal.category?.name ?? '' },
+        values: { name: modal.category?.name ?? '', color: modal.category?.color ?? '#000000' },
         resolver: zodResolver(schema),
     });
 
@@ -35,5 +37,5 @@ export function useCategoryFormController() {
         }
     });
 
-    return { register, errors, handleSubmit, isPending: isLoadingCreate || isLoadingUpdate };
+    return { register, errors, handleSubmit, isPending: isLoadingCreate || isLoadingUpdate, control };
 }
