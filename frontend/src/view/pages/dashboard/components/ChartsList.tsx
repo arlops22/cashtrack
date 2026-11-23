@@ -2,6 +2,7 @@ import { useDashboard } from './DashboardContext/useDashboard';
 
 import { Skeleton } from '../../../components/ui/Skeleton';
 import ExpensesChart from './ExpensesChart';
+import ExpensesByCategoryChart from './ExpensesByCategoryChart';
 
 export default function ChartsList() {
     const { metrics, isLoadingMetrics } = useDashboard();
@@ -15,8 +16,8 @@ export default function ChartsList() {
                 </>
             ) : (
                 <>
-                    {' '}
                     <ExpensesChart data={metrics?.monthlyTotals ?? []} />
+                    <ExpensesByCategoryChart />
                 </>
             )}
         </div>
