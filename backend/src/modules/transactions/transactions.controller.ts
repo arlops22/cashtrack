@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 
 import { TransactionsService } from './transactions.service';
-import * as metricsPresenter from './presenters/metrics.presenter';
 import * as listPresenter from './presenters/list-transactions.presenter';
 
 export class TransactionsController {
@@ -38,8 +37,8 @@ export class TransactionsController {
         );
         return res.status(200).json({
             summary,
-            categorySummary: metricsPresenter.presentCategoriesByMonth(categorySummary),
-            monthlyTotals: metricsPresenter.presentIncomeExpenseByMonth(monthlyTotals),
+            categorySummary,
+            monthlyTotals,
         });
     }
 

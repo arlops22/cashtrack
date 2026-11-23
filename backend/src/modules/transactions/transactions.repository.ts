@@ -141,12 +141,12 @@ export class TransactionsRepository implements ITransactionsRepository {
         });
 
         const sumByType = new Map(result.map(row => [row.type, row._sum.amount ?? 0]));
-        const totalIncome = sumByType.get('INCOME') ?? 0;
-        const totalExpense = sumByType.get('EXPENSE') ?? 0;
+        const income = sumByType.get('INCOME') ?? 0;
+        const expense = sumByType.get('EXPENSE') ?? 0;
 
         return {
-            totalIncome,
-            totalExpense,
+            income,
+            expense,
         };
     }
 
@@ -179,16 +179,16 @@ export class TransactionsRepository implements ITransactionsRepository {
     async getByType(
         filters: TransactionMetricsFilterQueryDto,
         bankAccountId: number,
-    ): Promise<Omit<MonthlyIncomeExpense, 'periodBalance'>[]> {
+    ): Promise<Omit<MonthlyIncomeExpense, 'balance'>[]> {
         const { from, to } = filters;
 
         const now = new Date();
 
-        const result = await this.prisma.$queryRaw<{ month: Date; totalExpense: number; totalIncome: number }[]>`
+        const result = await this.prisma.$queryRaw<{ month: Date; expense: number; income: number }[]>`
             SELECT
                 date_trunc('month', t."createdAt") as "month",
-                SUM(t.amount) FILTER (WHERE t."type" = ${TransactionTypeEnum.EXPENSE}) as "totalExpense",
-                SUM(t.amount) FILTER (WHERE t."type" = ${TransactionTypeEnum.INCOME}) as "totalIncome"
+                SUM(t.amount) FILTER (WHERE t."type" = ${TransactionTypeEnum.EXPENSE}) as "expense",
+                SUM(t.amount) FILTER (WHERE t."type" = ${TransactionTypeEnum.INCOME}) as "income"
             FROM "transactions" t
             WHERE t."fk_bank_account_id" = ${bankAccountId}
             AND t."createdAt" >= ${this.parseDateUTC(from || `${now.getFullYear()}-01-01`)}
@@ -199,8 +199,8 @@ export class TransactionsRepository implements ITransactionsRepository {
 
         return result.map(row => ({
             month: row.month,
-            totalExpense: Number(row.totalExpense),
-            totalIncome: Number(row.totalIncome),
+            expense: Number(row.expense),
+            income: Number(row.income),
         }));
     }
 

@@ -19,7 +19,7 @@ export interface ITransactionsRepository {
     getByType(
         filters: TransactionMetricsFilterQueryDto,
         bankAccountId: number,
-    ): Promise<Omit<MonthlyIncomeExpense, 'periodBalance'>[]>;
+    ): Promise<Omit<MonthlyIncomeExpense, 'balance'>[]>;
     update(updateDto: UpdateTransactionDto, transactionId: number, bankAccountId: number): Promise<Transaction>;
     delete(transactionId: number): Promise<Transaction>;
 }

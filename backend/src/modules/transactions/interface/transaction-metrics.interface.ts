@@ -1,6 +1,6 @@
 export interface TransactionTotals {
-    totalIncome: number;
-    totalExpense: number;
+    income: number;
+    expense: number;
 }
 
 export interface CategoryMonthSummary {
@@ -12,7 +12,7 @@ export interface CategoryMonthSummary {
 
 export interface MonthlyIncomeExpense {
     month: Date;
-    totalIncome: number;
-    totalExpense: number;
-    periodBalance: number;
+    income: number;
+    expense: number;
+    balance: number;
 }
