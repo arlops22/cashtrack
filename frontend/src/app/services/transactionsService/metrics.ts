@@ -9,20 +9,21 @@ export type MonthlySummary = {
     };
 };
 
+export type ByCategorySummary = {
+    month: string;
+    categoryId: number;
+    categoryName: string;
+    totalAmount: number;
+    categoryColor: string;
+};
+
 export type MetricsResponse = {
     summary: {
         totalIncome: number;
         totalExpense: number;
         periodBalance: number;
     };
-    categorySummary: {
-        month: string;
-        categories: {
-            categoryId: number;
-            categoryName: string;
-            totalAmount: number;
-        }[];
-    }[];
+    categorySummary: ByCategorySummary[];
     monthlyTotals: MonthlySummary[];
 };
 

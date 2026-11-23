@@ -16,8 +16,8 @@ export default function ChartsList() {
                 </>
             ) : (
                 <>
-                    <ExpensesChart data={metrics?.monthlyTotals ?? []} />
-                    <ExpensesByCategoryChart />
+                    <ExpensesChart data={metrics.monthlyTotals ?? []} />
+                    <ExpensesByCategoryChart data={metrics.categorySummary ?? []} />
                 </>
             )}
         </div>
