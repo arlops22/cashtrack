@@ -49,7 +49,7 @@ export default function DateRangePickerField(props: TProps) {
                 <PopoverPrimitive.Trigger asChild>
                     <Button className="px-3" type="button" variant="outlined" color="secondary" size="md">
                         <Calendar size={20} />
-                        {<span>{formatRangeLabel(value, presets)}</span>}
+                        {<span className="text-body-lg">{formatRangeLabel(value, presets)}</span>}
                     </Button>
                 </PopoverPrimitive.Trigger>
 
