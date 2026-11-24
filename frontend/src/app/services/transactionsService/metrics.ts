@@ -27,9 +27,10 @@ export type MetricsResponse = {
 
 export type MetricsFilter = {
     bankAccountId: number;
-    from: string;
-    to: string;
+    from?: string;
+    to?: string;
 };
+
 export async function getMetrics({ bankAccountId, ...filters }: MetricsFilter) {
     const { data } = await httpClient.get<MetricsResponse>(`/bank-accounts/${bankAccountId}/transactions/metrics`, {
         params: filters,

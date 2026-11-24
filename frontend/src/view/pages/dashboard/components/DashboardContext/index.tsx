@@ -1,58 +1,53 @@
 import { createContext, useEffect, useMemo, useState } from 'react';
+import moment from 'moment';
 
 import type { MetricsResponse } from '../../../../../app/services/transactionsService/metrics';
+import { getDateRangePreset } from '../../../../../app/utils';
 import { useTransactionsMetrics } from '../../../../../app/hooks/transactions';
 import { useAuth } from '../../../../../app/hooks/useAuth';
-
-type FilterState = {
-    account: string;
-    from: string;
-    to: string;
-};
+import type { DateRange } from 'react-day-picker';
 
 export interface DashboardContextProps {
     metrics?: MetricsResponse;
-    filters: FilterState;
-    setFilters: (filters: FilterState) => void;
-    isFilterModalOpen: boolean;
-    setIsFilterModalOpen: (isOpen: boolean) => void;
+    range: DateRange;
+    setRange: React.Dispatch<React.SetStateAction<DateRange>>;
+    selectedAccount: string | undefined;
+    setSelectedAccount: React.Dispatch<React.SetStateAction<string | undefined>>;
     isLoadingMetrics: boolean;
 }
 
 export const DashboardContext = createContext<DashboardContextProps | undefined>(undefined);
 
-const now = new Date();
+const toApiDate = (date: Date) => moment(date).format('YYYY-MM-DD');
 
 export function DashboardProvider({ children }: { children: React.ReactNode }) {
     const { user, isUserLoading } = useAuth();
 
-    const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-    const [filters, setFilters] = useState<FilterState>({
-        account: user?.bankAccounts[0].id.toString() ?? '',
-        from: `${now.getFullYear()}-01-01`,
-        to: `${now.getFullYear() + 1}-01-01`,
-    });
+    const [range, setRange] = useState<DateRange>(() => getDateRangePreset('thisYear').range);
+    const [selectedAccount, setSelectedAccount] = useState<string>();
+
+    const account = selectedAccount ?? user?.bankAccounts[0]?.id.toString();
 
     const { metrics, refetchMetrics, isLoading } = useTransactionsMetrics({
-        bankAccountId: Number(filters.account),
-        from: filters.from,
-        to: filters.to,
+        bankAccountId: Number(account),
+        from: range.from && toApiDate(range.from),
+        to: range.to && toApiDate(range.to),
     });
 
     useEffect(() => {
         refetchMetrics();
-    }, [filters, refetchMetrics]);
+    }, [range, selectedAccount, refetchMetrics]);
 
     const value = useMemo<DashboardContextProps>(
         () => ({
             metrics,
-            filters,
-            setFilters,
-            isFilterModalOpen,
-            setIsFilterModalOpen,
+            range,
+            setRange,
+            selectedAccount,
+            setSelectedAccount,
             isLoadingMetrics: isLoading || isUserLoading,
         }),
-        [metrics, filters, setFilters, isFilterModalOpen, setIsFilterModalOpen, isLoading],
+        [metrics, range, setRange, selectedAccount, setSelectedAccount, , isLoading],
     );
 
     return <DashboardContext value={value}>{children}</DashboardContext>;
