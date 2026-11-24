@@ -9,7 +9,7 @@ export default function TotalsList() {
     const { metrics, isLoadingMetrics } = useDashboard();
 
     return (
-        <div className="grid grid-cols-3 items-start gap-4">
+        <div className="grid lg:grid-cols-3 items-start gap-4">
             {!metrics || isLoadingMetrics ? (
                 <>
                     <Skeleton className="h-36 w-full" />

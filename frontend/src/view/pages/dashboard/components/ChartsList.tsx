@@ -8,7 +8,7 @@ export default function ChartsList() {
     const { metrics, isLoadingMetrics } = useDashboard();
 
     return (
-        <div className="grid grid-cols-2 items-start gap-4">
+        <div className="grid lg:grid-cols-2 items-start gap-4">
             {!metrics || isLoadingMetrics ? (
                 <>
                     <Skeleton className="h-80 w-full" />
