@@ -47,7 +47,13 @@ export default function DateRangePickerField(props: TProps) {
         <div className={cn('w-full', className)}>
             <PopoverPrimitive.Root open={open} onOpenChange={setOpen}>
                 <PopoverPrimitive.Trigger asChild>
-                    <Button className="px-3" type="button" variant="outlined" color="secondary" size="md">
+                    <Button
+                        className="px-3 w-full justify-start"
+                        type="button"
+                        variant="outlined"
+                        color="secondary"
+                        size="md"
+                    >
                         <Calendar size={20} />
                         {<span className="text-body-lg">{formatRangeLabel(value, presets)}</span>}
                     </Button>
@@ -56,7 +62,7 @@ export default function DateRangePickerField(props: TProps) {
                 <PopoverPrimitive.Portal>
                     <PopoverPrimitive.Content
                         sideOffset={8}
-                        align="end"
+                        align="start"
                         className="z-50 flex max-w-200 w-full origin-(--radix-popover-content-transform-origin) flex-col gap-2.5 rounded-lg bg-popover text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95"
                     >
                         <div className="flex items-stretch">
