@@ -29,6 +29,7 @@ model Category {
   id           Int           @id @default(autoincrement()) @map("pk_category_id")
   userId       Int           @map("fk_user_id")
   name         String        @db.VarChar(100)
+  color        String        @default("#000000") @db.VarChar(9)
   transactions Transaction[]
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 

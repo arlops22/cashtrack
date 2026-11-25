@@ -7,6 +7,9 @@ import { labelVariants, selectVariants, supportTextVariants } from './select.var
 
 type TProps = ComponentPropsWithRef<'select'> & {
     className?: string;
+    selectWrapperClassname?: string;
+    selectTriggerClassName?: string;
+    labelClassName?: string;
     error?: string;
     supportText?: string;
     placeholder: string;
@@ -19,7 +22,20 @@ type TProps = ComponentPropsWithRef<'select'> & {
 };
 
 export default function Select(props: TProps) {
-    const { className, error, supportText, ref, disabled, options, onChange, value, ...fieldProps } = props;
+    const {
+        className,
+        selectWrapperClassname,
+        selectTriggerClassName,
+        labelClassName,
+        error,
+        supportText,
+        ref,
+        disabled,
+        options,
+        onChange,
+        value,
+        ...fieldProps
+    } = props;
 
     const generatedId = useId();
     const id = fieldProps.id ?? fieldProps.name ?? generatedId;
@@ -30,10 +46,14 @@ export default function Select(props: TProps) {
 
     return (
         <div className={cn('w-full', className)}>
-            <div className="flex flex-col-reverse relative">
+            <div className={cn('flex flex-col-reverse relative', selectWrapperClassname)}>
                 <SelectPrimitive.Root value={value} onValueChange={onChange} disabled={disabled}>
                     <SelectPrimitive.Trigger
-                        className={cn(selectVariants({ invalid }), 'pr-10 text-left whitespace-nowrap')}
+                        className={cn(
+                            selectVariants({ invalid }),
+                            'pr-10 text-left whitespace-nowrap',
+                            selectTriggerClassName,
+                        )}
                     >
                         <SelectPrimitive.Value className="block min-w-0 flex-1 overflow-hidden">
                             <span className="block truncate">
@@ -72,10 +92,13 @@ export default function Select(props: TProps) {
                 </SelectPrimitive.Root>
 
                 <label
-                    className={labelVariants({
-                        invalid,
-                        selected: !!value,
-                    })}
+                    className={cn(
+                        labelVariants({
+                            invalid,
+                            selected: !!value,
+                        }),
+                        labelClassName,
+                    )}
                     htmlFor={fieldProps.name}
                 >
                     {fieldProps.placeholder}

@@ -35,7 +35,7 @@ export class TransactionsService {
 
         return {
             ...totals,
-            periodBalance: totals.totalIncome - totals.totalExpense,
+            balance: totals.income - totals.expense,
             transactions,
         };
     }
@@ -96,12 +96,12 @@ export class TransactionsService {
         return {
             summary: {
                 ...totals,
-                periodBalance: totals.totalIncome - totals.totalExpense,
+                balance: totals.income - totals.expense,
             },
             categorySummary,
             monthlyTotals: monthlyTotals.map(row => ({
                 ...row,
-                periodBalance: row.totalIncome - row.totalExpense,
+                balance: row.income - row.expense,
             })),
         };
     }

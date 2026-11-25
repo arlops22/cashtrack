@@ -9,7 +9,7 @@ export default function TotalsList() {
     const { metrics, isLoadingMetrics } = useDashboard();
 
     return (
-        <div className="grid grid-cols-3 items-start gap-4">
+        <div className="grid lg:grid-cols-3 items-start gap-4">
             {!metrics || isLoadingMetrics ? (
                 <>
                     <Skeleton className="h-36 w-full" />
@@ -18,13 +18,13 @@ export default function TotalsList() {
                 </>
             ) : (
                 <>
-                    <TotalValueCard label="Total Income" value={metrics.summary.totalIncome} icon={<TrendingUp />} />
+                    <TotalValueCard label="Total Income" value={metrics.summary.income} icon={<TrendingUp />} />
                     <TotalValueCard
                         label="Total Expense"
-                        value={metrics.summary.totalExpense * -1}
+                        value={metrics.summary.expense * -1}
                         icon={<TrendingDown />}
                     />
-                    <TotalValueCard label="Total Net Income" value={metrics.summary.periodBalance} icon={<Scale />} />
+                    <TotalValueCard label="Total Net Income" value={metrics.summary.balance} icon={<Scale />} />
                 </>
             )}
         </div>

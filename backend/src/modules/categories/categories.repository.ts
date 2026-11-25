@@ -7,16 +7,18 @@ export class CategoriesRepository implements ICategoriesRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
     create(createDto: CreateCategoryDto, userId: number): Promise<Category> {
-        const { name } = createDto;
+        const { name, color } = createDto;
 
         return this.prisma.category.create({
             data: {
                 userId,
                 name,
+                color,
             },
             select: {
                 id: true,
                 name: true,
+                color: true,
             },
         });
     }
@@ -27,6 +29,7 @@ export class CategoriesRepository implements ICategoriesRepository {
             select: {
                 id: true,
                 name: true,
+                color: true,
             },
         });
     }
@@ -38,14 +41,15 @@ export class CategoriesRepository implements ICategoriesRepository {
     }
 
     update(updateDto: UpdateCategoryDto, categoryId: number): Promise<Category> {
-        const { name } = updateDto;
+        const { name, color } = updateDto;
 
         return this.prisma.category.update({
             where: { id: categoryId },
-            data: { name },
+            data: { name, color },
             select: {
                 id: true,
                 name: true,
+                color: true,
             },
         });
     }

@@ -13,6 +13,7 @@ export const createTestCategory = async (overrides: Partial<CreateCategoryDto> =
         select: {
             id: true,
             name: true,
+            color: true,
         },
     });
 };

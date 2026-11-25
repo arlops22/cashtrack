@@ -15,7 +15,7 @@ export const buttonVariants = cva(
                 ghost: '',
             },
             size: {
-                sm: 'px-2 text-label-sm h-6 rounded-[3px]',
+                sm: 'px-2 text-label-md h-8 rounded-[3px]',
                 md: 'px-4 text-label-lg h-10 rounded-md',
                 lg: 'px-8 text-label-lg h-12 rounded-lg',
                 'icon-sm': 'aspect-square w-6 px-0! rounded-full! [&>svg]:size-3',
@@ -42,7 +42,7 @@ export const buttonVariants = cva(
                 color: 'primary',
                 variant: 'ghost',
                 disabled: false,
-                class: 'bg-transparent text-white hover:bg-teal-100',
+                class: 'bg-transparent text-primary hover:bg-teal-100',
             },
             {
                 color: 'primary',

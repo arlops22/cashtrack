@@ -24,7 +24,12 @@ export function useTransactionsMetrics(filters: MetricsFilter) {
         queryFn: () => transactionsService.getMetrics(filters),
     });
 
-    return { metrics: data, isLoading, refetchMetrics: refetch };
+    return {
+        metrics: data,
+        isLoading,
+        refetchMetrics: refetch,
+        enabled: Boolean(filters.bankAccountId && filters.from && filters.to),
+    };
 }
 
 export function useCreateTransaction() {

@@ -7,6 +7,7 @@ import { useCategory } from './CategoryContext/useCategory';
 import DataTable from '../../../components/DataTable';
 import Button from '../../../components/Button';
 import EmptyList from '../../../components/EmptyList';
+import Typography from '../../../components/Typography';
 
 export default function CategoryDataTable() {
     const { categories, isLoadingCategories, onOpenDeleteModal, onOpenEditModal, onOpenCreateModal } = useCategory();
@@ -15,14 +16,19 @@ export default function CategoryDataTable() {
         {
             id: 'name',
             header: 'Name',
-            cell: (row: Category) => row.name,
+            cell: (row: Category) => (
+                <div className="flex items-center gap-2">
+                    <span className="aspect-square h-5 rounded-full" style={{ backgroundColor: row.color }} />
+                    <Typography>{row.name}</Typography>
+                </div>
+            ),
         },
         {
             id: 'action',
             header: 'Actions',
             className: 'w-[100px]',
             cell: (row: Category) => (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                     <Button onClick={() => onOpenEditModal(row)} size="icon" variant="ghost" color="secondary">
                         <Edit />
                     </Button>

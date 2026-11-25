@@ -1,9 +1,7 @@
-import { useMemo } from 'react';
 import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis } from 'recharts';
 
 import type { MonthlySummary } from '../../../../app/services/transactionsService/metrics';
-import { MONTHS } from '../../../../app/config/constants';
-import { formatCurrency } from '../../../../app/utils';
+import { formatCurrency, formatChartMonthLabel } from '../../../../app/utils';
 
 import {
     ChartContainer,
@@ -24,33 +22,29 @@ type TProps = {
 };
 
 export default function ExpensesChart({ data }: TProps) {
-    const formatMonth = (month: string) => {
-        const [year, monthIndex] = month.split('-');
-
-        return `${MONTHS[Number(monthIndex) - 1]}/${year}`;
-    };
-
-    const chartData = useMemo(
-        () =>
-            data.map(({ month, summary }) => ({
-                month: formatMonth(month),
-                income: summary.totalIncome,
-                expense: summary.totalExpense,
-                balance: summary.periodBalance,
-            })),
-        [data],
-    );
-
     return (
-        <div className="h-96 w-full bg-white border rounded-md p-4">
+        <div className="h-fit w-full bg-white border rounded-md p-4">
             <Typography variant="body-lg" color="gray-800" className="font-medium mb-4">
-                Expenses by month
+                Metrics by month
             </Typography>
             <ChartContainer config={chartConfig}>
-                <BarChart accessibilityLayer data={chartData}>
+                <BarChart accessibilityLayer data={data}>
                     <CartesianGrid vertical={false} />
-                    <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={10} />
-                    <Tooltip content={<ChartTooltipContent valueFormatter={formatCurrency} />} />
+                    <XAxis
+                        dataKey="month"
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={10}
+                        tickFormatter={formatChartMonthLabel}
+                    />
+                    <Tooltip
+                        content={
+                            <ChartTooltipContent
+                                valueFormatter={formatCurrency}
+                                labelFormatter={label => formatChartMonthLabel(String(label))}
+                            />
+                        }
+                    />
                     <Legend content={<ChartLegendContent />} />
                     <Bar dataKey="income" fill="var(--color-income)" radius={4} />
                     <Bar dataKey="expense" fill="var(--color-expense)" radius={4} />
