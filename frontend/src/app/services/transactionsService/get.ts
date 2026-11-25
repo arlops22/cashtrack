@@ -7,9 +7,9 @@ export type TransactionsResponse = {
         dayBalance: number;
         transactions: Transaction[];
     }[];
-    totalIncome: number;
-    totalExpense: number;
-    periodBalance: number;
+    income: number;
+    expense: number;
+    balance: number;
     transactionCount: number;
 };
 

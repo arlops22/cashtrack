@@ -43,7 +43,7 @@ export default function TransactionsSummaryCard() {
                     Total Income:
                 </Typography>
                 <Typography variant="body-md" className="font-medium text-primary">
-                    {formatCurrency(transactionsData?.totalIncome || 0)}
+                    {formatCurrency(transactionsData?.income || 0)}
                 </Typography>
             </div>
             <div className="flex items-center justify-between mb-4">
@@ -51,7 +51,7 @@ export default function TransactionsSummaryCard() {
                     Total Expense:
                 </Typography>
                 <Typography variant="body-md" className="font-medium text-destructive">
-                    {formatCurrency(transactionsData?.totalExpense || 0)}
+                    {formatCurrency(transactionsData?.expense || 0)}
                 </Typography>
             </div>
             <div className="flex items-center justify-between">
@@ -59,7 +59,7 @@ export default function TransactionsSummaryCard() {
                     Result:
                 </Typography>
                 <Typography variant="body-md" className="font-medium">
-                    {formatCurrency(transactionsData?.periodBalance || 0)}
+                    {formatCurrency(transactionsData?.balance || 0)}
                 </Typography>
             </div>
         </div>
