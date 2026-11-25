@@ -46,7 +46,9 @@ export default function TransactionsDataTable() {
             className: 'hidden lg:table-cell lg:w-[150px]',
             header: 'Category',
             cell: (row: Transaction) => (
-                <Badge className="bg-teal-0 text-primary">{row.category ? row.category.name : '-'}</Badge>
+                <Badge style={{ backgroundColor: row.category?.color }} className="text-white">
+                    {row.category ? row.category.name : '-'}
+                </Badge>
             ),
         },
         {
