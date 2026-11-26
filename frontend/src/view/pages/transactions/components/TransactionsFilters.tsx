@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import type { Transaction } from '../../../../app/entities/Transaction';
 import { cn } from '../../../../app/utils/cn';
 import { MONTHS } from '../../../../app/config/constants';
@@ -9,6 +11,7 @@ import Select from '../../../components/Select';
 import Button from '../../../components/Button';
 
 export default function TransactionsFilters() {
+    const { t } = useTranslation();
     const { accounts, filters, setFilters } = useTransaction();
     const { width } = useWindowDimensions();
 
@@ -17,7 +20,7 @@ export default function TransactionsFilters() {
             <div className="flex items-center gap-4 mb-8">
                 <Select
                     className="max-w-60 w-full min-w-0"
-                    placeholder="Account:"
+                    placeholder={t('transactions.filters.account')}
                     value={filters.account}
                     onChange={value => setFilters(oldState => ({ ...oldState, account: value.toString() }))}
                     options={accounts.map(account => ({
@@ -27,15 +30,15 @@ export default function TransactionsFilters() {
                 />
                 <Select
                     className="max-w-60 w-full min-w-0"
-                    placeholder="Type:"
+                    placeholder={t('transactions.filters.type')}
                     value={filters.type}
                     onChange={value =>
                         setFilters(oldState => ({ ...oldState, type: value as Transaction['type'] | 'All' }))
                     }
                     options={[
-                        { value: 'All', label: 'All transactions' },
-                        { value: 'INCOME', label: 'Incomes' },
-                        { value: 'EXPENSE', label: 'Expenses' },
+                        { value: 'All', label: t('transactions.filters.allTransactions') },
+                        { value: 'INCOME', label: t('transactions.filters.incomes') },
+                        { value: 'EXPENSE', label: t('transactions.filters.expenses') },
                     ]}
                 />
             </div>

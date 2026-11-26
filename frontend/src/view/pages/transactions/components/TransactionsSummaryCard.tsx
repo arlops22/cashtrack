@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { useTransaction } from './TransactionContext/useTransaction';
 import { formatCurrency } from '../../../../app/utils';
 import { MONTHS } from '../../../../app/config/constants';
@@ -5,16 +7,17 @@ import { MONTHS } from '../../../../app/config/constants';
 import Typography from '../../../components/Typography';
 
 export default function TransactionsSummaryCard() {
+    const { t } = useTranslation();
     const { transactionsData, filters, accounts } = useTransaction();
 
     return (
         <div className="order-first w-full lg:order-last bg-white border rounded-md p-4">
             <Typography variant="body-lg" className="font-bold mb-6">
-                Summary
+                {t('transactions.summary.title')}
             </Typography>
             <div className="flex items-center justify-between mb-4">
                 <Typography variant="body-sm" color="gray-600">
-                    Date:
+                    {t('transactions.summary.date')}
                 </Typography>
                 <Typography variant="body-md" className="font-medium">
                     {MONTHS[filters.month]}, {filters.year}
@@ -22,7 +25,7 @@ export default function TransactionsSummaryCard() {
             </div>
             <div className="flex items-center justify-between mb-4">
                 <Typography variant="body-sm" color="gray-600">
-                    Account balance:
+                    {t('transactions.summary.accountBalance')}
                 </Typography>
                 <Typography variant="body-md" className="font-medium">
                     {formatCurrency(
@@ -32,7 +35,7 @@ export default function TransactionsSummaryCard() {
             </div>
             <div className="flex items-center justify-between mb-4">
                 <Typography variant="body-sm" color="gray-600">
-                    Total transactions:
+                    {t('transactions.summary.totalTransactions')}
                 </Typography>
                 <Typography variant="body-md" className="font-medium">
                     {transactionsData?.transactionCount}
@@ -40,7 +43,7 @@ export default function TransactionsSummaryCard() {
             </div>
             <div className="flex items-center justify-between mb-4">
                 <Typography variant="body-sm" color="gray-600">
-                    Total Income:
+                    {t('transactions.summary.totalIncome')}
                 </Typography>
                 <Typography variant="body-md" className="font-medium text-primary">
                     {formatCurrency(transactionsData?.income || 0)}
@@ -48,7 +51,7 @@ export default function TransactionsSummaryCard() {
             </div>
             <div className="flex items-center justify-between mb-4">
                 <Typography variant="body-sm" color="gray-600">
-                    Total Expense:
+                    {t('transactions.summary.totalExpense')}
                 </Typography>
                 <Typography variant="body-md" className="font-medium text-destructive">
                     {formatCurrency(transactionsData?.expense || 0)}
@@ -56,7 +59,7 @@ export default function TransactionsSummaryCard() {
             </div>
             <div className="flex items-center justify-between">
                 <Typography variant="body-sm" color="gray-600">
-                    Result:
+                    {t('transactions.summary.result')}
                 </Typography>
                 <Typography variant="body-md" className="font-medium">
                     {formatCurrency(transactionsData?.balance || 0)}

@@ -1,5 +1,6 @@
 import { NumericFormat } from 'react-number-format';
 import { Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import type { Transaction } from '../../../../app/entities/Transaction';
 import { useTransaction } from './TransactionContext/useTransaction';
@@ -16,6 +17,7 @@ type TProps = {
 };
 
 export default function TransactionForm({ transaction, onSuccess }: TProps) {
+    const { t } = useTranslation();
     const { categoryOptions } = useTransaction();
     const { handleSubmit, register, errors, isPending, control } = useTransactionFormController({
         transaction,
@@ -24,14 +26,20 @@ export default function TransactionForm({ transaction, onSuccess }: TProps) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Input type="text" placeholder="Name" className="mb-4" error={errors.name?.message} {...register('name')} />
+            <Input
+                type="text"
+                placeholder={t('common.name')}
+                className="mb-4"
+                error={errors.name?.message}
+                {...register('name')}
+            />
             <Controller
                 name="amount"
                 control={control}
                 render={({ field: { value, onChange } }) => (
                     <NumericFormat
                         className="mb-4"
-                        placeholder="Amount"
+                        placeholder={t('common.amount')}
                         customInput={Input}
                         prefix="R$ "
                         thousandSeparator="."
@@ -51,16 +59,16 @@ export default function TransactionForm({ transaction, onSuccess }: TProps) {
                     name="type"
                     render={({ field: { onChange, value, ...fieldProps } }) => (
                         <Select
-                            placeholder="Type"
+                            placeholder={t('common.type')}
                             error={errors.type?.message}
                             options={[
                                 {
                                     value: 'INCOME',
-                                    label: 'Income',
+                                    label: t('transactionTypes.INCOME'),
                                 },
                                 {
                                     value: 'EXPENSE',
-                                    label: 'Expense',
+                                    label: t('transactionTypes.EXPENSE'),
                                 },
                             ]}
                             onChange={onChange}
@@ -74,7 +82,7 @@ export default function TransactionForm({ transaction, onSuccess }: TProps) {
                     name="category"
                     render={({ field: { onChange, value, ...fieldProps } }) => (
                         <Select
-                            placeholder="Category"
+                            placeholder={t('common.category')}
                             error={errors.category?.message}
                             options={categoryOptions}
                             onChange={onChange}
@@ -90,24 +98,24 @@ export default function TransactionForm({ transaction, onSuccess }: TProps) {
                     name="method"
                     render={({ field: { onChange, value, ...fieldProps } }) => (
                         <Select
-                            placeholder="Payment Method"
+                            placeholder={t('common.paymentMethod')}
                             error={errors.method?.message}
                             options={[
                                 {
                                     value: 'CREDIT',
-                                    label: 'Credit card',
+                                    label: t('paymentMethods.CREDIT'),
                                 },
                                 {
                                     value: 'DEBIT',
-                                    label: 'Debit card',
+                                    label: t('paymentMethods.DEBIT'),
                                 },
                                 {
                                     value: 'PIX',
-                                    label: 'Pix',
+                                    label: t('paymentMethods.PIX'),
                                 },
                                 {
                                     value: 'CASH',
-                                    label: 'Cash',
+                                    label: t('paymentMethods.CASH'),
                                 },
                             ]}
                             onChange={onChange}
@@ -131,7 +139,7 @@ export default function TransactionForm({ transaction, onSuccess }: TProps) {
             </div>
 
             <Button isLoading={isPending} className="w-full" type="submit">
-                Save transaction
+                {t('transactions.modal.submit')}
             </Button>
         </form>
     );

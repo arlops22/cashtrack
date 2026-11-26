@@ -1,4 +1,5 @@
 import { Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { ALL } from '../../../../../../app/config/constants';
 import { useTransaction } from '../../TransactionContext/useTransaction';
@@ -9,6 +10,7 @@ import Select from '../../../../../components/Select';
 import Button from '../../../../../components/Button';
 
 export default function FilterTransactionsModal() {
+    const { t } = useTranslation();
     const { categoryOptions, isFilterModalOpen, setIsFilterModalOpen } = useTransaction();
     const { control, handleSubmit, reset } = useFilterTransactionFormController();
 
@@ -18,7 +20,11 @@ export default function FilterTransactionsModal() {
     });
 
     return (
-        <Modal open={isFilterModalOpen} onClose={() => setIsFilterModalOpen(false)} title="Filter">
+        <Modal
+            open={isFilterModalOpen}
+            onClose={() => setIsFilterModalOpen(false)}
+            title={t('transactions.filterModal.title')}
+        >
             <form onSubmit={handleSubmit}>
                 <Controller
                     control={control}
@@ -26,7 +32,7 @@ export default function FilterTransactionsModal() {
                     render={({ field: { onChange, value, ...fieldProps } }) => (
                         <Select
                             className="mb-4"
-                            placeholder="Year"
+                            placeholder={t('transactions.filterModal.year')}
                             options={yearOptions}
                             value={value?.toString()}
                             onChange={selected => onChange(Number(selected))}
@@ -40,7 +46,7 @@ export default function FilterTransactionsModal() {
                     render={({ field: { onChange, value, ...fieldProps } }) => (
                         <Select
                             className="mb-4"
-                            placeholder="By Category"
+                            placeholder={t('transactions.filterModal.byCategory')}
                             options={[
                                 {
                                     value: ALL,
@@ -59,7 +65,7 @@ export default function FilterTransactionsModal() {
                     name="method"
                     render={({ field: { onChange, value, ...fieldProps } }) => (
                         <Select
-                            placeholder="By Payment Method"
+                            placeholder={t('transactions.filterModal.byPaymentMethod')}
                             className="mb-8"
                             options={[
                                 {
@@ -68,19 +74,19 @@ export default function FilterTransactionsModal() {
                                 },
                                 {
                                     value: 'CREDIT',
-                                    label: 'Credit card',
+                                    label: t('paymentMethods.CREDIT'),
                                 },
                                 {
                                     value: 'DEBIT',
-                                    label: 'Debit card',
+                                    label: t('paymentMethods.DEBIT'),
                                 },
                                 {
                                     value: 'PIX',
-                                    label: 'Pix',
+                                    label: t('paymentMethods.PIX'),
                                 },
                                 {
                                     value: 'CASH',
-                                    label: 'Cash',
+                                    label: t('paymentMethods.CASH'),
                                 },
                             ]}
                             onChange={onChange}
@@ -97,10 +103,10 @@ export default function FilterTransactionsModal() {
                         className="w-full"
                         type="button"
                     >
-                        Reset
+                        {t('common.reset')}
                     </Button>
                     <Button className="w-full" type="submit">
-                        Filtrar
+                        {t('transactions.filterModal.apply')}
                     </Button>
                 </div>
             </form>

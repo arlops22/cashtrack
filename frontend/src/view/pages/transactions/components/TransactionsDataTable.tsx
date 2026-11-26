@@ -1,4 +1,5 @@
 import { CircleX, Edit, EllipsisVertical } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import type { Transaction } from '../../../../app/entities/Transaction';
 import { useTransaction } from './TransactionContext/useTransaction';
@@ -17,6 +18,7 @@ import Button from '../../../components/Button';
 import Typography from '../../../components/Typography';
 
 export default function TransactionsDataTable() {
+    const { t } = useTranslation();
     const { transactionsData, isLoadingTransactions, onOpenCreateModal, onOpenDeleteModal, onOpenEditModal } =
         useTransaction();
 
@@ -80,11 +82,11 @@ export default function TransactionsDataTable() {
                         >
                             <DropdownMenuItem onClick={() => onOpenEditModal(row)}>
                                 <Edit />
-                                <span>Edit</span>
+                                <span>{t('common.edit')}</span>
                             </DropdownMenuItem>
                             <DropdownMenuItem className="text-red-800" onClick={() => onOpenDeleteModal(row)}>
                                 <CircleX />
-                                <span>Delete</span>
+                                <span>{t('common.delete')}</span>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -96,9 +98,9 @@ export default function TransactionsDataTable() {
     if (!transactionsData || !transactionsData.transactionsByDay.length)
         return (
             <EmptyList
-                title="No transactions found"
-                description="Create your first transaction to start organizing your monthly expenses"
-                actionLabel="Add transaction"
+                title={t('transactions.empty.title')}
+                description={t('transactions.empty.description')}
+                actionLabel={t('transactions.add')}
                 onClickAction={onOpenCreateModal}
             />
         );

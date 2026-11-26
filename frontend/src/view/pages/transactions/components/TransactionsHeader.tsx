@@ -1,4 +1,5 @@
 import { Filter, Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { useTransaction } from './TransactionContext/useTransaction';
 
@@ -6,20 +7,21 @@ import Header from '../../../components/Header';
 import Button from '../../../components/Button';
 
 export default function TransactionsHeader() {
+    const { t } = useTranslation();
     const { onOpenCreateModal, setIsFilterModalOpen } = useTransaction();
 
     return (
         <Header
-            title="Transactions"
+            title={t('transactions.title')}
             actionComponent={
                 <div className="flex items-center gap-4">
                     <Button onClick={() => setIsFilterModalOpen(true)} size="md" variant="outlined" color="secondary">
                         <Filter size={14} />
-                        <span>Filters</span>
+                        <span>{t('common.filters')}</span>
                     </Button>
                     <Button className="hidden sm:flex" onClick={onOpenCreateModal} size="md">
                         <Plus size={15} />
-                        <span>Add transaction</span>
+                        <span>{t('transactions.add')}</span>
                     </Button>
                     <Button
                         className="absolute bottom-6 right-6 flex z-50 sm:hidden"
