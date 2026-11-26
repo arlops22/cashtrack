@@ -1,12 +1,19 @@
 import i18n from '../i18n';
 
+function getCurrency(language?: string) {
+    return language?.startsWith('en') ? 'USD' : 'BRL';
+}
+
 export function formatCurrency(
     value: number,
     signDisplay: keyof Intl.NumberFormatOptionsSignDisplayRegistry = 'never',
 ) {
-    return Intl.NumberFormat(i18n.resolvedLanguage, {
+    const locale = i18n.resolvedLanguage;
+    const currency = getCurrency(locale);
+
+    return Intl.NumberFormat(locale, {
         style: 'currency',
-        currency: 'BRL',
+        currency,
         signDisplay,
     }).format(value);
 }
