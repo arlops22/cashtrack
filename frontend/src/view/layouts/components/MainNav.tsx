@@ -1,4 +1,5 @@
 import { NavLink, useMatch } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import type { NavItem } from '../config/nav-items';
 
@@ -10,6 +11,7 @@ type TProps = {
 };
 
 export default function MainNav({ items }: TProps) {
+    const { t } = useTranslation();
     const { isMobile, toggleSidebar } = useSidebar();
 
     return (
@@ -25,7 +27,7 @@ export default function MainNav({ items }: TProps) {
                         >
                             <NavLink to={path} end={path === '/'} title={title}>
                                 <Icon size={16} />
-                                <span>{title}</span>
+                                <span>{t(title)}</span>
                             </NavLink>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
