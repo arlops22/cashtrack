@@ -1,0 +1,196 @@
+{
+    "common": {
+        "name": "Nome",
+        "type": "Tipo",
+        "category": "Categoria",
+        "amount": "Valor",
+        "paymentMethod": "Forma de pagamento",
+        "email": "E-mail",
+        "password": "Senha",
+        "actions": "Ações",
+        "edit": "Editar",
+        "delete": "Excluir",
+        "reset": "Limpar",
+        "filters": "Filtros"
+    },
+    "nav": {
+        "dashboard": "Dashboard",
+        "transactions": "Transações",
+        "bankAccounts": "Contas bancárias",
+        "categories": "Categorias",
+        "logOut": "Sair"
+    },
+    "auth": {
+        "signIn": {
+            "title": "Entre na sua conta",
+            "newHere": "Novo por aqui?",
+            "createAccount": "Crie uma conta",
+            "submit": "Entrar",
+            "invalidCredentials": "Credenciais inválidas!",
+            "error": "Não foi possível entrar. Tente novamente."
+        },
+        "signUp": {
+            "title": "Crie uma conta",
+            "haveAccount": "Já tem uma conta?",
+            "logIn": "Entrar",
+            "firstName": "Nome",
+            "lastName": "Sobrenome",
+            "submit": "Criar conta",
+            "emailInUse": "Este e-mail já está em uso.",
+            "error": "Não foi possível criar a conta. Tente novamente."
+        }
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "filters": {
+            "label": "Filtros:",
+            "account": "Conta:"
+        },
+        "totals": {
+            "income": "Total de receitas",
+            "expense": "Total de despesas",
+            "netIncome": "Resultado líquido total"
+        },
+        "charts": {
+            "monthlyMetrics": "Métricas por mês",
+            "expensesByCategory": "Despesas por categoria"
+        }
+    },
+    "bankAccounts": {
+        "title": "Minhas contas",
+        "add": "Adicionar conta",
+        "actualBalance": "Saldo atual",
+        "empty": {
+            "title": "Nenhuma conta ainda",
+            "description": "Crie sua primeira conta bancária para começar a organizar suas despesas"
+        },
+        "modal": {
+            "createTitle": "Nova conta",
+            "editTitle": "Editar conta",
+            "initialBalance": "Saldo inicial",
+            "submit": "Salvar conta"
+        },
+        "delete": {
+            "confirm": "Tem certeza de que deseja excluir a conta {{name}}?"
+        }
+    },
+    "categories": {
+        "title": "Minhas categorias",
+        "add": "Adicionar categoria",
+        "empty": {
+            "title": "Nenhuma categoria ainda",
+            "description": "Crie sua primeira categoria para começar a organizar suas despesas"
+        },
+        "modal": {
+            "createTitle": "Nova categoria",
+            "editTitle": "Editar categoria",
+            "submit": "Salvar categoria"
+        },
+        "delete": {
+            "confirm": "Tem certeza de que deseja excluir a categoria {{name}}?"
+        }
+    },
+    "transactions": {
+        "title": "Transações",
+        "add": "Adicionar transação",
+        "filters": {
+            "account": "Conta:",
+            "type": "Tipo:",
+            "allTransactions": "Todas as transações",
+            "incomes": "Receitas",
+            "expenses": "Despesas"
+        },
+        "empty": {
+            "title": "Nenhuma transação encontrada",
+            "description": "Crie sua primeira transação para começar a organizar seus gastos mensais"
+        },
+        "summary": {
+            "title": "Resumo",
+            "date": "Data:",
+            "accountBalance": "Saldo da conta:",
+            "totalTransactions": "Total de transações:",
+            "totalIncome": "Total de receitas:",
+            "totalExpense": "Total de despesas:",
+            "result": "Resultado:"
+        },
+        "modal": {
+            "createTitle": "Nova transação",
+            "editTitle": "Editar transação",
+            "submit": "Salvar transação"
+        },
+        "filterModal": {
+            "title": "Filtrar",
+            "year": "Ano",
+            "byCategory": "Por categoria",
+            "byPaymentMethod": "Por forma de pagamento",
+            "allCategories": "Todas",
+            "allMethods": "Todos",
+            "apply": "Aplicar"
+        },
+        "delete": {
+            "confirm": "Tem certeza de que deseja excluir a transação {{name}}?"
+        }
+    },
+    "transactionTypes": {
+        "INCOME": "Receita",
+        "EXPENSE": "Despesa"
+    },
+    "paymentMethods": {
+        "CREDIT": "Cartão de crédito",
+        "DEBIT": "Cartão de débito",
+        "PIX": "Pix",
+        "CASH": "Dinheiro"
+    },
+    "accountTypes": {
+        "CHECKING": "Conta corrente",
+        "INVESTMENT": "Investimento",
+        "SAVING": "Poupança"
+    },
+    "months": {
+        "january": "Janeiro",
+        "february": "Fevereiro",
+        "march": "Março",
+        "april": "Abril",
+        "may": "Maio",
+        "june": "Junho",
+        "july": "Julho",
+        "august": "Agosto",
+        "september": "Setembro",
+        "october": "Outubro",
+        "november": "Novembro",
+        "december": "Dezembro"
+    },
+    "dateRange": {
+        "selectPeriod": "Selecionar período",
+        "presets": {
+            "today": "Hoje",
+            "yesterday": "Ontem",
+            "thisWeek": "Esta semana",
+            "lastWeek": "Semana passada",
+            "lastTwoWeeks": "Últimas duas semanas",
+            "thisMonth": "Este mês",
+            "lastMonth": "Mês passado",
+            "thisYear": "Este ano",
+            "lastYear": "Ano passado"
+        }
+    },
+    "validation": {
+        "invalidEmail": "Informe um e-mail válido",
+        "passwordRequired": "Informe sua senha",
+        "passwordMin": "A senha deve ter pelo menos 8 caracteres",
+        "firstName": "Informe um nome válido",
+        "lastName": "Informe um sobrenome válido",
+        "accountName": "Informe um nome de conta válido",
+        "categoryName": "Informe um nome de categoria válido",
+        "invalidColor": "Deve ser uma cor hexadecimal válida (ex.: #FF5733)",
+        "nameRequired": "O nome não pode ficar vazio",
+        "categoryRequired": "A categoria não pode ficar vazia",
+        "amountRequired": "O valor não pode ficar vazio",
+        "amountPositive": "O valor deve ser maior que zero",
+        "dateRequired": "A data não pode ficar vazia",
+        "typeRequired": "O tipo não pode ficar vazio",
+        "methodRequired": "A forma de pagamento não pode ficar vazia",
+        "yearRequired": "O ano não pode ficar vazio",
+        "invalidYear": "Ano inválido"
+    }
+}

@@ -1,0 +1,196 @@
+{
+    "common": {
+        "name": "Name",
+        "type": "Type",
+        "category": "Category",
+        "amount": "Amount",
+        "paymentMethod": "Payment Method",
+        "email": "Email",
+        "password": "Password",
+        "actions": "Actions",
+        "edit": "Edit",
+        "delete": "Delete",
+        "reset": "Reset",
+        "filters": "Filters"
+    },
+    "nav": {
+        "dashboard": "Dashboard",
+        "transactions": "Transactions",
+        "bankAccounts": "Bank Accounts",
+        "categories": "Categories",
+        "logOut": "Log out"
+    },
+    "auth": {
+        "signIn": {
+            "title": "Log in to your account",
+            "newHere": "New here?",
+            "createAccount": "Create an account",
+            "submit": "Log in",
+            "invalidCredentials": "Invalid credentials!",
+            "error": "Unable to sign in. Please try again."
+        },
+        "signUp": {
+            "title": "Create an account",
+            "haveAccount": "Already have an account?",
+            "logIn": "Log in",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "submit": "Create account",
+            "emailInUse": "This email is already in use.",
+            "error": "Unable to sign up. Please try again."
+        }
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "filters": {
+            "label": "Filters:",
+            "account": "Account:"
+        },
+        "totals": {
+            "income": "Total Income",
+            "expense": "Total Expense",
+            "netIncome": "Total Net Income"
+        },
+        "charts": {
+            "monthlyMetrics": "Metrics by month",
+            "expensesByCategory": "Expenses by category"
+        }
+    },
+    "bankAccounts": {
+        "title": "My Accounts",
+        "add": "Add account",
+        "actualBalance": "Actual balance",
+        "empty": {
+            "title": "No accounts yet",
+            "description": "Create your first bank account to start organizing your expenses"
+        },
+        "modal": {
+            "createTitle": "New account",
+            "editTitle": "Edit account",
+            "initialBalance": "Initial balance",
+            "submit": "Save account"
+        },
+        "delete": {
+            "confirm": "Are you sure that you want to delete {{name}} account?"
+        }
+    },
+    "categories": {
+        "title": "My Categories",
+        "add": "Add category",
+        "empty": {
+            "title": "No categories yet",
+            "description": "Create your first category to start organizing your expenses"
+        },
+        "modal": {
+            "createTitle": "New category",
+            "editTitle": "Edit category",
+            "submit": "Save category"
+        },
+        "delete": {
+            "confirm": "Are you sure that you want to delete {{name}} category?"
+        }
+    },
+    "transactions": {
+        "title": "Transactions",
+        "add": "Add transaction",
+        "filters": {
+            "account": "Account:",
+            "type": "Type:",
+            "allTransactions": "All transactions",
+            "incomes": "Incomes",
+            "expenses": "Expenses"
+        },
+        "empty": {
+            "title": "No transactions found",
+            "description": "Create your first transaction to start organizing your monthly expenses"
+        },
+        "summary": {
+            "title": "Summary",
+            "date": "Date:",
+            "accountBalance": "Account balance:",
+            "totalTransactions": "Total transactions:",
+            "totalIncome": "Total Income:",
+            "totalExpense": "Total Expense:",
+            "result": "Result:"
+        },
+        "modal": {
+            "createTitle": "New transaction",
+            "editTitle": "Edit transaction",
+            "submit": "Save transaction"
+        },
+        "filterModal": {
+            "title": "Filter",
+            "year": "Year",
+            "byCategory": "By Category",
+            "byPaymentMethod": "By Payment Method",
+            "allCategories": "All",
+            "allMethods": "All",
+            "apply": "Apply"
+        },
+        "delete": {
+            "confirm": "Are you sure that you want to delete {{name}} transaction?"
+        }
+    },
+    "transactionTypes": {
+        "INCOME": "Income",
+        "EXPENSE": "Expense"
+    },
+    "paymentMethods": {
+        "CREDIT": "Credit card",
+        "DEBIT": "Debit card",
+        "PIX": "Pix",
+        "CASH": "Cash"
+    },
+    "accountTypes": {
+        "CHECKING": "Checking",
+        "INVESTMENT": "Investment",
+        "SAVING": "Saving"
+    },
+    "months": {
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December"
+    },
+    "dateRange": {
+        "selectPeriod": "Select period",
+        "presets": {
+            "today": "Today",
+            "yesterday": "Yesterday",
+            "thisWeek": "This week",
+            "lastWeek": "Last week",
+            "lastTwoWeeks": "Last two weeks",
+            "thisMonth": "This month",
+            "lastMonth": "Last month",
+            "thisYear": "This year",
+            "lastYear": "Last year"
+        }
+    },
+    "validation": {
+        "invalidEmail": "Enter a valid email address",
+        "passwordRequired": "Enter your password",
+        "passwordMin": "The password must have at least 8 characters",
+        "firstName": "Enter a valid first name",
+        "lastName": "Enter a valid last name",
+        "accountName": "Enter a valid account name",
+        "categoryName": "Enter a valid category name",
+        "invalidColor": "Must be a valid hex color (e.g. #FF5733)",
+        "nameRequired": "Name must not be empty",
+        "categoryRequired": "Category must not be empty",
+        "amountRequired": "Amount must not be empty",
+        "amountPositive": "Amount must be greater than zero",
+        "dateRequired": "Date must not be empty",
+        "typeRequired": "Type must not be empty",
+        "methodRequired": "Payment method must not be empty",
+        "yearRequired": "Year must not be empty",
+        "invalidYear": "Invalid year"
+    }
+}

@@ -2,12 +2,15 @@
 import type { ComponentProps } from 'react';
 import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { DayPicker, getDefaultClassNames } from 'react-day-picker';
-import { ptBR } from 'react-day-picker/locale';
+import { useTranslation } from 'react-i18next';
+import { enUS, ptBR } from 'react-day-picker/locale';
 
 import { cn } from '../../../../app/utils';
 import { buttonVariants } from '../../Button/button.variants';
 
 import { CalendarDayButton } from './CalendarDayButton';
+
+const CALENDAR_LOCALES = { en: enUS, 'pt-BR': ptBR };
 
 export const defaultClassNames = getDefaultClassNames();
 
@@ -54,9 +57,12 @@ const baseComponents = {
 type CalendarProps = ComponentProps<typeof DayPicker>;
 
 export function Calendar({ className, classNames, components, ...props }: CalendarProps) {
+    const { i18n } = useTranslation();
+    const locale = CALENDAR_LOCALES[i18n.resolvedLanguage as keyof typeof CALENDAR_LOCALES] ?? enUS;
+
     return (
         <DayPicker
-            locale={ptBR}
+            locale={locale}
             className={cn('p-2 [--cell-radius:var(--radius-md)] [--cell-size:--spacing(7)]', className)}
             classNames={{ ...baseClassNames, ...classNames }}
             components={{ ...baseComponents, ...components }}
