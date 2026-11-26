@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Eye, EyeClosed } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { useSignUpController } from './useSignUpController';
 
@@ -9,6 +10,7 @@ import Input from '../../../components/Input';
 import Typography from '../../../components/Typography';
 
 export default function SignUp() {
+    const { t } = useTranslation();
     const { register, errors, handleSubmit, isPending } = useSignUpController();
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -19,12 +21,12 @@ export default function SignUp() {
         >
             <div>
                 <Typography as="h1" variant="h5" className="mb-2">
-                    Create an account
+                    {t('auth.signUp.title')}
                 </Typography>
                 <Typography as="p" variant="body-md" className="mb-6">
-                    Already have an account?{' '}
+                    {t('auth.signUp.haveAccount')}{' '}
                     <Link className="link" to="/auth/sign-in">
-                        Log in
+                        {t('auth.signUp.logIn')}
                     </Link>
                 </Typography>
                 <Input
@@ -58,7 +60,7 @@ export default function SignUp() {
                 />
             </div>
             <Button isLoading={isPending} type="submit">
-                Create account
+                {t('auth.signUp.submit')}
             </Button>
         </form>
     );
