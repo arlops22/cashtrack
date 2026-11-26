@@ -1,4 +1,5 @@
 import { Scale, TrendingDown, TrendingUp } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 import { useDashboard } from './DashboardContext/useDashboard';
 
@@ -6,6 +7,7 @@ import { Skeleton } from '../../../components/ui/Skeleton';
 import TotalValueCard from './TotalValueCard';
 
 export default function TotalsList() {
+    const { t } = useTranslation();
     const { metrics, isLoadingMetrics } = useDashboard();
 
     return (
@@ -18,13 +20,21 @@ export default function TotalsList() {
                 </>
             ) : (
                 <>
-                    <TotalValueCard label="Total Income" value={metrics.summary.income} icon={<TrendingUp />} />
                     <TotalValueCard
-                        label="Total Expense"
+                        label={t('dashboard.totals.income')}
+                        value={metrics.summary.income}
+                        icon={<TrendingUp />}
+                    />
+                    <TotalValueCard
+                        label={t('dashboard.totals.expense')}
                         value={metrics.summary.expense * -1}
                         icon={<TrendingDown />}
                     />
-                    <TotalValueCard label="Total Net Income" value={metrics.summary.balance} icon={<Scale />} />
+                    <TotalValueCard
+                        label={t('dashboard.totals.netIncome')}
+                        value={metrics.summary.balance}
+                        icon={<Scale />}
+                    />
                 </>
             )}
         </div>

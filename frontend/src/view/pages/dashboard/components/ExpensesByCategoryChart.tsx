@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
 import type { ByCategorySummary } from '../../../../app/services/transactionsService/metrics';
 import { formatChartMonthLabel, formatCurrency } from '../../../../app/utils';
@@ -38,12 +39,13 @@ function buildChart(data: ByCategorySummary[]) {
 }
 
 export default function ExpensesByCategoryChart({ data }: TProps) {
+    const { t } = useTranslation();
     const { chartData, chartConfig, categoryKeys } = useMemo(() => buildChart(data), [data]);
 
     return (
         <div className="h-fit w-full bg-white border rounded-md p-4">
             <Typography variant="body-lg" color="gray-800" className="font-medium mb-4">
-                Expenses by category
+                {t('dashboard.charts.expensesByCategory')}
             </Typography>
             <ChartContainer config={chartConfig}>
                 <BarChart accessibilityLayer data={chartData}>

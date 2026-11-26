@@ -1,4 +1,5 @@
 import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
 import type { MonthlySummary } from '../../../../app/services/transactionsService/metrics';
 import { formatCurrency, formatChartMonthLabel } from '../../../../app/utils';
@@ -22,10 +23,12 @@ type TProps = {
 };
 
 export default function ExpensesChart({ data }: TProps) {
+    const { t } = useTranslation();
+
     return (
         <div className="h-fit w-full bg-white border rounded-md p-4">
             <Typography variant="body-lg" color="gray-800" className="font-medium mb-4">
-                Metrics by month
+                {t('dashboard.charts.monthlyMetrics')}
             </Typography>
             <ChartContainer config={chartConfig}>
                 <BarChart accessibilityLayer data={data}>
