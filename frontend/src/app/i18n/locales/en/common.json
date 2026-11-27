@@ -110,6 +110,11 @@
             "title": "No transactions found",
             "description": "Create your first transaction to start organizing your monthly expenses"
         },
+        "emptyAccount": {
+            "title": "Add an account first",
+            "description": "Transactions are linked to a bank account. Create one to start recording your income and expenses.",
+            "add": "Add bank account"
+        },
         "summary": {
             "title": "Summary",
             "date": "Date:",

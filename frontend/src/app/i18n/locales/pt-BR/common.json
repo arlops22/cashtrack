@@ -110,6 +110,11 @@
             "title": "Nenhuma transação encontrada",
             "description": "Crie sua primeira transação para começar a organizar seus gastos mensais"
         },
+        "emptyAccount": {
+            "title": "Adicione uma conta primeiro",
+            "description": "Despesas são relacionadas a uma conta bancária. Crie uma primeiro para depois salvar seus gastos e receitas.",
+            "add": "Adicionar conta"
+        },
         "summary": {
             "title": "Resumo",
             "date": "Data:",
