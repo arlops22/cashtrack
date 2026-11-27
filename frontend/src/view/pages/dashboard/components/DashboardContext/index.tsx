@@ -1,4 +1,4 @@
-import { createContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useMemo, useState } from 'react';
 import type { DateRange } from 'react-day-picker';
 import moment from 'moment';
 
@@ -28,15 +28,11 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
     const [range, setRange] = useState<DateRange>(() => getDateRangePreset('thisYear').range);
     const [selectedAccount, setSelectedAccount] = useState(user?.bankAccounts[0]?.id.toString());
 
-    const { metrics, refetchMetrics, isLoading } = useTransactionsMetrics({
+    const { metrics, isLoading } = useTransactionsMetrics({
         bankAccountId: Number(selectedAccount),
         from: range.from && toApiDate(range.from),
         to: range.to && toApiDate(range.to),
     });
-
-    useEffect(() => {
-        refetchMetrics();
-    }, [range, selectedAccount, refetchMetrics]);
 
     const value = useMemo<DashboardContextProps>(
         () => ({

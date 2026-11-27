@@ -42,6 +42,12 @@
     },
     "dashboard": {
         "title": "Dashboard",
+        "empty": {
+            "title": "Seu dashboard está aguardando",
+            "description": "Adicione uma conta bancária e suas primeiras despesas para ver um resumo financeiro.",
+            "addAccount": "Adicionar conta",
+            "addTransaction": "Adicionar despesas"
+        },
         "filters": {
             "label": "Filtros:",
             "account": "Conta:"

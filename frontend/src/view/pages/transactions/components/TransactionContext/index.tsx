@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useMemo, useState } from 'react';
 
 import type { Transaction } from '../../../../../app/entities/Transaction';
 import type { BankAccount } from '../../../../../app/entities/BankAccount';
@@ -48,7 +48,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
     const [modal, setModal] = useState<ModalState>({ type: 'closed' });
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
     const [filters, setFilters] = useState<FilterState>({
-        account: user?.bankAccounts[0].id.toString() ?? '',
+        account: user?.bankAccounts[0]?.id.toString() ?? '',
         type: 'All',
         category: undefined,
         method: undefined,
@@ -56,7 +56,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
         year: new Date().getFullYear(),
     });
 
-    const { transactionsData, refetchTransactions, isLoading } = useTransactions({
+    const { transactionsData, isLoading } = useTransactions({
         bankAccountId: Number(filters.account),
         type: filters.type !== 'All' ? filters.type : undefined,
         category: filters.category,
@@ -98,10 +98,6 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
             },
         );
     }, [modal, deleteTransaction, onCloseModal]);
-
-    useEffect(() => {
-        refetchTransactions();
-    }, [filters, refetchTransactions]);
 
     const value = useMemo<TransactionContextProps>(
         () => ({

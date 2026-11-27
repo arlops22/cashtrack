@@ -42,6 +42,12 @@
     },
     "dashboard": {
         "title": "Dashboard",
+        "empty": {
+            "title": "Your dashboard is waiting",
+            "description": "Add a bank account and record your first transaction to see your financial overview.",
+            "addAccount": "Add bank account",
+            "addTransaction": "Add transaction"
+        },
         "filters": {
             "label": "Filters:",
             "account": "Account:"

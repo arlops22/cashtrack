@@ -4,12 +4,13 @@ import Typography from './Typography';
 type TProps = {
     title: string;
     description: string;
-    actionLabel: string;
-    onClickAction: () => void;
+    actionLabel?: string;
+    onClickAction?: () => void;
+    actionComponent?: React.ReactNode;
 };
 
 export default function EmptyList(props: TProps) {
-    const { title, description, actionLabel, onClickAction } = props;
+    const { title, description, actionLabel, onClickAction, actionComponent } = props;
 
     return (
         <div className="border rounded-md border-dashed border-gray-400 h-96 flex items-center justify-center">
@@ -20,9 +21,11 @@ export default function EmptyList(props: TProps) {
                 <Typography as="p" className="mb-4 text-center max-w-80 w-full">
                     {description}
                 </Typography>
-                <Button size="md" onClick={onClickAction}>
-                    {actionLabel}
-                </Button>
+                {actionComponent || (
+                    <Button size="md" onClick={onClickAction}>
+                        {actionLabel}
+                    </Button>
+                )}
             </div>
         </div>
     );

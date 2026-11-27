@@ -10,25 +10,25 @@ const TRANSACTION_KEY = 'transactions';
 const TRANSACTION_METRIC_KEY = 'metrics';
 
 export function useTransactions(filters: TransactionsFilter) {
-    const { data, isLoading, refetch } = useQuery({
-        queryKey: [TRANSACTION_KEY],
+    const { data, isLoading } = useQuery({
+        queryKey: [TRANSACTION_KEY, filters],
         queryFn: () => transactionsService.get(filters),
+        enabled: Boolean(filters.bankAccountId),
     });
 
-    return { transactionsData: data, isLoading, refetchTransactions: refetch };
+    return { transactionsData: data, isLoading };
 }
 
 export function useTransactionsMetrics(filters: MetricsFilter) {
-    const { data, isLoading, refetch } = useQuery({
-        queryKey: [TRANSACTION_METRIC_KEY],
+    const { data, isLoading } = useQuery({
+        queryKey: [TRANSACTION_METRIC_KEY, filters],
         queryFn: () => transactionsService.getMetrics(filters),
+        enabled: Boolean(filters.bankAccountId && filters.from && filters.to),
     });
 
     return {
         metrics: data,
         isLoading,
-        refetchMetrics: refetch,
-        enabled: Boolean(filters.bankAccountId && filters.from && filters.to),
     };
 }
 
